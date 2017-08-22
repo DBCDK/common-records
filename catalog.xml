@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!--
+  ~ Copyright Dansk Bibliotekscenter a/s. Licensed under GNU GPL v3
+  ~  See license text at https://opensource.dbc.dk/licenses/gpl-3.0
+  -->
+
+<catalog xmlns="urn:oasis:names:tc:entity:xmlns:xml:catalog" prefer="system">
+    <system systemId="http://www.loc.gov/standards/iso25577/marcxchange-2-0.xsd" uri="src/main/resources/jaxb/MarcXChange/www.loc.gov/standards/iso25577/marcxchange-2-0.xsd"/>
+    <system systemId="http://www.loc.gov/standards/iso25577/marcxchange-1-1.xsd" uri="src/main/resources/jaxb/MarcXChange/www.loc.gov/standards/iso25577/marcxchange-1-1.xsd"/>
+</catalog>
