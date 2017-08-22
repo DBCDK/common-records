@@ -1,0 +1,118 @@
+<?xml version="1.0"?>
+<!--
+  ~ Copyright Dansk Bibliotekscenter a/s. Licensed under GNU GPL v3
+  ~  See license text at https://opensource.dbc.dk/licenses/gpl-3.0
+  -->
+
+<project xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd" xmlns="http://maven.apache.org/POM/4.0.0"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>dk.dbc</groupId>
+        <artifactId>dbc-pom</artifactId>
+        <version>1.0.0-SNAPSHOT</version>
+    </parent>
+
+    <name>common-records</name>
+    <artifactId>common-records</artifactId>
+    <version>1.0-SNAPSHOT</version>
+
+    <properties>
+        <maven.jaxb2.plugin>0.9.0</maven.jaxb2.plugin>
+        <maven.jaxb2.common.plugin>0.9.0</maven.jaxb2.common.plugin>
+        <updateservice.wsdl.url>https://svn.dbc.dk/repos/updateservice/trunk/src/wsdl/update/catalogingUpdate.wsdl</updateservice.wsdl.url>
+        <buildservice.wsdl.url>https://svn.dbc.dk/repos/updateservice/trunk/src/wsdl/build/catalogingBuild.wsdl</buildservice.wsdl.url>
+    </properties>
+
+    <dependencies>
+        <dependency>
+            <groupId>dk.dbc</groupId>
+            <artifactId>dbc-commons-marc</artifactId>
+            <version>1.3-SNAPSHOT</version>
+        </dependency>
+
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.google.code.gson</groupId>
+            <artifactId>gson</artifactId>
+            <version>2.2.4</version>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-lang3</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.jvnet.jaxb2_commons</groupId>
+            <artifactId>jaxb2-basics-runtime</artifactId>
+            <version>${maven.jaxb2.common.plugin}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-ext</artifactId>
+            <version>1.7.21</version>
+        </dependency>
+        <dependency>
+            <groupId>commons-lang</groupId>
+            <artifactId>commons-lang</artifactId>
+            <version>2.6</version>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+            </plugin>
+            <plugin>
+                <groupId>org.jvnet.jaxb2.maven2</groupId>
+                <artifactId>maven-jaxb2-plugin</artifactId>
+                <version>${maven.jaxb2.plugin}</version>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>generate</goal>
+                        </goals>
+                        <configuration>
+                            <schemaIncludes>
+                                <include>jaxb/MarcXChange/**/*.xsd</include>
+                            </schemaIncludes>
+                            <episodeFile>${project.build.directory}/generated-sources/xjc/META-INF/jaxb-MarcXChange.episode</episodeFile>
+                            <generatePackage>dk.dbc.common.records.marcxchange</generatePackage>
+                        </configuration>
+                        <id>jaxb-generate-MarcXChange</id>
+                    </execution>
+                </executions>
+                <configuration>
+                    <args>
+                        <arg>-XtoString</arg>
+                        <arg>-XhashCode</arg>
+                        <arg>-Xequals</arg>
+                    </args>
+                    <plugins>
+                        <plugin>
+                            <groupId>org.jvnet.jaxb2_commons</groupId>
+                            <artifactId>jaxb2-basics</artifactId>
+                            <version>${maven.jaxb2.common.plugin}</version>
+                        </plugin>
+                    </plugins>
+                    <packageLevelAnnotations>false</packageLevelAnnotations>
+                    <catalog>src/main/resources/jaxb/catalog.xml</catalog>
+                    <catalogResolver>org.jvnet.jaxb2.maven2.resolver.tools.ClasspathCatalogResolver</catalogResolver>
+                    <forceRegenerate>true</forceRegenerate>
+                    <generateDirectory>${project.build.directory}/generated-sources/xjc</generateDirectory>
+                    <verbose>true</verbose>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+
+</project>
