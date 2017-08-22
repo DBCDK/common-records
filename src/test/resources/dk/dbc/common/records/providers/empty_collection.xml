@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~ Copyright Dansk Bibliotekscenter a/s. Licensed under GNU GPL v3
+  ~  See license text at https://opensource.dbc.dk/licenses/gpl-3.0
+  -->
+
+<!--
+    Valid marcXchange record, that applies to the xsd
+-->
+<ns1:collection
+    xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+    xmlns:ns1='info:lc/xmlns/marcxchange-v1'
+    xsi:schemaLocation='info:lc/xmlns/marcxchange-v1'/>

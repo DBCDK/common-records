@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~ Copyright Dansk Bibliotekscenter a/s. Licensed under GNU GPL v3
+  ~  See license text at https://opensource.dbc.dk/licenses/gpl-3.0
+  -->
+
+<!--
+    MarcXchange record, that is valid xml but does not apply to the xsd
+-->
+<ns1:collection
+    xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+    xmlns:ns1='info:lc/xmlns/marcxchange-v1'
+    xsi:schemaLocation='info:lc/xmlns/marcxchange-v1'>
+    <ns1:post>
+        <ns1:datafield tag="001">
+            <ns1:subfield code="a">1 234 567 8</ns1:subfield>
+            <ns1:subfield code="b">870970</ns1:subfield>
+            <ns1:subfield code="c">12072013</ns1:subfield>
+            <ns1:subfield code="d">12072013101735</ns1:subfield>
+            <ns1:subfield code="f">a</ns1:subfield>
+        </ns1:datafield>
+        <ns1:datafield tag="004">
+            <ns1:subfield code="a">e</ns1:subfield>
+            <ns1:subfield code="r">n</ns1:subfield>
+        </ns1:datafield>
+    </ns1:post>
+
+</ns1:collection>

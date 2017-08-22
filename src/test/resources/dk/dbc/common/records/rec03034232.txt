@@ -1,0 +1,21 @@
+001 00*a0 303 423 2*b870970*c19910823*d19820601*fa*oc
+004 00*rn*ae
+008 00*ts*v1
+009 00*as*gxh
+032 00*xSFG197700
+039 00*abef
+110 00*aSmokie
+245 00*aBright lights & back alleys*eSmokie (Chris Norman, Terry Uttley, Alan Silson, Pete Spencer)
+260 00*bRAK
+300 00*n1 kassettebånd*bStereo, dolby
+520 00*aIndspillet 1976-77
+531 00*aIndhold:
+538 00*fRAK*g7C 262-99584
+652 00*m78.794*v5
+700 00*aNorman*hChris
+700 00*aUttley*hTerry
+700 00*aSilson*hAlan
+700 00*aSpencer*hPete
+795 00*å11*aIt's your life*aI can't stay here tonight*aSunshine Avenue*aThink of me*aIn the heat of the night*aNeedles and pins*aNo one could ever love you more*aThe ¤dancer*aBaby it's you*aWalk right back
+d08 00*ahvn
+s10 00*aDBC
