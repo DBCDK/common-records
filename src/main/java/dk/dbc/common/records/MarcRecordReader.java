@@ -338,6 +338,8 @@ public class MarcRecordReader {
      * Returns id of a parent record, that a record points to.
      * <p>
      * The parent id to located in <code>014a</code>.
+     * If there is a field 014 either without a subfield x or if the content of subfield x is ANM
+     * then the record is part of a volume/section/head structure.
      * </p>
      *
      * @return If a parent id is found it is returned, <code>null</code>
@@ -347,7 +349,12 @@ public class MarcRecordReader {
         logger.entry();
         String result = null;
         try {
-            return result = getValue("014", "a");
+            String field014x;
+            field014x = getValue("014", "x");
+            if (field014x == null || "ANM".equals(field014x)) {
+                result = getValue("014", "a");
+            }
+            return result;
         } finally {
             logger.exit(result);
         }
