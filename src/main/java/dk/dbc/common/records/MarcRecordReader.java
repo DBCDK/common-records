@@ -307,11 +307,32 @@ public class MarcRecordReader {
      *
      * @return If an id is found it is returned, <code>null</code> otherwise.
      */
+    @Deprecated
     public Integer getAgencyIdAsInteger() {
         logger.entry();
-        Integer result = null;
+        int result = 0;
         try {
             String id = getAgencyId();
+            return result = Integer.valueOf(id, 10);
+        } finally {
+            logger.exit(result);
+        }
+    }
+
+    /**
+     * Returns agency id of this record.
+     * <p>
+     * The id in <code>001b</code>.
+     * </p>
+     *
+     * @return The value of 001 *b
+     */
+    public int getAgencyIdAsInt() {
+        logger.entry();
+        int result = 0;
+        try {
+            String id = getAgencyId();
+            // In theory this could result in error. However field 001 *b must always have a value in a MarcRecord.
             return result = Integer.valueOf(id, 10);
         } finally {
             logger.exit(result);

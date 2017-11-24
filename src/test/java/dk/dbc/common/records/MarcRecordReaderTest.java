@@ -199,6 +199,7 @@ public class MarcRecordReaderTest {
         assertThat(instance.getAgencyId(), is("xxx"));
         writer.addOrReplaceSubfield("001", "b", "127");
         assertThat(instance.getAgencyIdAsInteger(), is(127));
+        assertThat(instance.getAgencyIdAsInt(), is(127));
     }
 
     @Test
