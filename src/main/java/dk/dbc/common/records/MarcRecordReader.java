@@ -332,8 +332,13 @@ public class MarcRecordReader {
         int result = 0;
         try {
             String id = getAgencyId();
-            // In theory this could result in error. However field 001 *b must always have a value in a MarcRecord.
-            return result = Integer.valueOf(id, 10);
+            if (id != null) {
+                result = Integer.valueOf(id, 10);
+            } else {
+                result = 0;
+            }
+
+            return result;
         } finally {
             logger.exit(result);
         }
@@ -408,12 +413,30 @@ public class MarcRecordReader {
         }
     }
 
+    @Deprecated
     public Integer getParentAgencyIdAsInteger() {
         logger.entry();
         Integer result = null;
         try {
             String id = getParentAgencyId();
             return result = Integer.valueOf(id, 10);
+        } finally {
+            logger.exit(result);
+        }
+    }
+
+    public int getParentAgencyIdAsInt() {
+        logger.entry();
+        Integer result = null;
+        try {
+            String id = getParentAgencyId();
+            if (id != null) {
+                result = Integer.valueOf(id, 10);
+            } else {
+                result = 0;
+            }
+
+            return result;
         } finally {
             logger.exit(result);
         }
