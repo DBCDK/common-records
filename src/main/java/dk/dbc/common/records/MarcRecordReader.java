@@ -11,6 +11,8 @@ import org.slf4j.ext.XLoggerFactory;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 /**
@@ -178,6 +180,37 @@ public class MarcRecordReader {
             }
 
             return false;
+        } finally {
+            logger.exit();
+        }
+    }
+
+    /**
+     * This function looks for field and subfield with the given names, and if subfield is found then pattern matching
+     * is perform. If match is successful then the matcher is returned otherwise null is returned
+     *
+     * @param fieldName    The field name
+     * @param subfieldName The subfield name
+     * @param p            Pattern
+     * @return List of matchers (empty if no matches)
+     */
+    public List<Matcher> getSubfieldValueMatchers(String fieldName, String subfieldName, Pattern p) {
+        logger.entry(fieldName, subfieldName, p);
+        List<Matcher> result = new ArrayList<>();
+
+        try {
+            for (MarcField field : getFieldStream(fieldName)) {
+                for (MarcSubField subfield : field.getSubfields()) {
+                    if (subfield.getName().equals(subfieldName)) {
+                        Matcher m = p.matcher(subfield.getValue());
+                        if (m.find()) {
+                            result.add(m);
+                        }
+                    }
+                }
+            }
+
+            return result;
         } finally {
             logger.exit();
         }
@@ -389,7 +422,7 @@ public class MarcRecordReader {
     /**
      * If 014 *x = ANM then 014 *a record has agency 870970. If 014 *x is either missing or has another value than ANM,
      * then the record in 014 *a has the same agency as this record (001 *b)
-     *
+     * <p>
      * Note: ANM = Anmeldelse = Review
      * Note: An article of type review always point to a common record
      *

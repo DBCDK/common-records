@@ -11,6 +11,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
@@ -198,7 +200,6 @@ public class MarcRecordReaderTest {
         writer.addOrReplaceSubfield("001", "b", "xxx");
         assertThat(instance.getAgencyId(), is("xxx"));
         writer.addOrReplaceSubfield("001", "b", "127");
-        assertThat(instance.getAgencyIdAsInteger(), is(127));
         assertThat(instance.getAgencyIdAsInt(), is(127));
     }
 
@@ -325,7 +326,6 @@ public class MarcRecordReaderTest {
 
         record.getFields().add(new MarcField("001", "00", Arrays.asList(new MarcSubField("a", "12345678"), new MarcSubField("b", "870971"))));
         record.getFields().add(new MarcField("014", "00", Arrays.asList(new MarcSubField("a", "87654321"), new MarcSubField("x", "Julemand"))));
-        assertThat(instance.getParentAgencyIdAsInteger(), is(870971));
         assertThat(instance.getParentAgencyId(), is("870971"));
     }
 
@@ -337,7 +337,6 @@ public class MarcRecordReaderTest {
 
         record.getFields().add(new MarcField("001", "00", Arrays.asList(new MarcSubField("a", "12345678"), new MarcSubField("b", "870971"))));
         record.getFields().add(new MarcField("014", "00", Arrays.asList(new MarcSubField("A", "87654321"), new MarcSubField("a", "87654321"))));
-        assertThat(instance.getParentAgencyIdAsInteger(), is(870971));
         assertThat(instance.getParentAgencyId(), is("870971"));
     }
 
@@ -349,7 +348,62 @@ public class MarcRecordReaderTest {
 
         record.getFields().add(new MarcField("001", "00", Arrays.asList(new MarcSubField("a", "12345678"), new MarcSubField("b", "870971"))));
         record.getFields().add(new MarcField("014", "00", Arrays.asList(new MarcSubField("a", "87654321"), new MarcSubField("x", "ANM"))));
-        assertThat(instance.getParentAgencyIdAsInteger(), is(870970));
         assertThat(instance.getParentAgencyId(), is("870970"));
+    }
+
+    @Test
+    public void testGetSubfieldValueMatchers_MutipleMatchesInSameField() {
+        MarcRecord record = new MarcRecord();
+        record.getFields().add(new MarcField("666", "00", Arrays.asList(new MarcSubField("u", "For 3-4 år"), new MarcSubField("u", "For 5-8 år"))));
+
+        MarcRecordReader instance = new MarcRecordReader(record);
+
+        String pattern = "^(For|for) ([0-9]+)-([0-9]+) (år)";
+        Pattern p = Pattern.compile(pattern);
+        List<Matcher> matchers = instance.getSubfieldValueMatchers("666", "u", p);
+        assertThat(matchers.size(), is(2));
+    }
+
+    @Test
+    public void testGetSubfieldValueMatchers_MutipleMatchesInMutipleFields() {
+        MarcRecord record = new MarcRecord();
+        record.getFields().add(new MarcField("666", "00", Arrays.asList(new MarcSubField("u", "For 3-4 år"))));
+        record.getFields().add(new MarcField("666", "00", Arrays.asList(new MarcSubField("u", "For 5-8 år"))));
+
+        MarcRecordReader instance = new MarcRecordReader(record);
+
+        String pattern = "^(For|for) ([0-9]+)-([0-9]+) (år)";
+        Pattern p = Pattern.compile(pattern);
+        List<Matcher> matchers = instance.getSubfieldValueMatchers("666", "u", p);
+        assertThat(matchers.size(), is(2));
+    }
+
+    @Test
+    public void testGetSubfieldValueMatchers_SingleMatchInMutipleFields() {
+        MarcRecord record = new MarcRecord();
+        record.getFields().add(new MarcField("666", "00", Arrays.asList(new MarcSubField("u", "For 3-4 år"))));
+        record.getFields().add(new MarcField("666", "00", Arrays.asList(new MarcSubField("u", "For 3 år"))));
+        record.getFields().add(new MarcField("666", "00", Arrays.asList(new MarcSubField("u", "For 4 år"))));
+
+        MarcRecordReader instance = new MarcRecordReader(record);
+
+        String pattern = "^(For|for) ([0-9]+)-([0-9]+) (år)";
+        Pattern p = Pattern.compile(pattern);
+        List<Matcher> matchers = instance.getSubfieldValueMatchers("666", "u", p);
+        assertThat(matchers.size(), is(1));
+    }
+
+    @Test
+    public void testGetSubfieldValueMatchers_NoMatch() {
+        MarcRecord record = new MarcRecord();
+        record.getFields().add(new MarcField("666", "00", Arrays.asList(new MarcSubField("u", "For 3 år"))));
+        record.getFields().add(new MarcField("666", "00", Arrays.asList(new MarcSubField("u", "For 4 år"))));
+
+        MarcRecordReader instance = new MarcRecordReader(record);
+
+        String pattern = "^(For|for) ([0-9]+)-([0-9]+) (år)";
+        Pattern p = Pattern.compile(pattern);
+        List<Matcher> matchers = instance.getSubfieldValueMatchers("666", "u", p);
+        assertThat(matchers.size(), is(0));
     }
 }
