@@ -187,7 +187,7 @@ public class MarcRecordReader {
 
     /**
      * This function looks for field and subfield with the given names, and if subfield is found then pattern matching
-     * is perform. If match is successful then the matcher is returned otherwise null is returned
+     * is perform. All matching subfields are returned as a list - if no matches then empty list is returned
      *
      * @param fieldName    The field name
      * @param subfieldName The subfield name
@@ -196,7 +196,7 @@ public class MarcRecordReader {
      */
     public List<Matcher> getSubfieldValueMatchers(String fieldName, String subfieldName, Pattern p) {
         logger.entry(fieldName, subfieldName, p);
-        List<Matcher> result = new ArrayList<>();
+        final List<Matcher> result = new ArrayList<>();
 
         try {
             for (MarcField field : getFieldStream(fieldName)) {
