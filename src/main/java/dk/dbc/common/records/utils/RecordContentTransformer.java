@@ -5,7 +5,7 @@
 
 package dk.dbc.common.records.utils;
 
-import dk.dbc.common.records.MarcConverter;
+import dk.dbc.common.records.MarcXConverter;
 import dk.dbc.common.records.MarcRecord;
 import dk.dbc.common.records.MarcXchangeFactory;
 import dk.dbc.common.records.marcxchange.CollectionType;
@@ -65,7 +65,7 @@ public class RecordContentTransformer {
     }
 
     public static MarcRecord decodeRecord(byte[] bytes) throws UnsupportedEncodingException {
-        return MarcConverter.convertFromMarcXChange(new String(bytes, ENCODING));
+        return MarcXConverter.convertFromMarcXChange(new String(bytes, ENCODING));
     }
 
 }

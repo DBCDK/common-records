@@ -5,7 +5,7 @@
 
 package dk.dbc.common.records.providers;
 
-import dk.dbc.common.records.MarcConverter;
+import dk.dbc.common.records.MarcXConverter;
 import dk.dbc.common.records.MarcRecord;
 import dk.dbc.common.records.marcxchange.CollectionType;
 import dk.dbc.common.records.marcxchange.RecordType;
@@ -119,7 +119,7 @@ public class MarcXChangeProvider implements MarcRecordProvider {
                 currentIndex++;
                 if (currentIndex < xmlRecords.size()) {
                     logger.trace("Item: {}", xmlRecords.get(currentIndex));
-                    return MarcConverter.createFromMarcXChange(xmlRecords.get(currentIndex));
+                    return MarcXConverter.createFromMarcXChange(xmlRecords.get(currentIndex));
                 }
             }
 

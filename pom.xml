@@ -16,7 +16,7 @@
 
     <name>common-records</name>
     <artifactId>common-records</artifactId>
-    <version>1.1-SNAPSHOT</version>
+    <version>1.2-SNAPSHOT</version>
 
     <properties>
         <maven.jaxb2.plugin>0.9.0</maven.jaxb2.plugin>
@@ -83,12 +83,25 @@
                         </goals>
                         <configuration>
                             <schemaIncludes>
-                                <include>jaxb/MarcXChange/**/*.xsd</include>
+                                <include>xsd/marcxchange-1-1.xsd</include>
                             </schemaIncludes>
                             <episodeFile>${project.build.directory}/generated-sources/xjc/META-INF/jaxb-MarcXChange.episode</episodeFile>
                             <generatePackage>dk.dbc.common.records.marcxchange</generatePackage>
                         </configuration>
                         <id>jaxb-generate-MarcXChange</id>
+                    </execution>
+                    <execution>
+                        <goals>
+                            <goal>generate</goal>
+                        </goals>
+                        <configuration>
+                            <schemaIncludes>
+                                <include>xsd/marc21slim-1-0.xsd</include>
+                            </schemaIncludes>
+                            <episodeFile>${project.build.directory}/generated-sources/xjc/META-INF/jaxb-mac21slim.episode</episodeFile>
+                            <generatePackage>dk.dbc.common.records.marc21</generatePackage>
+                        </configuration>
+                        <id>jaxb-generate-marc21</id>
                     </execution>
                 </executions>
                 <configuration>

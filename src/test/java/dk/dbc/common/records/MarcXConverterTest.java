@@ -21,7 +21,7 @@ import static org.junit.Assert.*;
 /**
  * @author stp
  */
-public class MarcConverterTest {
+public class MarcXConverterTest {
 
     /**
      * @test Case where the input file is not valid xml.
@@ -30,7 +30,7 @@ public class MarcConverterTest {
     public void testCreateFromMarcXChange_InvalidXml() throws Exception {
         System.out.println("testCreateFromMarcXChange_InvalidXml()");
         InputStream in = getClass().getResourceAsStream("invalid_xml.xml");
-        MarcConverter.convertFromMarcXChange(IOUtils.readAll(in, "UTF-8"));
+        MarcXConverter.convertFromMarcXChange(IOUtils.readAll(in, "UTF-8"));
     }
 
     /**
@@ -41,7 +41,7 @@ public class MarcConverterTest {
         System.out.println("testCreateFromMarcXChange_Wrong_Record_Xsd()");
 
         InputStream in = getClass().getResourceAsStream("wrong_record_xsd.xml");
-        MarcConverter.convertFromMarcXChange(IOUtils.readAll(in, "UTF-8"));
+        MarcXConverter.convertFromMarcXChange(IOUtils.readAll(in, "UTF-8"));
 
         in = getClass().getResourceAsStream("wrong_record_xsd.xml");
         CollectionType collection = JAXB.unmarshal(new InputStreamReader(in), CollectionType.class);
@@ -57,7 +57,7 @@ public class MarcConverterTest {
         System.out.println("testCreateFromMarcXChange_Single_Record()");
 
         InputStream in = getClass().getResourceAsStream("single_record.xml");
-        MarcRecord rec = MarcConverter.convertFromMarcXChange(IOUtils.readAll(in, "UTF-8"));
+        MarcRecord rec = MarcXConverter.convertFromMarcXChange(IOUtils.readAll(in, "UTF-8"));
 
         assertEquals(2, rec.getFields().size());
 
@@ -100,13 +100,13 @@ public class MarcConverterTest {
                 "</ns1:datafield>" +
                 "</ns1:record>" +
                 "</ns1:collection>";
-        MarcConverter.convertFromMarcXChange(in);
+        MarcXConverter.convertFromMarcXChange(in);
     }
 
     @Test
     public void createJsonFromMarcXChange() throws Exception {
         InputStream in = getClass().getResourceAsStream("single_record.xml");
-        MarcRecord rec = MarcConverter.convertFromMarcXChange(IOUtils.readAll(in, "UTF-8"));
+        MarcRecord rec = MarcXConverter.convertFromMarcXChange(IOUtils.readAll(in, "UTF-8"));
         Gson gson = new GsonBuilder().setPrettyPrinting().create();
         assertNotEquals("", gson.toJson(rec));
     }

@@ -10,6 +10,7 @@ import org.slf4j.ext.XLoggerFactory;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * This class represents a marc record.
@@ -17,6 +18,9 @@ import java.util.List;
 public class MarcRecord {
     private static final XLogger logger = XLoggerFactory.getXLogger(MarcRecord.class);
 
+    private String leader;
+    private MarcRecordType type;
+    private List<MarcControlField> controlFields;
     private List<MarcField> fields;
 
     /**
@@ -49,12 +53,43 @@ public class MarcRecord {
         }
     }
 
+    public MarcRecord(String leader, MarcRecordType type) {
+        this.leader = leader;
+        this.type = type;
+        this.controlFields = new ArrayList<>();
+        this.fields = new ArrayList<>();
+    }
+
     public List<MarcField> getFields() {
         return fields;
     }
 
     public void setFields(List<MarcField> fields) {
         this.fields = fields;
+    }
+
+    public List<MarcControlField> getControlFields() {
+        return controlFields;
+    }
+
+    public void setControlFields(List<MarcControlField> controlFields) {
+        this.controlFields = controlFields;
+    }
+
+    public String getLeader() {
+        return leader;
+    }
+
+    public void setLeader(String leader) {
+        this.leader = leader;
+    }
+
+    public MarcRecordType getType() {
+        return type;
+    }
+
+    public void setType(MarcRecordType type) {
+        this.type = type;
     }
 
     public boolean isEmpty() {
@@ -70,37 +105,47 @@ public class MarcRecord {
 
     @Override
     public int hashCode() {
-        int hash = 3;
-        hash = 79 * hash + (this.fields != null ? this.fields.hashCode() : 0);
-        return hash;
+        return Objects.hash(leader, type, controlFields, fields);
     }
 
     @Override
-    public boolean equals(Object obj) {
-        if (obj == null) {
-            return false;
-        }
-
-        if (getClass() != obj.getClass()) {
-            return false;
-        }
-
-        final MarcRecord other = (MarcRecord) obj;
-        if (this.fields != other.fields && (this.fields == null || !this.fields.equals(other.fields))) {
-            return false;
-        }
-        return true;
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        MarcRecord that = (MarcRecord) o;
+        return Objects.equals(leader, that.leader) &&
+                type == that.type &&
+                Objects.equals(controlFields, that.controlFields) &&
+                Objects.equals(fields, that.fields);
     }
 
     @Override
     public String toString() {
-        String result = "";
+        StringBuilder result = new StringBuilder();
 
-        for (MarcField rf : this.fields) {
-            result += rf.toString() + "\n";
+        if (leader != null && !leader.isEmpty()) {
+            result.append(leader);
+            result.append("\n");
         }
 
-        return result;
+        if (type != null && type != MarcRecordType.UNDEFINED) {
+            result.append(type.getText());
+            result.append("\n");
+        }
+
+        if (controlFields != null) {
+            for (MarcControlField marcControlField : this.controlFields) {
+                result.append(marcControlField.toString());
+                result.append("\n");
+            }
+        }
+
+        for (MarcField marcField : this.fields) {
+            result.append(marcField.toString());
+            result.append("\n");
+        }
+
+        return result.toString();
     }
 
 }
