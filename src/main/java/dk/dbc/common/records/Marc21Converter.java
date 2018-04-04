@@ -100,7 +100,6 @@ public class Marc21Converter {
         for (DataFieldType df : rt.getDatafield()) {
             System.out.println("MarcField");
             mfl.add(convertFromDataFieldType(df));
-
         }
         record.getFields().addAll(mfl);
 
