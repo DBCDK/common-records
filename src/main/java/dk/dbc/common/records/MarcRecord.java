@@ -126,11 +126,7 @@ public class MarcRecord {
         if (leader != null && !leader.isEmpty()) {
             result.append(leader);
             result.append("\n");
-        }
-
-        if (type != null && type != MarcRecordType.UNDEFINED) {
-            result.append(type.getText());
-            result.append("\n");
+            result.append("------------------------------\n");
         }
 
         if (controlFields != null) {
@@ -138,6 +134,7 @@ public class MarcRecord {
                 result.append(marcControlField.toString());
                 result.append("\n");
             }
+            result.append("------------------------------\n");
         }
 
         for (MarcField marcField : this.fields) {
