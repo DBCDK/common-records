@@ -89,7 +89,7 @@ public class Marc21Converter {
      */
     private static MarcRecord convertFromRecordType(RecordType rt) {
         String leader = rt.getLeader().getValue();
-        MarcRecordType type = convertRecordTypeType(rt.getType());
+        String type = rt.getType().value();
 
         MarcRecord record = new MarcRecord(leader, type);
 
@@ -150,14 +150,6 @@ public class Marc21Converter {
             throw new IllegalArgumentException("Subfield name cannot exceed one char. Field [" + df.getTag() + "], subfield name [" + name + "], subfield value [" + val + "]");
         }
         return new MarcSubField(name.trim(), val.trim());
-    }
-
-    private static MarcRecordType convertRecordTypeType(RecordTypeType type) {
-        if (type == null) {
-            return MarcRecordType.UNDEFINED;
-        } else {
-            return MarcRecordType.fromString(type.value());
-        }
     }
 
 }

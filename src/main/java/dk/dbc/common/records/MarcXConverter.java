@@ -91,11 +91,21 @@ public class MarcXConverter {
      * @brief Constructs a MarcRecord from a RecordType.
      */
     private static MarcRecord convertFromRecordType(RecordType rt) {
-        ArrayList<MarcField> mfl = new ArrayList<>();
+        String leader = rt.getLeader().getValue();
+        String type = rt.getType();
+
+        MarcRecord record = new MarcRecord(leader, type);
+
         for (DataFieldType df : rt.getDatafield()) {
-            mfl.add(convertFromDataField(df));
+            record.getFields().add(convertFromDataField(df));
         }
-        return new MarcRecord(mfl);
+
+        if (rt.getControlfield() != null) {
+            for (ControlFieldType controlFieldType : rt.getControlfield()) {
+                record.getControlFields().add(convertFromControlFieldType(controlFieldType));
+            }
+        }
+        return record;
     }
 
     /**
@@ -154,5 +164,11 @@ public class MarcXConverter {
             throw new IllegalArgumentException("Subfield name cannot exceed one char. Field [" + df.getTag() + "], subfield name [" + name + "], subfield value [" + val + "]");
         }
         return new MarcSubField(name.trim(), val.trim());
+    }
+
+    private static MarcControlField convertFromControlFieldType(ControlFieldType controlFieldType) {
+        MarcControlField controlField = new MarcControlField(controlFieldType.getTag(), controlFieldType.getValue());
+
+        return controlField;
     }
 }

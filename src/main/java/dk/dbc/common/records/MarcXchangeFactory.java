@@ -28,6 +28,8 @@ public class MarcXchangeFactory {
                 leaderFieldType.setValue(marcRecord.getLeader());
             }
             recordType.setLeader(leaderFieldType);
+            recordType.setType(marcRecord.getType());
+
             for (MarcField marcField : marcRecord.getFields()) {
                 dataFieldType = createMarcXchangeFieldFromMarcField(marcField);
                 recordType.getDatafield().add(dataFieldType);

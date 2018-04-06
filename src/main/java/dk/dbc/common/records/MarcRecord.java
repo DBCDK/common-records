@@ -19,7 +19,7 @@ public class MarcRecord {
     private static final XLogger logger = XLoggerFactory.getXLogger(MarcRecord.class);
 
     private String leader;
-    private MarcRecordType type;
+    private String type;
     private List<MarcControlField> controlFields;
     private List<MarcField> fields;
 
@@ -53,7 +53,7 @@ public class MarcRecord {
         }
     }
 
-    public MarcRecord(String leader, MarcRecordType type) {
+    public MarcRecord(String leader, String type) {
         this.leader = leader;
         this.type = type;
         this.controlFields = new ArrayList<>();
@@ -84,11 +84,11 @@ public class MarcRecord {
         this.leader = leader;
     }
 
-    public MarcRecordType getType() {
+    public String getType() {
         return type;
     }
 
-    public void setType(MarcRecordType type) {
+    public void setType(String type) {
         this.type = type;
     }
 
