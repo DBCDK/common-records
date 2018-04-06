@@ -29,7 +29,6 @@ public class Marc21Converter {
     public static MarcRecord convertFromMarc21(String xml) {
         // Try to unmarshal a collection
         CollectionType collection = JAXB.unmarshal(new StreamSource(new StringReader(xml)), CollectionType.class);
-        System.out.println(collection);
         if (!collection.getRecord().isEmpty()) {
             return convertFromRecordType(collection.getRecord().get(0));
         }
@@ -89,8 +88,6 @@ public class Marc21Converter {
      * @brief Constructs a MarcRecord from a RecordType.
      */
     private static MarcRecord convertFromRecordType(RecordType rt) {
-        //MarcRecord record = new MarcRecord();
-
         String leader = rt.getLeader().getValue();
         MarcRecordType type = convertRecordTypeType(rt.getType());
 
@@ -98,20 +95,15 @@ public class Marc21Converter {
 
         List<MarcField> mfl = new ArrayList<>();
         for (DataFieldType df : rt.getDatafield()) {
-            System.out.println("MarcField");
             mfl.add(convertFromDataFieldType(df));
         }
         record.getFields().addAll(mfl);
 
         List<MarcControlField> marcControlFieldList = new ArrayList<>();
         for (ControlFieldType cft : rt.getControlfield()) {
-            System.out.println("ControlField");
             marcControlFieldList.add(convertFromControlFieldType(cft));
         }
         record.getControlFields().addAll(marcControlFieldList);
-
-        //Leader
-        // RecordType
 
         return record;
     }

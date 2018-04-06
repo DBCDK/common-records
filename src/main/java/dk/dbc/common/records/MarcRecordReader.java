@@ -57,6 +57,29 @@ public class MarcRecordReader {
         }
     }
 
+    public String getControlFieldValue(String controlFieldName) {
+        logger.entry(controlFieldName);
+        String result = null;
+        List<MarcControlField> controlFields;
+        try {
+            if (!hasControlFields()) {
+                return null;
+            }
+
+            controlFields = getControlFieldStream(controlFieldName);
+
+            for (MarcControlField field : controlFields) {
+                if (field.getName().equals(controlFieldName)) {
+                    return result = field.getValue();
+                }
+            }
+
+            return null;
+        } finally {
+            logger.exit(result);
+        }
+    }
+
     public Boolean hasField(String fieldName) {
         List<MarcField> fields = getFieldStream(fieldName);
 
@@ -89,6 +112,16 @@ public class MarcRecordReader {
         return record.getFields().stream()
                 .filter(f -> fieldName.equals(f.getName()))
                 .collect(Collectors.toList());
+    }
+
+    private List<MarcControlField> getControlFieldStream(String controlFieldName) {
+        return record.getControlFields().stream()
+                .filter(f -> controlFieldName.equals(f.getName()))
+                .collect(Collectors.toList());
+    }
+
+    private boolean hasControlFields() {
+        return record.getControlFields() != null;
     }
 
     /**
@@ -284,12 +317,8 @@ public class MarcRecordReader {
         String result = null;
         try {
             result = getValue("996", "a");
-            if (result != null) {
-                if (result.equals("DBC") || result.equals("RET")) {
-                    return true;
-                }
-            }
-            return false;
+
+            return result != null && (result.equals("DBC") || result.equals("RET"));
         } finally {
             logger.exit(result);
         }
@@ -308,7 +337,11 @@ public class MarcRecordReader {
 
         String result = null;
         try {
-            return result = getValue("001", "a");
+            if (hasControlFields()) {
+                return result = getControlFieldValue("001");
+            } else {
+                return result = getValue("001", "a");
+            }
         } finally {
             logger.exit(result);
         }

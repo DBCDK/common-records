@@ -28,7 +28,6 @@ public class MarcXConverterTest {
      */
     @Test(expected = DataBindingException.class)
     public void testCreateFromMarcXChange_InvalidXml() throws Exception {
-        System.out.println("testCreateFromMarcXChange_InvalidXml()");
         InputStream in = getClass().getResourceAsStream("invalid_xml.xml");
         MarcXConverter.convertFromMarcXChange(IOUtils.readAll(in, "UTF-8"));
     }
@@ -38,8 +37,6 @@ public class MarcXConverterTest {
      */
     @Test
     public void testCreateFromMarcXChange_Wrong_Record_Xsd() throws Exception {
-        System.out.println("testCreateFromMarcXChange_Wrong_Record_Xsd()");
-
         InputStream in = getClass().getResourceAsStream("wrong_record_xsd.xml");
         MarcXConverter.convertFromMarcXChange(IOUtils.readAll(in, "UTF-8"));
 
@@ -54,8 +51,6 @@ public class MarcXConverterTest {
      */
     @Test
     public void testCreateFromMarcXChange_Single_Record() throws Exception {
-        System.out.println("testCreateFromMarcXChange_Single_Record()");
-
         InputStream in = getClass().getResourceAsStream("single_record.xml");
         MarcRecord rec = MarcXConverter.convertFromMarcXChange(IOUtils.readAll(in, "UTF-8"));
 
@@ -89,7 +84,6 @@ public class MarcXConverterTest {
      */
     @Test(expected = IllegalArgumentException.class)
     public void testCreateFromMarcXChange_Single_Record_with_spaces() throws Exception {
-        System.out.println("testCreateFromMarcXChange_Single_Record_with_spaces()");
         String in = "<ns1:collection xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns:ns1=\"info:lc/xmlns/marcxchange-v1\" xsi:schemaLocation=\"info:lc/xmlns/marcxchange-v1\">" +
                 "<ns1:record>" +
                 "<ns1:datafield tag=\"001\" ind1=\"1\" ind2=\"0\">" +

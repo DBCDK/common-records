@@ -11,8 +11,6 @@ public class Marc21ConverterTest {
 
     @Test
     public void testCreateFromMarc21_Single_marc21_Record() throws Exception {
-        System.out.println("testCreateFromMarcXChange_Single_marc21_Record()");
-
         InputStream in = getClass().getResourceAsStream("marc21_record.xml");
         MarcRecord rec = Marc21Converter.convertFromMarc21(IOUtils.readAll(in, "UTF-8"));
 

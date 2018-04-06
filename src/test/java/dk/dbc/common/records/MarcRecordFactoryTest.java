@@ -22,7 +22,6 @@ public class MarcRecordFactoryTest {
 
     @Test
     public void testRegExps() {
-        System.out.println("testRegExps");
         assertTrue("001 00".matches(MarcRecordFactory.FIELD_PATTERN));
         assertTrue("d01 00".matches(MarcRecordFactory.FIELD_PATTERN));
         assertTrue("001  7".matches(MarcRecordFactory.FIELD_PATTERN));
@@ -34,7 +33,6 @@ public class MarcRecordFactoryTest {
      */
     @Test
     public void testReadRecord() throws Exception {
-        System.out.println("readRecord");
         MarcRecord rec;
         String data = IOUtils.readAll(getClass().getResourceAsStream("rec03034232.txt"), "UTF-8");
         rec = MarcRecordFactory.readRecord(data);
@@ -50,7 +48,6 @@ public class MarcRecordFactoryTest {
      */
     @Test
     public void testReadField() {
-        System.out.println("readField");
         assertNull(MarcRecordFactory.readField(null));
         assertNull(MarcRecordFactory.readField(""));
 
@@ -77,7 +74,6 @@ public class MarcRecordFactoryTest {
      */
     @Test
     public void testReadSubField() {
-        System.out.println("readSubField");
         assertEquals(null, MarcRecordFactory.readSubField(""));
         assertEquals(null, MarcRecordFactory.readSubField("*"));
         assertEquals(new MarcSubField("*", ""), MarcRecordFactory.readSubField("**"));

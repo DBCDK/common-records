@@ -406,4 +406,28 @@ public class MarcRecordReaderTest {
         List<Matcher> matchers = instance.getSubfieldValueMatchers("666", "u", p);
         assertThat(matchers.size(), is(0));
     }
+
+    @Test
+    public void testGetRecordIdAndGetControlFieldValue() {
+        MarcRecord record = new MarcRecord();
+        record.getFields().add(new MarcField("001", "00", Arrays.asList(new MarcSubField("a", "9876543210"))));
+        record.getFields().add(new MarcField("666", "00", Arrays.asList(new MarcSubField("u", "For 3 år"))));
+        record.getFields().add(new MarcField("666", "00", Arrays.asList(new MarcSubField("u", "For 4 år"))));
+
+        List<MarcControlField> controlFields = new ArrayList<>();
+        controlFields.add(new MarcControlField("005", "20170929085245.0"));
+        controlFields.add(new MarcControlField("007", "ta"));
+        controlFields.add(new MarcControlField("008", "150709s1965 no#|||||||||||000|u|nob|d"));
+        controlFields.add(new MarcControlField("001", "990000480974702201"));
+
+        record.setControlFields(controlFields);
+
+        MarcRecordReader instance = new MarcRecordReader(record);
+
+        assertThat(instance.getRecordId(), is("990000480974702201"));
+        assertThat(instance.getControlFieldValue("001"), is("990000480974702201"));
+        assertThat(instance.getControlFieldValue("005"), is("20170929085245.0"));
+        assertThat(instance.getControlFieldValue("007"), is("ta"));
+        assertThat(instance.getControlFieldValue("008"), is("150709s1965 no#|||||||||||000|u|nob|d"));
+    }
 }
