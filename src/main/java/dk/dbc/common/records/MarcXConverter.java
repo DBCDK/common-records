@@ -16,6 +16,7 @@ import javax.xml.transform.Source;
 import javax.xml.transform.stream.StreamSource;
 import java.io.StringReader;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author stp
@@ -91,19 +92,30 @@ public class MarcXConverter {
      * @brief Constructs a MarcRecord from a RecordType.
      */
     private static MarcRecord convertFromRecordType(RecordType rt) {
-        String leader = rt.getLeader().getValue();
-        String type = rt.getType();
+        MarcRecord record = new MarcRecord();
 
-        MarcRecord record = new MarcRecord(leader, type);
-
-        for (DataFieldType df : rt.getDatafield()) {
-            record.getFields().add(convertFromDataField(df));
+        if (rt.getLeader() != null && !rt.getLeader().getValue().isEmpty()) {
+            record.setLeader(rt.getLeader().getValue());
         }
 
-        if (rt.getControlfield() != null) {
+        if (rt.getType() != null && !rt.getType().isEmpty()) {
+            record.setType(rt.getType());
+        }
+
+
+        List<MarcField> fields = new ArrayList<>();
+        for (DataFieldType df : rt.getDatafield()) {
+            fields.add(convertFromDataField(df));
+        }
+        record.setFields(fields);
+
+        // getControlfield will always return something so we also have to check the size
+        if (rt.getControlfield() != null && rt.getControlfield().size() > 0) {
+            List<MarcControlField> controlFields = new ArrayList<>();
             for (ControlFieldType controlFieldType : rt.getControlfield()) {
-                record.getControlFields().add(convertFromControlFieldType(controlFieldType));
+                controlFields.add(convertFromControlFieldType(controlFieldType));
             }
+            record.setControlFields(controlFields);
         }
         return record;
     }

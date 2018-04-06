@@ -18,7 +18,7 @@ public class Marc21Factory {
             leaderFieldType.setValue(marcRecord.getLeader());
             recordType.setLeader(leaderFieldType);
 
-            RecordTypeType recordTypeType = RecordTypeType.fromValue(marcRecord.getType().getText());
+            RecordTypeType recordTypeType = RecordTypeType.fromValue(marcRecord.getType());
             recordType.setType(recordTypeType);
             if (marcRecord.getFields() != null) {
                 for (MarcField marcField : marcRecord.getFields()) {

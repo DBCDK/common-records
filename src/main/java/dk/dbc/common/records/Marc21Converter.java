@@ -88,22 +88,25 @@ public class Marc21Converter {
      * @brief Constructs a MarcRecord from a RecordType.
      */
     private static MarcRecord convertFromRecordType(RecordType rt) {
-        String leader = rt.getLeader().getValue();
-        String type = rt.getType().value();
+        MarcRecord record = new MarcRecord();
 
-        MarcRecord record = new MarcRecord(leader, type);
+        record.setLeader(rt.getLeader().getValue());
 
-        List<MarcField> mfl = new ArrayList<>();
-        for (DataFieldType df : rt.getDatafield()) {
-            mfl.add(convertFromDataFieldType(df));
+        if (rt.getType() != null) {
+            record.setType(rt.getType().value());
         }
-        record.getFields().addAll(mfl);
+
+        List<MarcField> fields = new ArrayList<>();
+        for (DataFieldType df : rt.getDatafield()) {
+            fields.add(convertFromDataFieldType(df));
+        }
+        record.getFields().addAll(fields);
 
         List<MarcControlField> marcControlFieldList = new ArrayList<>();
         for (ControlFieldType cft : rt.getControlfield()) {
             marcControlFieldList.add(convertFromControlFieldType(cft));
         }
-        record.getControlFields().addAll(marcControlFieldList);
+        record.setControlFields(marcControlFieldList);
 
         return record;
     }
