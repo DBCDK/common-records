@@ -5,6 +5,7 @@
 
 package dk.dbc.common.records;
 
+import dk.dbc.common.records.marcxchange.ControlFieldType;
 import dk.dbc.common.records.marcxchange.DataFieldType;
 import dk.dbc.common.records.marcxchange.LeaderFieldType;
 import dk.dbc.common.records.marcxchange.RecordType;
@@ -17,13 +18,26 @@ public class MarcXchangeFactory {
     public static RecordType createMarcXchangeFromMarc(MarcRecord marcRecord) {
         RecordType recordType = new RecordType();
         DataFieldType dataFieldType;
+        ControlFieldType controlFieldType;
+
         if (marcRecord != null && marcRecord.getFields() != null) {
             LeaderFieldType leaderFieldType = new LeaderFieldType();
-            leaderFieldType.setValue(MarcStatic.MARC_X_CHANGE_LEADER);
+            if (marcRecord.getLeader() == null) {
+                leaderFieldType.setValue(MarcStatic.MARC_X_CHANGE_LEADER);
+            } else {
+                leaderFieldType.setValue(marcRecord.getLeader());
+            }
             recordType.setLeader(leaderFieldType);
             for (MarcField marcField : marcRecord.getFields()) {
                 dataFieldType = createMarcXchangeFieldFromMarcField(marcField);
                 recordType.getDatafield().add(dataFieldType);
+            }
+
+            if (marcRecord.getControlFields() != null) {
+                for (MarcControlField controlField : marcRecord.getControlFields()) {
+                    controlFieldType = createMarcXchangeControlFieldFromMarcField(controlField);
+                    recordType.getControlfield().add(controlFieldType);
+                }
             }
         }
         return recordType;
@@ -54,6 +68,15 @@ public class MarcXchangeFactory {
             subfieldatafieldType.setCode("");
         }
         return subfieldatafieldType;
+    }
+
+    private static ControlFieldType createMarcXchangeControlFieldFromMarcField(MarcControlField controlField) {
+        ControlFieldType controlFieldType = new ControlFieldType();
+
+        controlFieldType.setTag(controlField.getName());
+        controlFieldType.setValue(controlField.getValue());
+
+        return controlFieldType;
     }
 
     private static DataFieldType fillIndicatorFieldsFromString(String indicator, DataFieldType dataFieldType) {
