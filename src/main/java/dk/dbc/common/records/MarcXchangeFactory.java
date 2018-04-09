@@ -10,17 +10,26 @@ import dk.dbc.common.records.marcxchange.DataFieldType;
 import dk.dbc.common.records.marcxchange.LeaderFieldType;
 import dk.dbc.common.records.marcxchange.RecordType;
 import dk.dbc.common.records.marcxchange.SubfieldatafieldType;
+import org.slf4j.ext.XLogger;
+import org.slf4j.ext.XLoggerFactory;
 
 /**
  * Factory class to construct MarcXchange objects.
  */
 public class MarcXchangeFactory {
+    private static final XLogger logger = XLoggerFactory.getXLogger(MarcXchangeFactory.class);
+
     public static RecordType createMarcXchangeFromMarc(MarcRecord marcRecord) {
+        logger.info("createMarcXchangeFromMarc");
+
         RecordType recordType = new RecordType();
         DataFieldType dataFieldType;
         ControlFieldType controlFieldType;
 
         if (marcRecord != null && marcRecord.getFields() != null) {
+            logger.info("Input record:");
+            logger.info(marcRecord.toString());
+
             LeaderFieldType leaderFieldType = new LeaderFieldType();
             if (marcRecord.getLeader() == null) {
                 leaderFieldType.setValue(MarcStatic.MARC_X_CHANGE_LEADER);
@@ -28,18 +37,22 @@ public class MarcXchangeFactory {
                 leaderFieldType.setValue(marcRecord.getLeader());
             }
             recordType.setLeader(leaderFieldType);
+            logger.info("Leader: {}", leaderFieldType);
             recordType.setType(marcRecord.getType());
-
-            for (MarcField marcField : marcRecord.getFields()) {
-                dataFieldType = createMarcXchangeFieldFromMarcField(marcField);
-                recordType.getDatafield().add(dataFieldType);
-            }
+            logger.info("Type: {}", marcRecord.getType());
 
             if (marcRecord.getControlFields() != null) {
                 for (MarcControlField controlField : marcRecord.getControlFields()) {
                     controlFieldType = createMarcXchangeControlFieldFromMarcField(controlField);
                     recordType.getControlfield().add(controlFieldType);
+                    logger.info("Adding control field: {}", controlFieldType);
                 }
+            }
+
+            for (MarcField marcField : marcRecord.getFields()) {
+                dataFieldType = createMarcXchangeFieldFromMarcField(marcField);
+                recordType.getDatafield().add(dataFieldType);
+                logger.info("Adding field: {}", dataFieldType);
             }
         }
         return recordType;
