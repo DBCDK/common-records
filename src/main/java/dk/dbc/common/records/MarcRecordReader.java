@@ -359,7 +359,11 @@ public class MarcRecordReader {
         logger.entry();
         String result = null;
         try {
-            return result = getValue("001", "b");
+            if (hasControlFields()) {
+                return result = getControlFieldValue("003");
+            } else {
+                return result = getValue("001", "b");
+            }
         } finally {
             logger.exit(result);
         }
