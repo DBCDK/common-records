@@ -18,16 +18,24 @@ import java.io.StringReader;
 import java.util.ArrayList;
 
 /**
- * @author stp
- * @brief Converter class to convert between marcXchange and MarcRecord.
+ * Converter class to convert between marcXchange and MarcRecord.
  */
 public class MarcConverter {
+    private static JAXBContext jaxbContext = null;
+
+    private static synchronized JAXBContext getJAXBContext() throws JAXBException {
+        if (jaxbContext == null) {
+            jaxbContext = JAXBContext.newInstance(RecordType.class);
+        }
+
+        return jaxbContext;
+    }
+
     /**
+     * Constructs a MarcRecord from a String that contains an marcxchange xml document.
+     *
      * @param xml Some marcxchange xml.
-     * @return A MarcRecord. If no records are found, when we returns an
-     * empty MarcRecord.
-     * @brief Constructs a MarcRecord from a String that contains an
-     * marcxchange xml document.
+     * @return A MarcRecord. If no records are found, when we returns an empty MarcRecord.
      */
     public static MarcRecord convertFromMarcXChange(String xml) {
         // Try to unmarshal a collection
@@ -41,11 +49,11 @@ public class MarcConverter {
     }
 
     /**
+     * Constructs a MarcRecord from a Source that contains an marcxchange xml document.
+     *
      * @param xml Some marcxchange xml.
      * @return A MarcRecord. If no records are found, when we returns an
      * empty MarcRecord.
-     * @brief Constructs a MarcRecord from a Source that contains an
-     * marcxchange xml document.
      */
     public static MarcRecord createFromMarcXChange(Source xml) {
         // Try to unmarshal a collection
@@ -60,10 +68,10 @@ public class MarcConverter {
     }
 
     /**
+     * Constructs a MarcRecord from a RecordType that contains a Constructs a MarcRecord from a RecordType that contains a
+     *
      * @param record Marcxchange record.
      * @return A MarcRecord.
-     * @brief Constructs a MarcRecord from a RecordType that contains a
-     * record from a marcxchange xml.
      */
     public static MarcRecord createFromMarcXChange(RecordType record) {
         return convertFromRecordType(record);
@@ -74,8 +82,7 @@ public class MarcConverter {
         ObjectFactory objectFactory = new ObjectFactory();
         JAXBElement<RecordType> jAXBElement = objectFactory.createRecord(marcXhangeType);
 
-        JAXBContext jc = JAXBContext.newInstance(RecordType.class);
-        Marshaller marshaller = jc.createMarshaller();
+        Marshaller marshaller = getJAXBContext().createMarshaller();
         marshaller.setProperty(Marshaller.JAXB_SCHEMA_LOCATION, "info:lc/xmlns/marcxchange-v1");
 
         DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
@@ -88,7 +95,7 @@ public class MarcConverter {
     }
 
     /**
-     * @brief Constructs a MarcRecord from a RecordType.
+     * Constructs a MarcRecord from a RecordType.
      */
     private static MarcRecord convertFromRecordType(RecordType rt) {
         ArrayList<MarcField> mfl = new ArrayList<>();
@@ -99,7 +106,7 @@ public class MarcConverter {
     }
 
     /**
-     * @brief Constructs a MarcField from a DataFieldType.
+     * Constructs a MarcField from a DataFieldType.
      * <p/>
      * The indicator of the field is generated from attributes ind1 - ind9
      * of DataFieldType.
@@ -145,7 +152,7 @@ public class MarcConverter {
     }
 
     /**
-     * @brief Constructs a MarcSubField from a SubfieldatafieldType.
+     * Constructs a MarcSubField from a SubfieldatafieldType.
      */
     private static MarcSubField createFromSubfield(SubfieldatafieldType sf, DataFieldType df) throws IllegalArgumentException {
         String name = sf.getCode();
