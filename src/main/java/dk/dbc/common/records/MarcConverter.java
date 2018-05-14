@@ -5,10 +5,18 @@
 
 package dk.dbc.common.records;
 
-import dk.dbc.common.records.marcxchange.*;
+import dk.dbc.common.records.marcxchange.CollectionType;
+import dk.dbc.common.records.marcxchange.DataFieldType;
+import dk.dbc.common.records.marcxchange.ObjectFactory;
+import dk.dbc.common.records.marcxchange.RecordType;
+import dk.dbc.common.records.marcxchange.SubfieldatafieldType;
 import org.w3c.dom.Document;
 
-import javax.xml.bind.*;
+import javax.xml.bind.JAXB;
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.JAXBElement;
+import javax.xml.bind.JAXBException;
+import javax.xml.bind.Marshaller;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
@@ -21,13 +29,17 @@ import java.util.ArrayList;
  * Converter class to convert between marcXchange and MarcRecord.
  */
 public class MarcConverter {
-    private static JAXBContext jaxbContext = null;
+    private static JAXBContext jaxbContext;
 
-    private static synchronized JAXBContext getJAXBContext() throws JAXBException {
-        if (jaxbContext == null) {
+    static {
+        try {
             jaxbContext = JAXBContext.newInstance(RecordType.class);
+        } catch (JAXBException e) {
+            throw new RuntimeException("Exception while calling JAXBContext.newInstance", e);
         }
+    }
 
+    private static JAXBContext getJAXBContext() {
         return jaxbContext;
     }
 
@@ -68,7 +80,7 @@ public class MarcConverter {
     }
 
     /**
-     * Constructs a MarcRecord from a RecordType that contains a Constructs a MarcRecord from a RecordType that contains a
+     * Constructs a MarcRecord from a RecordType that contains a from a marcxchange xml.
      *
      * @param record Marcxchange record.
      * @return A MarcRecord.

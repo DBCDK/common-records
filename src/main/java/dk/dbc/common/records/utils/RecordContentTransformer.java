@@ -26,13 +26,17 @@ public class RecordContentTransformer {
     private static final String SCHEMA_LOCATION = "http://www.loc.gov/standards/iso25577/marcxchange-1-1.xsd";
     private static final String ENCODING = "UTF-8";
 
-    private static JAXBContext jaxbContext = null;
+    private static JAXBContext jaxbContext;
 
-    private static synchronized JAXBContext getJAXBContext() throws JAXBException {
-        if (jaxbContext == null) {
+    static {
+        try {
             jaxbContext = JAXBContext.newInstance(CollectionType.class);
+        } catch (JAXBException e) {
+            throw new RuntimeException("Exception while calling JAXBContext.newInstance", e);
         }
+    }
 
+    private static JAXBContext getJAXBContext() {
         return jaxbContext;
     }
 
