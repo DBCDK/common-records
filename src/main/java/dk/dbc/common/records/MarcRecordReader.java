@@ -410,7 +410,7 @@ public class MarcRecordReader {
         try {
             String field014x;
             field014x = getValue("014", "x");
-            if (field014x == null || "ANM".equals(field014x)) {
+            if (field014x == null || "ANM".equals(field014x) || "DEB".equals(field014x)) {
                 result = getValue("014", "a");
             }
             return result;
