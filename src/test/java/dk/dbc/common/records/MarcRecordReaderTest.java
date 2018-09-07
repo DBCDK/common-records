@@ -338,6 +338,7 @@ public class MarcRecordReaderTest {
         record.getFields().add(new MarcField("001", "00", Arrays.asList(new MarcSubField("a", "12345678"), new MarcSubField("b", "870971"))));
         record.getFields().add(new MarcField("014", "00", Arrays.asList(new MarcSubField("A", "87654321"), new MarcSubField("a", "87654321"))));
         assertThat(instance.getParentAgencyId(), is("870971"));
+        assertThat(instance.getParentRecordId(), is("87654321"));
     }
 
     @Test
@@ -349,6 +350,19 @@ public class MarcRecordReaderTest {
         record.getFields().add(new MarcField("001", "00", Arrays.asList(new MarcSubField("a", "12345678"), new MarcSubField("b", "870971"))));
         record.getFields().add(new MarcField("014", "00", Arrays.asList(new MarcSubField("a", "87654321"), new MarcSubField("x", "ANM"))));
         assertThat(instance.getParentAgencyId(), is("870970"));
+        assertThat(instance.getParentRecordId(), is("87654321"));
+    }
+
+    @Test
+    public void testGetParentAgencyId_DEB() {
+        MarcRecord record = new MarcRecord();
+
+        MarcRecordReader instance = new MarcRecordReader(record);
+
+        record.getFields().add(new MarcField("001", "00", Arrays.asList(new MarcSubField("a", "12345678"), new MarcSubField("b", "870971"))));
+        record.getFields().add(new MarcField("014", "00", Arrays.asList(new MarcSubField("a", "87654321"), new MarcSubField("x", "DEB"))));
+        assertThat(instance.getParentAgencyId(), is("870971"));
+        assertThat(instance.getParentRecordId(), is("87654321"));
     }
 
     @Test
