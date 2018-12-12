@@ -14,20 +14,20 @@ public class CatalogExtractionCodeTest {
 
     @Test
     public void testhasLastProductionDate() throws Exception {
-        assertThat(CatalogExtractionCode.hasLastProductionDate(""), equalTo(false));
-        assertThat(CatalogExtractionCode.hasLastProductionDate("XXX20161"), equalTo(false));
-        assertThat(CatalogExtractionCode.hasLastProductionDate("XXX2016001"), equalTo(false));
-        assertThat(CatalogExtractionCode.hasLastProductionDate("DBIXXXXXX"), equalTo(false));
+        assertThat(CatalogExtractionCode.hasPublishingDate(""), equalTo(false));
+        assertThat(CatalogExtractionCode.hasPublishingDate("XXX20161"), equalTo(false));
+        assertThat(CatalogExtractionCode.hasPublishingDate("XXX2016001"), equalTo(false));
+        assertThat(CatalogExtractionCode.hasPublishingDate("DBIXXXXXX"), equalTo(false));
 
-        assertThat(CatalogExtractionCode.hasLastProductionDate("DBI201652"), equalTo(true));
-        assertThat(CatalogExtractionCode.hasLastProductionDate("DBI999999"), equalTo(true));
+        assertThat(CatalogExtractionCode.hasPublishingDate("DBI201652"), equalTo(true));
+        assertThat(CatalogExtractionCode.hasPublishingDate("DBI999999"), equalTo(true));
     }
 
     @Test
     public void testhasFutureLastProductionDate() throws Exception {
-        assertThat(CatalogExtractionCode.hasFutureLastProductionDate("DBI999999"), equalTo(true));
-        assertThat(CatalogExtractionCode.hasFutureLastProductionDate("DBI201502"), equalTo(false));
-        assertThat(CatalogExtractionCode.hasFutureLastProductionDate("DBI211602"), equalTo(true));
+        assertThat(CatalogExtractionCode.hasFuturePublishingDate("DBI999999"), equalTo(true));
+        assertThat(CatalogExtractionCode.hasFuturePublishingDate("DBI201502"), equalTo(false));
+        assertThat(CatalogExtractionCode.hasFuturePublishingDate("DBI211602"), equalTo(true));
     }
 
     @Test
@@ -177,6 +177,59 @@ public class CatalogExtractionCodeTest {
         record.getFields().add(field);
 
         assertThat(CatalogExtractionCode.isUnderProduction(record), equalTo(false));
+    }
+
+    @Test
+    public void testIsPublishedNoField032() throws Exception {
+        MarcRecord record = new MarcRecord();
+
+        assertThat(CatalogExtractionCode.isPublished(record), equalTo(false));
+    }
+
+
+    @Test
+    public void testIsPublishedHasProductionCodeInThePast() throws Exception {
+        MarcSubField subfieldA = new MarcSubField("a", "DBI191304");
+        MarcSubField subfieldX = new MarcSubField("x", "DBI999999");
+
+        MarcField field = new MarcField("032", "00");
+        field.getSubfields().add(subfieldA);
+        field.getSubfields().add(subfieldX);
+
+        MarcRecord record = new MarcRecord();
+        record.getFields().add(field);
+
+        assertThat(CatalogExtractionCode.isPublished(record), equalTo(true));
+    }
+
+    @Test
+    public void testIsPublishedHasProductionCodeInTheFuture() throws Exception {
+        MarcSubField subfieldA = new MarcSubField("a", "DBI291304");
+        MarcSubField subfieldX = new MarcSubField("x", "DBI999999");
+
+        MarcField field = new MarcField("032", "00");
+        field.getSubfields().add(subfieldA);
+        field.getSubfields().add(subfieldX);
+
+        MarcRecord record = new MarcRecord();
+        record.getFields().add(field);
+
+        assertThat(CatalogExtractionCode.isPublished(record), equalTo(false));
+    }
+
+    @Test
+    public void testIsPublishedHasACCCodeInThePast() throws Exception {
+        MarcSubField subfieldA = new MarcSubField("a", "ACC201839");
+        MarcSubField subfieldX = new MarcSubField("x", "DBI999999");
+
+        MarcField field = new MarcField("032", "00");
+        field.getSubfields().add(subfieldA);
+        field.getSubfields().add(subfieldX);
+
+        MarcRecord record = new MarcRecord();
+        record.getFields().add(field);
+
+        assertThat(CatalogExtractionCode.isPublished(record), equalTo(false));
     }
 
 }

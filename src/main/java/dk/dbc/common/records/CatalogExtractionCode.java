@@ -36,7 +36,7 @@ public class CatalogExtractionCode {
      * If there is at least one production release date in the past then the record is no longer under production (return false)
      *
      * @param record The input record
-     * @return <code>true</code> if production date is in the future, otherwise <code>false</code>
+     * @return <code>true</code> if publishing date is in the future, otherwise <code>false</code>
      */
     public static boolean isUnderProduction(MarcRecord record) {
         logger.entry(record);
@@ -53,8 +53,8 @@ public class CatalogExtractionCode {
                 for (MarcSubField subfield : field032.getSubfields()) {
                     String value = subfield.getValue();
                     logger.info("Checking {} for production date", value);
-                    if (hasLastProductionDate(value)) {
-                        if (hasFutureLastProductionDate(value)) {
+                    if (hasPublishingDate(value)) {
+                        if (hasFuturePublishingDate(value)) {
                             logger.info("Found future extraction date");
                             hasExtractionDateInTheFuture = true;
                         } else {
@@ -67,10 +67,10 @@ public class CatalogExtractionCode {
 
             // If we get to this point there has not been found an extraction date in the past
             if (hasExtractionDateInTheFuture) {
-                logger.info("Extraction date was found in the future but not in the past - therefor this record is in production");
+                logger.info("Extraction date was found in the future but not in the past - therefor this record is under production");
                 return true;
             } else {
-                logger.info("Neither past nor future extraction date was found - record is not in production");
+                logger.info("Neither past nor future extraction date was found - record is not under production");
                 return false;
             }
         } finally {
@@ -78,6 +78,42 @@ public class CatalogExtractionCode {
         }
     }
 
+    /**
+     * This function checks whether the given record has been published
+     * A record is publish if it has a publishing date in the past
+     *
+     * @param record The input record
+     * @return <code>true</code> if the record has a publishing date is in the past, otherwise <code>false</code>
+     */
+    public static boolean isPublished(MarcRecord record) {
+        logger.entry(record);
+
+        try {
+            MarcRecordReader reader = new MarcRecordReader(record);
+
+            MarcField field032 = reader.getField("032");
+
+            if (field032 != null) {
+                logger.info("Found 032 field: {}", field032);
+                // 032 contains both *a and *x fields but for this calculation they are treated the same way
+                for (MarcSubField subfield : field032.getSubfields()) {
+                    String value = subfield.getValue();
+                    logger.info("Checking {} for production date", value);
+                    if (hasPublishingDate(value)) {
+                        if (!hasFuturePublishingDate(value)) {
+                            // Since the publishing date is not in the future it must be in the past
+                            logger.info("Extraction date in the past was found so returning true");
+                            return true;
+                        }
+                    }
+                }
+            }
+
+            return false;
+        } finally {
+            logger.exit();
+        }
+    }
 
     /**
      * This function takes the value of a subfield and determines whether that value should be treated as an
@@ -91,7 +127,7 @@ public class CatalogExtractionCode {
      * <p>
      * Otherwise <code>false</code> is returned
      */
-    static boolean hasLastProductionDate(String value) {
+    static boolean hasPublishingDate(String value) {
         logger.entry(value);
 
         boolean result = false;
@@ -122,7 +158,7 @@ public class CatalogExtractionCode {
      * @param value Subfield value
      * @return <code>true</code> if the value contains a date later that the date input - otherwise <code>false</code>
      */
-    static boolean hasFutureLastProductionDate(String value) {
+    static boolean hasFuturePublishingDate(String value) {
         logger.entry(value);
         boolean result = false;
         LocalDate date = LocalDate.now();
