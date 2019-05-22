@@ -396,7 +396,8 @@ public class MarcRecordReader {
     /**
      * Returns id of a parent record, that a record points to.
      * <p>
-     * The parent id to located in <code>014a</code>.
+     * The parent id to located in <code>014 *a</code>, <code>016 *a</code> or <code>018 *a</code> depending on the record type.
+     * <p>
      * If there is a field 014 either without a subfield x or if the content of subfield x is ANM
      * then the record is part of a volume/section/head structure.
      * </p>
@@ -409,10 +410,19 @@ public class MarcRecordReader {
         String result = null;
         try {
             String field014x;
-            field014x = getValue("014", "x");
-            if (field014x == null || "ANM".equals(field014x) || "DEB".equals(field014x)) {
-                result = getValue("014", "a");
+
+            if (hasSubfield("014", "a") && getValue("014", "a") != null) {
+                field014x = getValue("014", "x");
+
+                if (field014x == null || "ANM".equals(field014x) || "DEB".equals(field014x)) {
+                    result = getValue("014", "a");
+                }
+            } else if (hasSubfield("016", "a") && getValue("016", "a") != null) {
+                result = getValue("016", "a");
+            } else if (hasSubfield("018", "a") && getValue("018", "a") != null) {
+                result = getValue("018", "a");
             }
+
             return result;
         } finally {
             logger.exit(result);
@@ -425,6 +435,8 @@ public class MarcRecordReader {
      * <p>
      * Note: ANM = Anmeldelse = Review
      * Note: An article of type review always point to a common record
+     * <p>
+     * For 016 and 018 the parent agency id is defined by *5 (if present)
      *
      * @return The agencyId of the 014 *a record
      */
@@ -432,10 +444,12 @@ public class MarcRecordReader {
         logger.entry();
         String result = null;
         try {
-            String field014x;
-            field014x = getValue("014", "x");
-            if (field014x != null && "ANM".equals(field014x)) {
+            if (hasSubfield("014", "x") && "ANM".equals(getValue("014", "x"))) {
                 result = "870970";
+            } else if (hasSubfield("016", "5") && getValue("016", "5") != null) {
+                result = getValue("016", "5");
+            } else if (hasSubfield("018", "5") && getValue("018", "5") != null) {
+                result = getValue("018", "5");
             } else {
                 result = getAgencyId();
             }
