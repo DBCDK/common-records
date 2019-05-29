@@ -417,10 +417,12 @@ public class MarcRecordReader {
                 if (field014x == null || "ANM".equals(field014x) || "DEB".equals(field014x)) {
                     result = getValue("014", "a");
                 }
-            } else if (hasSubfield("016", "a") && getValue("016", "a") != null) {
-                result = getValue("016", "a");
-            } else if (hasSubfield("018", "a") && getValue("018", "a") != null) {
-                result = getValue("018", "a");
+            } else if ("870974".equals(getAgencyId())) {
+                if (hasSubfield("016", "a") && getValue("016", "a") != null) {
+                    result = getValue("016", "a");
+                } else if (hasSubfield("018", "a") && getValue("018", "a") != null) {
+                    result = getValue("018", "a");
+                }
             }
 
             return result;
@@ -436,7 +438,7 @@ public class MarcRecordReader {
      * Note: ANM = Anmeldelse = Review
      * Note: An article of type review always point to a common record
      * <p>
-     * For 016 and 018 the parent agency id is defined by *5 (if present)
+     * For 870974 records field 016 and 018 the parent agency id is defined by *5 (if present)
      *
      * @return The agencyId of the 014 *a record
      */
@@ -446,10 +448,12 @@ public class MarcRecordReader {
         try {
             if (hasSubfield("014", "x") && "ANM".equals(getValue("014", "x"))) {
                 result = "870970";
-            } else if (hasSubfield("016", "5") && getValue("016", "5") != null) {
-                result = getValue("016", "5");
-            } else if (hasSubfield("018", "5") && getValue("018", "5") != null) {
-                result = getValue("018", "5");
+            } else if ("870974".equals(getAgencyId())) {
+                if (hasSubfield("016", "5") && getValue("016", "5") != null) {
+                    result = getValue("016", "5");
+                } else if (hasSubfield("018", "5") && getValue("018", "5") != null) {
+                    result = getValue("018", "5");
+                }
             } else {
                 result = getAgencyId();
             }
