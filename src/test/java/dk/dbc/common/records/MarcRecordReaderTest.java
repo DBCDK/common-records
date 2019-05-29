@@ -366,6 +366,30 @@ public class MarcRecordReaderTest {
     }
 
     @Test
+    public void testGetParentAgencyId_016_WithAgency() {
+        MarcRecord record = new MarcRecord();
+
+        MarcRecordReader instance = new MarcRecordReader(record);
+
+        record.getFields().add(new MarcField("001", "00", Arrays.asList(new MarcSubField("a", "12345678"), new MarcSubField("b", "870974"))));
+        record.getFields().add(new MarcField("016", "00", Arrays.asList(new MarcSubField("a", "87654321"), new MarcSubField("5", "123456"))));
+        assertThat(instance.getParentAgencyId(), is("123456"));
+        assertThat(instance.getParentRecordId(), is("87654321"));
+    }
+
+    @Test
+    public void testGetParentAgencyId_018_WithAgency() {
+        MarcRecord record = new MarcRecord();
+
+        MarcRecordReader instance = new MarcRecordReader(record);
+
+        record.getFields().add(new MarcField("001", "00", Arrays.asList(new MarcSubField("a", "12345678"), new MarcSubField("b", "870974"))));
+        record.getFields().add(new MarcField("018", "00", Arrays.asList(new MarcSubField("a", "87654321"), new MarcSubField("5", "123456"))));
+        assertThat(instance.getParentAgencyId(), is("123456"));
+        assertThat(instance.getParentRecordId(), is("87654321"));
+    }
+
+    @Test
     public void testGetSubfieldValueMatchers_MutipleMatchesInSameField() {
         MarcRecord record = new MarcRecord();
         record.getFields().add(new MarcField("666", "00", Arrays.asList(new MarcSubField("u", "For 3-4 år"), new MarcSubField("u", "For 5-8 år"))));
