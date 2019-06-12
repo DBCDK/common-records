@@ -26,6 +26,20 @@ public class RecordContentTransformer {
     private static final String SCHEMA_LOCATION = "http://www.loc.gov/standards/iso25577/marcxchange-1-1.xsd";
     private static final String ENCODING = "UTF-8";
 
+    private static JAXBContext jaxbContext;
+
+    static {
+        try {
+            jaxbContext = JAXBContext.newInstance(CollectionType.class);
+        } catch (JAXBException e) {
+            throw new RuntimeException("Exception while calling JAXBContext.newInstance", e);
+        }
+    }
+
+    private static JAXBContext getJAXBContext() {
+        return jaxbContext;
+    }
+
     /**
      * Encodes the record as marcxchange.
      *
@@ -48,8 +62,7 @@ public class RecordContentTransformer {
             ObjectFactory objectFactory = new ObjectFactory();
             JAXBElement<RecordType> jAXBElement = objectFactory.createRecord(marcXchangeType);
 
-            JAXBContext jc = JAXBContext.newInstance(CollectionType.class);
-            Marshaller marshaller = jc.createMarshaller();
+            Marshaller marshaller = getJAXBContext().createMarshaller();
             marshaller.setProperty(Marshaller.JAXB_SCHEMA_LOCATION, SCHEMA_LOCATION);
 
             StringWriter recData = new StringWriter();
