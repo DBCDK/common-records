@@ -418,9 +418,9 @@ public class MarcRecordReader {
                     result = getValue("014", "a");
                 }
             } else if ("870974".equals(getAgencyId())) {
-                if (hasSubfield("016", "a") && getValue("016", "a") != null) {
+                if (hasSubfield("016", "a")) {
                     result = getValue("016", "a");
-                } else if (hasSubfield("018", "a") && getValue("018", "a") != null) {
+                } else if (hasSubfield("018", "a")) {
                     result = getValue("018", "a");
                 }
             }
@@ -449,9 +449,9 @@ public class MarcRecordReader {
             if (hasSubfield("014", "x") && "ANM".equals(getValue("014", "x"))) {
                 result = "870970";
             } else if ("870974".equals(getAgencyId())) {
-                if (hasSubfield("016", "5") && getValue("016", "5") != null) {
+                if (hasSubfield("016", "5")) {
                     result = getValue("016", "5");
-                } else if (hasSubfield("018", "5") && getValue("018", "5") != null) {
+                } else if (hasSubfield("018", "5")) {
                     result = getValue("018", "5");
                 }
             } else {
