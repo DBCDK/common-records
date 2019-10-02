@@ -12,7 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class UpdateOwnership {
-    private static final XLogger logger = XLoggerFactory.getXLogger(UpdateOwnership.class);
+    private static final XLogger LOGGER = XLoggerFactory.getXLogger(UpdateOwnership.class);
 
     /**
      * Merges ownership in field 996 from record and currentRecord.
@@ -40,23 +40,27 @@ public class UpdateOwnership {
      * @return MarcRecord The record with the merged result in record.
      */
     public static MarcRecord mergeRecord(MarcRecord newRecord, MarcRecord currentRecord) {
-        logger.entry(newRecord, currentRecord);
+        LOGGER.entry(newRecord, currentRecord);
 
         try {
             if (newRecord == null || currentRecord == null) {
                 return newRecord;
             }
 
-            MarcRecordReader currentRecordReader = new MarcRecordReader(currentRecord);
+            final MarcRecordReader currentRecordReader = new MarcRecordReader(currentRecord);
 
-            MarcRecordReader newRecordReader = new MarcRecordReader(newRecord);
-            MarcRecordWriter newRecordWriter = new MarcRecordWriter(newRecord);
+            final MarcRecordReader newRecordReader = new MarcRecordReader(newRecord);
+            final MarcRecordWriter newRecordWriter = new MarcRecordWriter(newRecord);
 
-            String currentOwner = currentRecordReader.getValue("996", "a");
-            String newOwner = newRecordReader.getValue("996", "a");
+            final String currentOwner = currentRecordReader.getValue("996", "a");
+            final String newOwner = newRecordReader.getValue("996", "a");
 
-            logger.info("currentOwner: {}", currentOwner);
-            logger.info("newOwner: {}", newOwner);
+            if (currentOwner == null) {
+                return newRecord;
+            }
+
+            LOGGER.info("currentOwner: {}", currentOwner);
+            LOGGER.info("newOwner: {}", newOwner);
 
             newRecordWriter.removeField("996");
 
@@ -66,7 +70,7 @@ public class UpdateOwnership {
             if (newOwner == null || newOwner.equals(currentOwner)) {
                 newRecord.getFields().add(new MarcField(currentRecordReader.getField("996")));
             } else {
-                MarcField ownerField = new MarcField("996", "00");
+                final MarcField ownerField = new MarcField("996", "00");
 
                 // Handle 996 *a
                 ownerField.getSubfields().add(new MarcSubField("a", newOwner));
@@ -94,12 +98,12 @@ public class UpdateOwnership {
 
             return newRecord;
         } finally {
-            logger.exit(newRecord);
+            LOGGER.exit(newRecord);
         }
     }
 
     private static List<String> createListOfPreviousOwners(MarcRecordReader reader) {
-        List<String> owners;
+        final List<String> owners;
 
         if (reader.hasSubfield("996", "m")) {
             owners = reader.getValues("996", "m");
