@@ -8,6 +8,7 @@ package dk.dbc.common.records;
 import org.junit.Test;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -22,12 +23,12 @@ public class UpdateOwnershipTest {
         MarcField field996 = new MarcField("996", "00");
 
         List<MarcSubField> subfields = new ArrayList<>();
-        subfields.add(new MarcSubField("a", "DBC"));
+        subfields.add(new MarcSubField("a", "789456"));
         subfields.add(new MarcSubField("o", "ORIGINAL"));
         subfields.add(new MarcSubField("m", "ABC"));
 
         if (includeSelf)
-            subfields.add(new MarcSubField("m", "DBC"));
+            subfields.add(new MarcSubField("m", "789456"));
 
         field996.setSubfields(subfields);
         record.getFields().add(field996);
@@ -65,7 +66,7 @@ public class UpdateOwnershipTest {
     @Test
     public void testMergeOwnersSameOwner() {
         MarcField owner = new MarcField("996", "00");
-        owner.getSubfields().add(new MarcSubField("a", "DBC"));
+        owner.getSubfields().add(new MarcSubField("a", "789456"));
 
         MarcRecord record = new MarcRecord();
         record.getFields().add(owner);
@@ -86,7 +87,7 @@ public class UpdateOwnershipTest {
     @Test
     public void testMergeOwners_DifferentOwners_PreviousOwnersIncludeCurrent() {
         MarcField owner = new MarcField("996", "00");
-        owner.getSubfields().add(new MarcSubField("a", "NOT_DBC"));
+        owner.getSubfields().add(new MarcSubField("a", "777777"));
         MarcRecord record = new MarcRecord();
         record.getFields().add(owner);
 
@@ -94,7 +95,7 @@ public class UpdateOwnershipTest {
 
         MarcRecord expected = getCurrentRecordWithOwner(true);
         MarcRecordWriter expectedWriter = new MarcRecordWriter(expected);
-        expectedWriter.addOrReplaceSubfield("996", "a", "NOT_DBC");
+        expectedWriter.addOrReplaceSubfield("996", "a", "777777");
 
         assertThat(UpdateOwnership.mergeRecord(record, currentRecord), equalTo(expected));
     }
@@ -102,7 +103,7 @@ public class UpdateOwnershipTest {
     @Test
     public void testMergeOwners_DifferentOwners_PreviousOwnersDontIncludeCurrent() {
         MarcField owner = new MarcField("996", "00");
-        owner.getSubfields().add(new MarcSubField("a", "NOT_DBC"));
+        owner.getSubfields().add(new MarcSubField("a", "777777"));
         MarcRecord record = new MarcRecord();
         record.getFields().add(owner);
 
@@ -110,8 +111,81 @@ public class UpdateOwnershipTest {
 
         MarcRecord expected = getCurrentRecordWithOwner(true);
         MarcRecordWriter expectedWriter = new MarcRecordWriter(expected);
-        expectedWriter.addOrReplaceSubfield("996", "a", "NOT_DBC");
+        expectedWriter.addOrReplaceSubfield("996", "a", "777777");
 
         assertThat(UpdateOwnership.mergeRecord(record, currentRecord), equalTo(expected));
     }
+
+    @Test
+    public void testMergeOwners_RETToDBC() {
+        MarcRecord currentRecord = new MarcRecord();
+        currentRecord.getFields().add(new MarcField("996", "00", Arrays.asList(new MarcSubField("a", "RET"))));
+
+        MarcRecord record = new MarcRecord();
+        record.getFields().add(new MarcField("996", "00", Arrays.asList(new MarcSubField("a", "DBC"))));
+
+        MarcRecord expected = new MarcRecord();
+        expected.getFields().add(new MarcField("996", "00", Arrays.asList(new MarcSubField("a", "DBC"))));
+
+        assertThat(UpdateOwnership.mergeRecord(record, currentRecord), equalTo(expected));
+    }
+
+    @Test
+    public void testMergeOwners_DBCToRET() {
+        MarcRecord currentRecord = new MarcRecord();
+        currentRecord.getFields().add(new MarcField("996", "00", Arrays.asList(new MarcSubField("a", "DBC"))));
+
+        MarcRecord record = new MarcRecord();
+        record.getFields().add(new MarcField("996", "00", Arrays.asList(new MarcSubField("a", "RET"))));
+
+        MarcRecord expected = new MarcRecord();
+        expected.getFields().add(new MarcField("996", "00", Arrays.asList(new MarcSubField("a", "RET"))));
+
+        assertThat(UpdateOwnership.mergeRecord(record, currentRecord), equalTo(expected));
+    }
+
+    @Test
+    public void testMergeOwners_NewNon7xOwner() {
+        MarcRecord currentRecord = new MarcRecord();
+        currentRecord.getFields().add(new MarcField("996", "00", Arrays.asList(new MarcSubField("a", "888888"))));
+
+        MarcRecord record = new MarcRecord();
+        record.getFields().add(new MarcField("996", "00", Arrays.asList(new MarcSubField("a", "777777"))));
+
+        MarcRecord expected = new MarcRecord();
+        expected.getFields().add(new MarcField("996", "00", Arrays.asList(new MarcSubField("a", "777777"))));
+
+        assertThat(UpdateOwnership.mergeRecord(record, currentRecord), equalTo(expected));
+    }
+
+    @Test
+    public void testMergeOwners_RETTo7xOwner() {
+        MarcRecord currentRecord = new MarcRecord();
+        currentRecord.getFields().add(new MarcField("996", "00", Arrays.asList(new MarcSubField("a", "RET"))));
+
+        MarcRecord record = new MarcRecord();
+        record.getFields().add(new MarcField("996", "00", Arrays.asList(new MarcSubField("a", "777777"))));
+
+        MarcRecord expected = new MarcRecord();
+        expected.getFields().add(new MarcField("996", "00", Arrays.asList(new MarcSubField("a", "777777"))));
+
+        assertThat(UpdateOwnership.mergeRecord(record, currentRecord), equalTo(expected));
+    }
+
+    @Test
+    public void testMergeOwners_7xToDBC() {
+        MarcRecord currentRecord = new MarcRecord();
+        currentRecord.getFields().add(new MarcField("996", "00", Arrays.asList(new MarcSubField("a", "710100"))));
+
+        MarcRecord record = new MarcRecord();
+        record.getFields().add(new MarcField("996", "00", Arrays.asList(new MarcSubField("a", "DBC"))));
+
+        MarcRecord expected = new MarcRecord();
+        expected.getFields().add(new MarcField("996", "00", Arrays.asList(new MarcSubField("a", "DBC"),
+                new MarcSubField("o", "710100"),
+                new MarcSubField("m", "710100"))));
+
+        assertThat(UpdateOwnership.mergeRecord(record, currentRecord), equalTo(expected));
+    }
+
 }
