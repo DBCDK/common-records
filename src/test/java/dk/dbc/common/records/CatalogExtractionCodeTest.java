@@ -7,6 +7,8 @@ package dk.dbc.common.records;
 
 import org.junit.Test;
 
+import java.util.Arrays;
+
 import static org.hamcrest.core.IsEqual.equalTo;
 import static org.junit.Assert.assertThat;
 
@@ -83,6 +85,15 @@ public class CatalogExtractionCodeTest {
         MarcRecord record = generateMarcRecordWith032("a", "DBI201504");
 
         assertThat(CatalogExtractionCode.isUnderProduction(record), equalTo(false));
+    }
+
+    @Test
+    public void testIsRecordInProduction032aPublicityDateIsBeforeCurrentDateCustomCatalogCodes() throws Exception {
+        MarcRecord record = generateMarcRecordWith032("a", "DBF201504");
+
+        assertThat(CatalogExtractionCode.isUnderProduction(record,
+                Arrays.asList("DLF", "DBI", "DMF", "DMO", "DPF", "BKM", "GBF", "GMO", "GPF", "FPF", "DBR", "UTI")),
+                equalTo(false));
     }
 
     @Test
@@ -200,6 +211,21 @@ public class CatalogExtractionCodeTest {
         record.getFields().add(field);
 
         assertThat(CatalogExtractionCode.isPublished(record), equalTo(true));
+    }
+
+    @Test
+    public void testIsPublishedHasProductionCodeInThePastCustomCatalogueCodes() throws Exception {
+        MarcSubField subfieldA = new MarcSubField("a", "DBI191304");
+        MarcSubField subfieldX = new MarcSubField("x", "DBI999999");
+
+        MarcField field = new MarcField("032", "00");
+        field.getSubfields().add(subfieldA);
+        field.getSubfields().add(subfieldX);
+
+        MarcRecord record = new MarcRecord();
+        record.getFields().add(field);
+
+        assertThat(CatalogExtractionCode.isPublished(record, Arrays.asList("DBF", "DLF", "DMF", "DMO", "DPF", "BKM", "GBF", "GMO", "GPF", "FPF", "DBR", "UTI")), equalTo(false));
     }
 
     @Test
