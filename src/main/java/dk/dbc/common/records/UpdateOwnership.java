@@ -81,15 +81,15 @@ public class UpdateOwnership {
                         String originalOwner = currentRecordReader.getValue("996", "o");
 
                         ownerField.getSubfields().add(new MarcSubField("o", originalOwner));
+
+                        // Handle 996 *m
+                        List<String> previousOwners = createListOfPreviousOwners(currentRecordReader);
+
+                        for (String previousOwner : previousOwners) {
+                            ownerField.getSubfields().add(new MarcSubField("m", previousOwner));
+                        }
                     } else {
                         ownerField.getSubfields().add(new MarcSubField("o", currentOwner));
-                    }
-
-                    // Handle 996 *m
-                    List<String> previousOwners = createListOfPreviousOwners(currentRecordReader);
-
-                    for (String previousOwner : previousOwners) {
-                        ownerField.getSubfields().add(new MarcSubField("m", previousOwner));
                     }
                 }
                 newRecord.getFields().add(ownerField);
@@ -115,7 +115,7 @@ public class UpdateOwnership {
         String currentOwner = reader.getValue("996", "a");
 
         // Current owner should be added to the list of previous owners unless already listed
-        if (owners.indexOf(currentOwner) == -1) {
+        if (!owners.contains(currentOwner)) {
             owners.add(currentOwner);
         }
 

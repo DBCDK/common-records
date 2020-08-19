@@ -182,7 +182,42 @@ public class UpdateOwnershipTest {
 
         MarcRecord expected = new MarcRecord();
         expected.getFields().add(new MarcField("996", "00", Arrays.asList(new MarcSubField("a", "DBC"),
-                new MarcSubField("o", "710100"),
+                new MarcSubField("o", "710100"))));
+
+        assertThat(UpdateOwnership.mergeRecord(record, currentRecord), equalTo(expected));
+    }
+
+    @Test
+    public void testMergeOwners_7xPreviousOwner() {
+        MarcRecord currentRecord = new MarcRecord();
+        currentRecord.getFields().add(new MarcField("996", "00", Arrays.asList(new MarcSubField("a", "710100")
+        , new MarcSubField("o", "720200"))));
+
+        MarcRecord record = new MarcRecord();
+        record.getFields().add(new MarcField("996", "00", Arrays.asList(new MarcSubField("a", "730300"))));
+
+        MarcRecord expected = new MarcRecord();
+        expected.getFields().add(new MarcField("996", "00", Arrays.asList(new MarcSubField("a", "730300"),
+                new MarcSubField("o", "720200"),
+                new MarcSubField("m", "710100"))));
+
+        assertThat(UpdateOwnership.mergeRecord(record, currentRecord), equalTo(expected));
+    }
+
+    @Test
+    public void testMergeOwners_7xPreviousOwners() {
+        MarcRecord currentRecord = new MarcRecord();
+        currentRecord.getFields().add(new MarcField("996", "00", Arrays.asList(new MarcSubField("a", "710100"),
+                new MarcSubField("o", "720200"),
+                new MarcSubField("m", "740400"))));
+
+        MarcRecord record = new MarcRecord();
+        record.getFields().add(new MarcField("996", "00", Arrays.asList(new MarcSubField("a", "730300"))));
+
+        MarcRecord expected = new MarcRecord();
+        expected.getFields().add(new MarcField("996", "00", Arrays.asList(new MarcSubField("a", "730300"),
+                new MarcSubField("o", "720200"),
+                new MarcSubField("m", "740400"),
                 new MarcSubField("m", "710100"))));
 
         assertThat(UpdateOwnership.mergeRecord(record, currentRecord), equalTo(expected));
