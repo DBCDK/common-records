@@ -9,6 +9,7 @@ import org.slf4j.ext.XLogger;
 import org.slf4j.ext.XLoggerFactory;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.regex.Matcher;
@@ -20,8 +21,8 @@ import java.util.stream.Collectors;
  */
 public class MarcRecordReader {
     private static final XLogger logger = XLoggerFactory.getXLogger(MarcRecordReader.class);
-
-    private MarcRecord record;
+    private static final List<String> AGENCIES_WITH_OTHER_RELATIONS = Arrays.asList("870974", "870975");
+    private final MarcRecord record;
 
     public MarcRecordReader(MarcRecord record) {
         this.record = record;
@@ -417,7 +418,7 @@ public class MarcRecordReader {
                 if (field014x == null || "ANM".equals(field014x) || "DEB".equals(field014x)) {
                     result = getValue("014", "a");
                 }
-            } else if ("870974".equals(getAgencyId())) {
+            } else if (AGENCIES_WITH_OTHER_RELATIONS.contains(getAgencyId())) {
                 if (hasSubfield("016", "a")) {
                     result = getValue("016", "a");
                 } else if (hasSubfield("018", "a")) {
@@ -448,13 +449,15 @@ public class MarcRecordReader {
         try {
             if (hasSubfield("014", "x") && "ANM".equals(getValue("014", "x"))) {
                 result = "870970";
-            } else if ("870974".equals(getAgencyId())) {
+            } else if (AGENCIES_WITH_OTHER_RELATIONS.contains(getAgencyId())) {
                 if (hasSubfield("016", "5")) {
                     result = getValue("016", "5");
                 } else if (hasSubfield("018", "5")) {
                     result = getValue("018", "5");
                 }
-            } else {
+            }
+
+            if (result == null) {
                 result = getAgencyId();
             }
 
