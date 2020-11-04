@@ -46,7 +46,7 @@ public class CatalogExtractionCode {
         logger.entry(record);
 
         try {
-            Boolean hasExtractionDateInTheFuture = false;
+            boolean hasExtractionDateInTheFuture = false;
             final MarcRecordReader reader = new MarcRecordReader(record);
             final MarcField field032 = reader.getField("032");
 

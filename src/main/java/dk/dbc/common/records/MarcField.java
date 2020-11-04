@@ -109,10 +109,7 @@ public class MarcField {
         if ((this.indicator == null) ? (other.indicator != null) : !this.indicator.equals(other.indicator)) {
             return false;
         }
-        if (this.subfields != other.subfields && (this.subfields == null || !this.subfields.equals(other.subfields))) {
-            return false;
-        }
-        return true;
+        return this.subfields == other.subfields || (this.subfields != null && this.subfields.equals(other.subfields));
     }
 
     @Override

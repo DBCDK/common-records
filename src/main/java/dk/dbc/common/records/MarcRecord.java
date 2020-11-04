@@ -86,21 +86,18 @@ public class MarcRecord {
         }
 
         final MarcRecord other = (MarcRecord) obj;
-        if (this.fields != other.fields && (this.fields == null || !this.fields.equals(other.fields))) {
-            return false;
-        }
-        return true;
+        return this.fields == other.fields || (this.fields != null && this.fields.equals(other.fields));
     }
 
     @Override
     public String toString() {
-        String result = "";
+        StringBuilder result = new StringBuilder();
 
         for (MarcField rf : this.fields) {
-            result += rf.toString() + "\n";
+            result.append(rf.toString()).append("\n");
         }
 
-        return result;
+        return result.toString();
     }
 
 }

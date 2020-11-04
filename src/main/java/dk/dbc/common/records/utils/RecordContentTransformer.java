@@ -26,7 +26,7 @@ public class RecordContentTransformer {
     private static final String SCHEMA_LOCATION = "http://www.loc.gov/standards/iso25577/marcxchange-1-1.xsd";
     private static final String ENCODING = "UTF-8";
 
-    private static JAXBContext jaxbContext;
+    private static final JAXBContext jaxbContext;
 
     static {
         try {

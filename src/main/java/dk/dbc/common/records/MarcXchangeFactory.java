@@ -56,45 +56,42 @@ public class MarcXchangeFactory {
         return subfieldatafieldType;
     }
 
-    private static DataFieldType fillIndicatorFieldsFromString(String indicator, DataFieldType dataFieldType) {
+    private static void fillIndicatorFieldsFromString(String indicator, DataFieldType dataFieldType) {
         if (indicator != null && !indicator.isEmpty()) {
             String tmpIndicator = indicator;
-            if (tmpIndicator.length() > 0) {
-                dataFieldType.setInd1(tmpIndicator.substring(0, 1));
-                tmpIndicator = tmpIndicator.substring(1);
-            }
-            if (!tmpIndicator.isEmpty() && tmpIndicator.length() > 0) {
+            dataFieldType.setInd1(tmpIndicator.substring(0, 1));
+            tmpIndicator = tmpIndicator.substring(1);
+            if (!tmpIndicator.isEmpty()) {
                 dataFieldType.setInd2(tmpIndicator.substring(0, 1));
                 tmpIndicator = tmpIndicator.substring(1);
             }
-            if (!tmpIndicator.isEmpty() && tmpIndicator.length() > 0) {
+            if (!tmpIndicator.isEmpty()) {
                 dataFieldType.setInd3(tmpIndicator.substring(0, 1));
                 tmpIndicator = tmpIndicator.substring(1);
             }
-            if (!tmpIndicator.isEmpty() && tmpIndicator.length() > 0) {
+            if (!tmpIndicator.isEmpty()) {
                 dataFieldType.setInd4(tmpIndicator.substring(0, 1));
                 tmpIndicator = tmpIndicator.substring(1);
             }
-            if (!tmpIndicator.isEmpty() && tmpIndicator.length() > 0) {
+            if (!tmpIndicator.isEmpty()) {
                 dataFieldType.setInd5(tmpIndicator.substring(0, 1));
                 tmpIndicator = tmpIndicator.substring(1);
             }
-            if (!tmpIndicator.isEmpty() && tmpIndicator.length() > 0) {
+            if (!tmpIndicator.isEmpty()) {
                 dataFieldType.setInd6(tmpIndicator.substring(0, 1));
                 tmpIndicator = tmpIndicator.substring(1);
             }
-            if (!tmpIndicator.isEmpty() && tmpIndicator.length() > 0) {
+            if (!tmpIndicator.isEmpty()) {
                 dataFieldType.setInd7(tmpIndicator.substring(0, 1));
                 tmpIndicator = tmpIndicator.substring(1);
             }
-            if (!tmpIndicator.isEmpty() && tmpIndicator.length() > 0) {
+            if (!tmpIndicator.isEmpty()) {
                 dataFieldType.setInd8(tmpIndicator.substring(0, 1));
                 tmpIndicator = tmpIndicator.substring(1);
             }
-            if (!tmpIndicator.isEmpty() && tmpIndicator.length() > 0) {
+            if (!tmpIndicator.isEmpty()) {
                 dataFieldType.setInd9(tmpIndicator.substring(0, 1));
             }
         }
-        return dataFieldType;
     }
 }

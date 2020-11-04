@@ -21,7 +21,7 @@ import java.util.List;
 public class MarcRecordWriter {
     private static final XLogger logger = XLoggerFactory.getXLogger(MarcRecordReader.class);
 
-    private MarcRecord record;
+    private final MarcRecord record;
 
     public MarcRecordWriter(MarcRecord record) {
         this.record = record;
@@ -64,13 +64,11 @@ public class MarcRecordWriter {
         logger.entry(fieldnames, rec);
         try {
             List<MarcField> marcFieldsToAdd = new ArrayList<>();
-            fieldnames.forEach((fieldName) -> {
-                rec.getFields().forEach((MarcField mf) -> {
-                    if (mf.getName().equals(fieldName)) {
-                        marcFieldsToAdd.add(mf);
-                    }
-                });
-            });
+            fieldnames.forEach((fieldName) -> rec.getFields().forEach((MarcField mf) -> {
+                if (mf.getName().equals(fieldName)) {
+                    marcFieldsToAdd.add(mf);
+                }
+            }));
             record.getFields().addAll(marcFieldsToAdd);
 
         } finally {
@@ -95,12 +93,7 @@ public class MarcRecordWriter {
                 MarcField mf = mfIter.next();
                 if (mf.getName().equals(fieldname)) {
                     List<MarcSubField> subfields = mf.getSubfields();
-                    for (Iterator<MarcSubField> sfIter = subfields.listIterator(); sfIter.hasNext(); ) {
-                        MarcSubField subfield = sfIter.next();
-                        if (subfield.getName().equals(subfieldname)) {
-                            sfIter.remove();
-                        }
-                    }
+                    subfields.removeIf(subfield -> subfield.getName().equals(subfieldname));
                     // remove field if it has no subfields
                     if (mf.getSubfields().size() == 0) {
                         mfIter.remove();
@@ -121,12 +114,7 @@ public class MarcRecordWriter {
         logger.entry(record, fieldname);
         try {
             List<MarcField> marcFieldList = record.getFields();
-            for (Iterator<MarcField> mfIter = marcFieldList.listIterator(); mfIter.hasNext(); ) {
-                MarcField mf = mfIter.next();
-                if (mf.getName().equals(fieldname)) {
-                    mfIter.remove();
-                }
-            }
+            marcFieldList.removeIf(mf -> mf.getName().equals(fieldname));
         } finally {
             logger.exit();
         }

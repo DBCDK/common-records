@@ -23,7 +23,7 @@ import java.util.NoSuchElementException;
 public class MarcXChangeProvider implements MarcRecordProvider {
     private static final XLogger logger = XLoggerFactory.getXLogger(MarcXChangeProvider.class);
 
-    private List<RecordType> records;
+    private final List<RecordType> records;
 
     /**
      * Constructs a Marcxchange provider to provide all records from a file.
@@ -77,9 +77,9 @@ public class MarcXChangeProvider implements MarcRecordProvider {
         return records;
     }
 
-    private class MarcXChangeProviderIterator implements Iterator<MarcRecord> {
+    private static class MarcXChangeProviderIterator implements Iterator<MarcRecord> {
         int currentIndex;
-        private List<RecordType> xmlRecords;
+        private final List<RecordType> xmlRecords;
 
         public MarcXChangeProviderIterator(List<RecordType> xmlRecords) {
             this.currentIndex = -1;
