@@ -102,12 +102,13 @@ public class MarcRecordReader {
      */
     public Boolean hasSubfield(String fieldName, String subfieldName) {
         logger.entry(fieldName, subfieldName);
-        Boolean result = false;
+        boolean result = false;
         try {
             for (MarcField field : getFieldStream(fieldName)) {
                 for (MarcSubField subfield : field.getSubfields()) {
                     if (subfield.getName().equals(subfieldName)) {
                         result = true;
+                        break;
                     }
                 }
             }
@@ -286,9 +287,7 @@ public class MarcRecordReader {
         try {
             result = getValue("996", "a");
             if (result != null) {
-                if (result.equals("DBC") || result.equals("RET")) {
-                    return true;
-                }
+                return result.equals("DBC") || result.equals("RET");
             }
             return false;
         } finally {
@@ -368,8 +367,6 @@ public class MarcRecordReader {
             String id = getAgencyId();
             if (id != null) {
                 result = Integer.valueOf(id, 10);
-            } else {
-                result = 0;
             }
 
             return result;

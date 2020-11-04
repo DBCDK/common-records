@@ -45,12 +45,7 @@ public class MarcFieldWriter {
         logger.entry(subfieldName);
         try {
             List<MarcSubField> subfieldList = field.getSubfields();
-            for (Iterator<MarcSubField> msfIter = subfieldList.listIterator(); msfIter.hasNext(); ) {
-                MarcSubField msf = msfIter.next();
-                if (msf.getName().equals(subfieldName)) {
-                    msfIter.remove();
-                }
-            }
+            subfieldList.removeIf(msf -> msf.getName().equals(subfieldName));
         } finally {
             logger.exit();
         }

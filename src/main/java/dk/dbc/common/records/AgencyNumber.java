@@ -60,13 +60,13 @@ public class AgencyNumber {
      */
     @Override
     public String toString() {
-        String result = agencyId.toString();
+        StringBuilder result = new StringBuilder(agencyId.toString());
 
         while (result.length() < AGENCY_NUMBER_SIZE) {
-            result = "0" + result;
+            result.insert(0, "0");
         }
 
-        return result;
+        return result.toString();
     }
 
 }

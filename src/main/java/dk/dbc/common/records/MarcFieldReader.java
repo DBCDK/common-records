@@ -17,7 +17,7 @@ import java.util.List;
 public class MarcFieldReader {
     private static final XLogger logger = XLoggerFactory.getXLogger(MarcFieldReader.class);
 
-    private MarcField field;
+    private final MarcField field;
 
     public MarcFieldReader(MarcField field) {
         this.field = field;

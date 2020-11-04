@@ -29,7 +29,7 @@ import java.util.ArrayList;
  * Converter class to convert between marcXchange and MarcRecord.
  */
 public class MarcConverter {
-    private static JAXBContext jaxbContext;
+    private static final JAXBContext jaxbContext;
 
     static {
         try {
