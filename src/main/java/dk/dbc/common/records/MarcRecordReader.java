@@ -58,10 +58,10 @@ public class MarcRecordReader {
         }
     }
 
-    public Boolean hasField(String fieldName) {
+    public boolean hasField(String fieldName) {
         List<MarcField> fields = getFieldStream(fieldName);
 
-        return fields.size() > 0;
+        return !fields.isEmpty();
     }
 
     public MarcField getField(String fieldName) {
@@ -69,7 +69,7 @@ public class MarcRecordReader {
 
         List<MarcField> fields = getFieldStream(fieldName);
 
-        if (fields != null && fields.size() > 0) {
+        if (fields != null && !fields.isEmpty()) {
             result = fields.get(0);
         }
 
@@ -100,21 +100,19 @@ public class MarcRecordReader {
      * @param subfieldName Name of the subfield.
      * @return True if fieldName and subfieldName exists at least once in the record
      */
-    public Boolean hasSubfield(String fieldName, String subfieldName) {
+    public boolean hasSubfield(String fieldName, String subfieldName) {
         logger.entry(fieldName, subfieldName);
-        boolean result = false;
         try {
             for (MarcField field : getFieldStream(fieldName)) {
                 for (MarcSubField subfield : field.getSubfields()) {
                     if (subfield.getName().equals(subfieldName)) {
-                        result = true;
-                        break;
+                        return true;
                     }
                 }
             }
-            return result;
+            return false;
         } finally {
-            logger.exit(result);
+            logger.exit();
         }
     }
 
@@ -153,7 +151,7 @@ public class MarcRecordReader {
      * with <code>fieldName</code> contains the value <code>value</code>. <code>false</code>
      * otherwise.
      */
-    public Boolean hasValue(String fieldName, String subfieldName, String value) {
+    public boolean hasValue(String fieldName, String subfieldName, String value) {
         logger.entry(fieldName, subfieldName);
 
         try {
@@ -169,7 +167,7 @@ public class MarcRecordReader {
         }
     }
 
-    public Boolean matchValue(String fieldName, String subfieldName, String value) {
+    public boolean matchValue(String fieldName, String subfieldName, String value) {
         logger.entry(fieldName, subfieldName);
 
         try {
@@ -383,11 +381,10 @@ public class MarcRecordReader {
      */
     public boolean markedForDeletion() {
         logger.entry();
-        Boolean result = null;
         try {
-            return result = "d".equals(getValue("004", "r"));
+            return "d".equals(getValue("004", "r"));
         } finally {
-            logger.exit(result);
+            logger.exit();
         }
     }
 

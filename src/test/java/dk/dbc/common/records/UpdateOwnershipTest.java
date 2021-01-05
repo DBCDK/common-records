@@ -18,7 +18,7 @@ import static org.hamcrest.core.IsNull.nullValue;
 
 public class UpdateOwnershipTest {
 
-    private MarcRecord getCurrentRecordWithOwner(Boolean includeSelf) {
+    private MarcRecord getCurrentRecordWithOwner(boolean includeSelf) {
         final MarcRecord record = new MarcRecord();
 
         final MarcField field996 = new MarcField("996", "00");
