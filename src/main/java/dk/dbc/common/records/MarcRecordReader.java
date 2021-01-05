@@ -5,9 +5,6 @@
 
 package dk.dbc.common.records;
 
-import org.slf4j.ext.XLogger;
-import org.slf4j.ext.XLoggerFactory;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -20,7 +17,6 @@ import java.util.stream.Collectors;
  * This class can read values from a MarcRecord.
  */
 public class MarcRecordReader {
-    private static final XLogger logger = XLoggerFactory.getXLogger(MarcRecordReader.class);
     private static final List<String> AGENCIES_WITH_OTHER_RELATIONS = Arrays.asList("870974", "870975");
     private final MarcRecord record;
 
@@ -37,29 +33,23 @@ public class MarcRecordReader {
      * @return The value of the subfield if found, <code>null</code> otherwise.
      */
     public String getValue(String fieldName, String subfieldName) {
-        logger.entry(fieldName, subfieldName);
         String result = null;
-        List<MarcField> fields;
-        try {
-            fields = getFieldStream(fieldName);
+        final List<MarcField> fields = getFieldStream(fieldName);
 
-            for (MarcField field : fields) {
-                if (field.getName().equals(fieldName)) {
-                    result = new MarcFieldReader(field).getValue(subfieldName);
-                    if (result != null) {
-                        return result;
-                    }
+        for (MarcField field : fields) {
+            if (field.getName().equals(fieldName)) {
+                result = new MarcFieldReader(field).getValue(subfieldName);
+                if (result != null) {
+                    return result;
                 }
             }
-
-            return result;
-        } finally {
-            logger.exit(result);
         }
+
+        return result;
     }
 
     public boolean hasField(String fieldName) {
-        List<MarcField> fields = getFieldStream(fieldName);
+        final List<MarcField> fields = getFieldStream(fieldName);
 
         return !fields.isEmpty();
     }
@@ -67,7 +57,7 @@ public class MarcRecordReader {
     public MarcField getField(String fieldName) {
         MarcField result = null;
 
-        List<MarcField> fields = getFieldStream(fieldName);
+        final List<MarcField> fields = getFieldStream(fieldName);
 
         if (fields != null && !fields.isEmpty()) {
             result = fields.get(0);
@@ -101,19 +91,14 @@ public class MarcRecordReader {
      * @return True if fieldName and subfieldName exists at least once in the record
      */
     public boolean hasSubfield(String fieldName, String subfieldName) {
-        logger.entry(fieldName, subfieldName);
-        try {
-            for (MarcField field : getFieldStream(fieldName)) {
-                for (MarcSubField subfield : field.getSubfields()) {
-                    if (subfield.getName().equals(subfieldName)) {
-                        return true;
-                    }
+        for (MarcField field : getFieldStream(fieldName)) {
+            for (MarcSubField subfield : field.getSubfields()) {
+                if (subfield.getName().equals(subfieldName)) {
+                    return true;
                 }
             }
-            return false;
-        } finally {
-            logger.exit();
         }
+        return false;
     }
 
     /**
@@ -125,16 +110,13 @@ public class MarcRecordReader {
      * if no field or subfield matches the arguments.
      */
     public List<String> getValues(String fieldName, String subfieldName) {
-        logger.entry(fieldName, subfieldName);
-        List<String> result = new ArrayList<>();
-        try {
-            for (MarcField field : getFieldStream(fieldName)) {
-                result.addAll(new MarcFieldReader(field).getValues(subfieldName));
-            }
-            return result;
-        } finally {
-            logger.exit(result);
+        final List<String> result = new ArrayList<>();
+
+        for (MarcField field : getFieldStream(fieldName)) {
+            result.addAll(new MarcFieldReader(field).getValues(subfieldName));
         }
+
+        return result;
     }
 
     /**
@@ -152,37 +134,25 @@ public class MarcRecordReader {
      * otherwise.
      */
     public boolean hasValue(String fieldName, String subfieldName, String value) {
-        logger.entry(fieldName, subfieldName);
-
-        try {
-            for (MarcField field : getFieldStream(fieldName)) {
-                if (new MarcFieldReader(field).hasValue(subfieldName, value)) {
-                    return true;
-                }
+        for (MarcField field : getFieldStream(fieldName)) {
+            if (new MarcFieldReader(field).hasValue(subfieldName, value)) {
+                return true;
             }
-
-            return false;
-        } finally {
-            logger.exit();
         }
+
+        return false;
     }
 
     public boolean matchValue(String fieldName, String subfieldName, String value) {
-        logger.entry(fieldName, subfieldName);
-
-        try {
-            for (MarcField field : getFieldStream(fieldName)) {
-                for (MarcSubField subfield : field.getSubfields()) {
-                    if (subfield.getName().equals(subfieldName) && subfield.getValue().matches(value)) {
-                        return true;
-                    }
+        for (MarcField field : getFieldStream(fieldName)) {
+            for (MarcSubField subfield : field.getSubfields()) {
+                if (subfield.getName().equals(subfieldName) && subfield.getValue().matches(value)) {
+                    return true;
                 }
             }
-
-            return false;
-        } finally {
-            logger.exit();
         }
+
+        return false;
     }
 
     /**
@@ -195,25 +165,20 @@ public class MarcRecordReader {
      * @return List of matchers (empty if no matches)
      */
     public List<Matcher> getSubfieldValueMatchers(String fieldName, String subfieldName, Pattern p) {
-        logger.entry(fieldName, subfieldName, p);
         final List<Matcher> result = new ArrayList<>();
 
-        try {
-            for (MarcField field : getFieldStream(fieldName)) {
-                for (MarcSubField subfield : field.getSubfields()) {
-                    if (subfield.getName().equals(subfieldName)) {
-                        Matcher m = p.matcher(subfield.getValue());
-                        if (m.find()) {
-                            result.add(m);
-                        }
+        for (MarcField field : getFieldStream(fieldName)) {
+            for (MarcSubField subfield : field.getSubfields()) {
+                if (subfield.getName().equals(subfieldName)) {
+                    Matcher m = p.matcher(subfield.getValue());
+                    if (m.find()) {
+                        result.add(m);
                     }
                 }
             }
-
-            return result;
-        } finally {
-            logger.exit();
         }
+
+        return result;
     }
 
     /**
@@ -225,13 +190,7 @@ public class MarcRecordReader {
      * @return If an alias id is found it is returned, <code>null</code> otherwise.
      */
     public List<String> getCentralAliasIds() {
-        logger.entry();
-        List<String> result = null;
-        try {
-            return result = getValues("002", "a");
-        } finally {
-            logger.exit(result);
-        }
+        return getValues("002", "a");
     }
 
     /**
@@ -243,35 +202,30 @@ public class MarcRecordReader {
      * @return list of pairs of 002 b and c values
      */
     public List<HashMap<String, String>> getDecentralAliasIds() {
-        logger.entry();
-        List<HashMap<String, String>> result = new ArrayList<>();
-        try {
-            for (MarcField field : getFieldStream("002")) {
-                String bValue = null;
-                String cValue = null;
+        final List<HashMap<String, String>> result = new ArrayList<>();
+        for (MarcField field : getFieldStream("002")) {
+            String bValue = null;
+            String cValue = null;
 
-                for (MarcSubField subfield : field.getSubfields()) {
-                    if (subfield.getName().equals("b")) {
-                        bValue = subfield.getValue();
-                    }
+            for (MarcSubField subfield : field.getSubfields()) {
+                if (subfield.getName().equals("b")) {
+                    bValue = subfield.getValue();
+                }
 
-                    if (subfield.getName().equals("c")) {
-                        cValue = subfield.getValue();
-                    }
+                if (subfield.getName().equals("c")) {
+                    cValue = subfield.getValue();
+                }
 
-                    if (bValue != null && cValue != null) {
-                        HashMap<String, String> bcValues = new HashMap<>();
-                        bcValues.put("b", bValue);
-                        bcValues.put("c", cValue);
+                if (bValue != null && cValue != null) {
+                    HashMap<String, String> bcValues = new HashMap<>();
+                    bcValues.put("b", bValue);
+                    bcValues.put("c", cValue);
 
-                        result.add(bcValues);
-                    }
+                    result.add(bcValues);
                 }
             }
-            return result;
-        } finally {
-            logger.exit(result);
         }
+        return result;
     }
 
     /**
@@ -280,17 +234,11 @@ public class MarcRecordReader {
      * @return If content of 996*a is DBC or RET, true is returned, false otherwise.
      */
     public boolean isDBCRecord() {
-        logger.entry();
-        String result = null;
-        try {
-            result = getValue("996", "a");
-            if (result != null) {
-                return result.equals("DBC") || result.equals("RET");
-            }
-            return false;
-        } finally {
-            logger.exit(result);
+        final String result = getValue("996", "a");
+        if (result != null) {
+            return result.equals("DBC") || result.equals("RET");
         }
+        return false;
     }
 
     /**
@@ -302,14 +250,7 @@ public class MarcRecordReader {
      * @return If an id is found it is returned, <code>null</code> otherwise.
      */
     public String getRecordId() {
-        logger.entry();
-
-        String result = null;
-        try {
-            return result = getValue("001", "a");
-        } finally {
-            logger.exit(result);
-        }
+        return getValue("001", "a");
     }
 
     /**
@@ -321,13 +262,7 @@ public class MarcRecordReader {
      * @return If a id is found it is returned, <code>null</code> otherwise.
      */
     public String getAgencyId() {
-        logger.entry();
-        String result = null;
-        try {
-            return result = getValue("001", "b");
-        } finally {
-            logger.exit(result);
-        }
+        return getValue("001", "b");
     }
 
     /**
@@ -340,14 +275,8 @@ public class MarcRecordReader {
      */
     @Deprecated
     public Integer getAgencyIdAsInteger() {
-        logger.entry();
-        int result = 0;
-        try {
-            String id = getAgencyId();
-            return result = Integer.valueOf(id, 10);
-        } finally {
-            logger.exit(result);
-        }
+        final String id = getAgencyId();
+        return Integer.valueOf(id, 10);
     }
 
     /**
@@ -359,18 +288,13 @@ public class MarcRecordReader {
      * @return The value of 001 *b
      */
     public int getAgencyIdAsInt() {
-        logger.entry();
         int result = 0;
-        try {
-            String id = getAgencyId();
-            if (id != null) {
-                result = Integer.valueOf(id, 10);
-            }
-
-            return result;
-        } finally {
-            logger.exit(result);
+        final String id = getAgencyId();
+        if (id != null) {
+            result = Integer.valueOf(id, 10);
         }
+
+        return result;
     }
 
     /**
@@ -380,12 +304,7 @@ public class MarcRecordReader {
      * </p>
      */
     public boolean markedForDeletion() {
-        logger.entry();
-        try {
-            return "d".equals(getValue("004", "r"));
-        } finally {
-            logger.exit();
-        }
+        return "d".equals(getValue("004", "r"));
     }
 
     /**
@@ -401,29 +320,23 @@ public class MarcRecordReader {
      * otherwise.
      */
     public String getParentRecordId() {
-        logger.entry();
-        String result = null;
-        try {
-            String field014x;
+        String field014x;
 
-            if (hasSubfield("014", "a") && getValue("014", "a") != null) {
-                field014x = getValue("014", "x");
+        if (hasSubfield("014", "a") && getValue("014", "a") != null) {
+            field014x = getValue("014", "x");
 
-                if (field014x == null || "ANM".equals(field014x) || "DEB".equals(field014x)) {
-                    result = getValue("014", "a");
-                }
-            } else if (AGENCIES_WITH_OTHER_RELATIONS.contains(getAgencyId())) {
-                if (hasSubfield("016", "a")) {
-                    result = getValue("016", "a");
-                } else if (hasSubfield("018", "a")) {
-                    result = getValue("018", "a");
-                }
+            if (field014x == null || "ANM".equals(field014x) || "DEB".equals(field014x)) {
+                return getValue("014", "a");
             }
-
-            return result;
-        } finally {
-            logger.exit(result);
+        } else if (AGENCIES_WITH_OTHER_RELATIONS.contains(getAgencyId())) {
+            if (hasSubfield("016", "a")) {
+                return getValue("016", "a");
+            } else if (hasSubfield("018", "a")) {
+                return getValue("018", "a");
+            }
         }
+
+        return null;
     }
 
     /**
@@ -438,55 +351,36 @@ public class MarcRecordReader {
      * @return The agencyId of the 014 *a record
      */
     public String getParentAgencyId() {
-        logger.entry();
         String result = null;
-        try {
-            if (hasSubfield("014", "x") && "ANM".equals(getValue("014", "x"))) {
-                result = "870970";
-            } else if (AGENCIES_WITH_OTHER_RELATIONS.contains(getAgencyId())) {
-                if (hasSubfield("016", "5")) {
-                    result = getValue("016", "5");
-                } else if (hasSubfield("018", "5")) {
-                    result = getValue("018", "5");
-                }
+        if (hasSubfield("014", "x") && "ANM".equals(getValue("014", "x"))) {
+            result = "870970";
+        } else if (AGENCIES_WITH_OTHER_RELATIONS.contains(getAgencyId())) {
+            if (hasSubfield("016", "5")) {
+                result = getValue("016", "5");
+            } else if (hasSubfield("018", "5")) {
+                result = getValue("018", "5");
             }
-
-            if (result == null) {
-                result = getAgencyId();
-            }
-
-            return result;
-        } finally {
-            logger.exit(result);
         }
+
+        if (result == null) {
+            result = getAgencyId();
+        }
+
+        return result;
     }
 
     @Deprecated
     public Integer getParentAgencyIdAsInteger() {
-        logger.entry();
-        Integer result = null;
-        try {
-            String id = getParentAgencyId();
-            return result = Integer.valueOf(id, 10);
-        } finally {
-            logger.exit(result);
-        }
+        final String id = getParentAgencyId();
+        return Integer.valueOf(id, 10);
     }
 
     public int getParentAgencyIdAsInt() {
-        logger.entry();
-        Integer result = null;
-        try {
-            String id = getParentAgencyId();
-            if (id != null) {
-                result = Integer.valueOf(id, 10);
-            } else {
-                result = 0;
-            }
-
-            return result;
-        } finally {
-            logger.exit(result);
+        final String id = getParentAgencyId();
+        if (id != null) {
+            return Integer.valueOf(id, 10);
+        } else {
+            return 0;
         }
     }
 }

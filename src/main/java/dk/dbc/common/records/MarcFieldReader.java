@@ -5,9 +5,6 @@
 
 package dk.dbc.common.records;
 
-import org.slf4j.ext.XLogger;
-import org.slf4j.ext.XLoggerFactory;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,8 +12,6 @@ import java.util.List;
  * This class can read values from a MarcField.
  */
 public class MarcFieldReader {
-    private static final XLogger logger = XLoggerFactory.getXLogger(MarcFieldReader.class);
-
     private final MarcField field;
 
     public MarcFieldReader(MarcField field) {
@@ -30,20 +25,13 @@ public class MarcFieldReader {
      * @return The value of the subfield if found, <code>null</code> otherwise.
      */
     public String getValue(String subfieldName) {
-        logger.entry(subfieldName);
-
-        String result = null;
-        try {
-            for (MarcSubField sf : this.field.getSubfields()) {
-                if (sf.getName().equals(subfieldName)) {
-                    return result = sf.getValue();
-                }
+        for (MarcSubField sf : this.field.getSubfields()) {
+            if (sf.getName().equals(subfieldName)) {
+                return sf.getValue();
             }
-
-            return result;
-        } finally {
-            logger.exit(result);
         }
+
+        return null;
     }
 
     /**
@@ -54,20 +42,14 @@ public class MarcFieldReader {
      * if no subfields matches the arguments.
      */
     List<String> getValues(String subfieldName) {
-        logger.entry(subfieldName);
-
-        List<String> result = new ArrayList<>();
-        try {
-            for (MarcSubField sf : this.field.getSubfields()) {
-                if (sf.getName().equals(subfieldName)) {
-                    result.add(sf.getValue());
-                }
+        final List<String> result = new ArrayList<>();
+        for (MarcSubField sf : this.field.getSubfields()) {
+            if (sf.getName().equals(subfieldName)) {
+                result.add(sf.getValue());
             }
-
-            return result;
-        } finally {
-            logger.exit(result);
         }
+
+        return result;
     }
 
     /**
@@ -78,40 +60,28 @@ public class MarcFieldReader {
      * </p>
      *
      * @param subfieldName Name of the subfield.
-     * @param value   The value to check for.
+     * @param value        The value to check for.
      * @return <code>true</code> if a subfield with name <code>subfieldName</code> contains the value
      * <code>value</code>. <code>false</code> otherwise.
      */
     boolean hasValue(String subfieldName, String value) {
-        logger.entry(subfieldName, value);
-
-        try {
-            for (MarcSubField sf : this.field.getSubfields()) {
-                if (sf.getName().equals(subfieldName) && sf.getValue().equals(value)) {
-                    return true;
-                }
+        for (MarcSubField sf : this.field.getSubfields()) {
+            if (sf.getName().equals(subfieldName) && sf.getValue().equals(value)) {
+                return true;
             }
-
-            return false;
-        } finally {
-            logger.exit();
         }
+
+        return false;
     }
 
     public boolean hasSubfield(String subfieldName) {
-        logger.entry(subfieldName);
-
-        try {
-            for (MarcSubField sf : this.field.getSubfields()) {
-                if (sf.getName().equals(subfieldName)) {
-                    return true;
-                }
+        for (MarcSubField sf : this.field.getSubfields()) {
+            if (sf.getName().equals(subfieldName)) {
+                return true;
             }
-
-            return false;
-        } finally {
-            logger.exit();
         }
+
+        return false;
     }
 
 }
