@@ -85,36 +85,32 @@ public class MarcFieldReader {
     boolean hasValue(String subfieldName, String value) {
         logger.entry(subfieldName, value);
 
-        Boolean result = null;
         try {
-            result = false;
             for (MarcSubField sf : this.field.getSubfields()) {
                 if (sf.getName().equals(subfieldName) && sf.getValue().equals(value)) {
-                    return result = true;
+                    return true;
                 }
             }
 
-            return result;
+            return false;
         } finally {
-            logger.exit(result);
+            logger.exit();
         }
     }
 
     public boolean hasSubfield(String subfieldName) {
         logger.entry(subfieldName);
 
-        Boolean result = null;
         try {
-            result = false;
             for (MarcSubField sf : this.field.getSubfields()) {
                 if (sf.getName().equals(subfieldName)) {
-                    return result = true;
+                    return true;
                 }
             }
 
-            return result;
+            return false;
         } finally {
-            logger.exit(result);
+            logger.exit();
         }
     }
 
