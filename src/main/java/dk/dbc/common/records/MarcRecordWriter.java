@@ -51,7 +51,7 @@ public class MarcRecordWriter {
      */
     public void copyFieldsFromRecord(List<String> fieldnames, MarcRecord rec) {
         final List<MarcField> marcFieldsToAdd = new ArrayList<>();
-        fieldnames.forEach((fieldName) -> rec.getFields().forEach((MarcField mf) -> {
+        fieldnames.forEach(fieldName -> rec.getFields().forEach((MarcField mf) -> {
             if (mf.getName().equals(fieldName)) {
                 marcFieldsToAdd.add(mf);
             }

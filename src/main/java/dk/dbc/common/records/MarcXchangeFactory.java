@@ -14,6 +14,11 @@ import dk.dbc.common.records.marcxchange.SubfieldatafieldType;
  * Factory class to construct MarcXchange objects.
  */
 public class MarcXchangeFactory {
+
+    private MarcXchangeFactory() {
+
+    }
+
     public static RecordType createMarcXchangeFromMarc(MarcRecord marcRecord) {
         RecordType recordType = new RecordType();
         DataFieldType dataFieldType;
