@@ -1,6 +1,6 @@
 #!groovy
 
-def workerNode = "itwn-002"
+def workerNode = "devel11"
 
 void notifyOfBuildStatus(final String buildStatus) {
     final String subject = "${buildStatus}: ${env.JOB_NAME} #${env.BUILD_NUMBER}"
@@ -17,9 +17,10 @@ void notifyOfBuildStatus(final String buildStatus) {
 pipeline {
     agent { label workerNode }
 
-    tools {
-        maven "Maven 3"
-    }
+	tools {
+		jdk 'jdk11'
+		maven 'Maven 3'
+	}
 
     triggers {
         pollSCM("H/03 * * * *")
@@ -39,14 +40,23 @@ pipeline {
 
         stage("Maven build") {
             steps {
-                sh "mvn clean verify pmd:pmd"
-                junit "target/surefire-reports/TEST-*.xml,target/failsafe-reports/TEST-*.xml"
-            }
-        }
+				sh "mvn verify pmd:pmd pmd:cpd spotbugs:spotbugs"
 
-        stage("Publish pmd results") {
-            steps {
-                step([$class: 'hudson.plugins.pmd.PmdPublisher', checkstyle: 'target/pmd.xml'])
+				junit testResults: '**/target/surefire-reports/TEST-*.xml,**/target/failsafe-reports/TEST-*.xml'
+
+				script {
+                    def java = scanForIssues tool: [$class: 'Java']
+                    publishIssues issues: [java], unstableTotalAll:1
+
+                    def pmd = scanForIssues tool: [$class: 'Pmd']
+                    publishIssues issues: [pmd], unstableTotalAll:1
+
+                    // spotbugs still has some outstanding issues with regard
+                    // to analyzing Java 11 bytecode.
+                    // def spotbugs = scanForIssues tool: [$class: 'SpotBugs']
+                    // publishIssues issues:[spotbugs], unstableTotalAll:1
+
+                    archiveArtifacts artifacts: 'target/*.war,target/*.log', onlyIfSuccessful: 'true', fingerprint: 'true'
             }
         }
 
