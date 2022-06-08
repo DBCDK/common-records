@@ -121,6 +121,33 @@ public class CatalogExtractionCode {
         }
     }
 
+    public static boolean isPublishedIgnoreCatalogCodes(MarcRecord marcRecord) {
+        logger.entry(marcRecord);
+
+        try {
+            final MarcRecordReader reader = new MarcRecordReader(marcRecord);
+            final MarcField field032 = reader.getField("032");
+
+            if (field032 != null) {
+                logger.info("Found 032 field: {}", field032);
+                // 032 contains both *a and *x fields but for this calculation they are treated the same way
+                for (MarcSubField subfield : field032.getSubfields()) {
+                    final String value = subfield.getValue();
+                    logger.info("Checking {} for production date", value);
+                    if (hasPublishingDateIgnoreCatalogCodes(value) && !hasFuturePublishingDate(value)) {
+                        // Since the publishing date is not in the future it must be in the past
+                        logger.info("Extraction date in the past was found so returning true");
+                        return true;
+                    }
+                }
+            }
+
+            return false;
+        } finally {
+            logger.exit();
+        }
+    }
+
     /**
      * This function takes the value of a subfield and determines whether that value should be treated as an
      * extraction date.
@@ -158,6 +185,26 @@ public class CatalogExtractionCode {
         } finally {
             logger.exit(result);
         }
+    }
+
+    static boolean hasPublishingDateIgnoreCatalogCodes(String value) {
+        logger.entry(value);
+
+        boolean result = false;
+        final String patternDate = "^(\\d){6}"; // Matches 6 numbers
+
+        try {
+            if (value.length() == 9) {
+                final String extractionDate = value.substring(3, 9);
+
+                result = extractionDate.equals(temporaryDate) || extractionDate.matches(patternDate);
+            }
+
+            return result;
+        } finally {
+            logger.exit(result);
+        }
+
     }
 
     /**
