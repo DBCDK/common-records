@@ -55,8 +55,6 @@ pipeline {
                     // to analyzing Java 11 bytecode.
                     // def spotbugs = scanForIssues tool: [$class: 'SpotBugs']
                     // publishIssues issues:[spotbugs], unstableTotalAll:1
-
-                    archiveArtifacts artifacts: 'target/*.war,target/*.log', onlyIfSuccessful: 'true', fingerprint: 'true'
                 }
             }
         }
