@@ -5,15 +5,10 @@
 
 package dk.dbc.common.records;
 
-import org.slf4j.ext.XLogger;
-import org.slf4j.ext.XLoggerFactory;
-
 /**
  * @brief This class represents a sub field in a marc record.
  */
 public class MarcSubField implements Cloneable {
-    private static final XLogger logger = XLoggerFactory.getXLogger(MarcSubField.class);
-
     private String name;
     private String value;
 
