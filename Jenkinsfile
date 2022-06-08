@@ -57,6 +57,7 @@ pipeline {
                     // publishIssues issues:[spotbugs], unstableTotalAll:1
 
                     archiveArtifacts artifacts: 'target/*.war,target/*.log', onlyIfSuccessful: 'true', fingerprint: 'true'
+                }
             }
         }
 
