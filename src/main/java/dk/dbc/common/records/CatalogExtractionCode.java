@@ -24,6 +24,7 @@ public class CatalogExtractionCode {
     private static final XLogger logger = XLoggerFactory.getXLogger(CatalogExtractionCode.class);
     public static final List<String> listOfCatalogCodes = Arrays.asList("DBF", "DLF", "DBI", "DMF", "DMO", "DPF", "BKM", "GBF", "GMO", "GPF", "FPF", "DBR", "UTI");
     private static final String temporaryDate = "999999";
+    private static final String DATE_PATTERN = "^(\\d){6}"; // Matches 6 numbers
 
     /**
      * This function checks whether the given record is under production
@@ -168,7 +169,6 @@ public class CatalogExtractionCode {
         logger.entry(value);
 
         boolean result = false;
-        final String patternDate = "^(\\d){6}"; // Matches 6 numbers
 
         try {
             if (value.length() == 9) {
@@ -177,7 +177,7 @@ public class CatalogExtractionCode {
                 if (listOfCatalogCodes.contains(catalogCode)) {
                     final String extractionDate = value.substring(3, 9);
 
-                    result = extractionDate.equals(temporaryDate) || extractionDate.matches(patternDate);
+                    result = extractionDate.equals(temporaryDate) || extractionDate.matches(DATE_PATTERN);
                 }
             }
 
@@ -191,13 +191,12 @@ public class CatalogExtractionCode {
         logger.entry(value);
 
         boolean result = false;
-        final String patternDate = "^(\\d){6}"; // Matches 6 numbers
 
         try {
             if (value.length() == 9) {
                 final String extractionDate = value.substring(3, 9);
 
-                result = extractionDate.equals(temporaryDate) || extractionDate.matches(patternDate);
+                result = extractionDate.equals(temporaryDate) || extractionDate.matches(DATE_PATTERN);
             }
 
             return result;
