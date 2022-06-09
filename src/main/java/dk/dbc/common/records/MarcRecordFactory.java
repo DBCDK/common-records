@@ -9,9 +9,9 @@ import java.util.regex.Pattern;
  * a MarcRecord instance.
  */
 public class MarcRecordFactory {
-    public static String FIELD_PATTERN = "((\\d|\\w){3})\\s((\\s|\\d){2}).*";
+    public static final String FIELD_PATTERN = "((\\d|\\w){3})\\s((\\s|\\d){2}).*";
 
-    public MarcRecordFactory() {
+    private MarcRecordFactory() {
     }
 
     public static MarcRecord readRecord(String str) {

@@ -17,9 +17,13 @@ import java.util.List;
  */
 public class CatalogExtractionCode {
     private static final XLogger logger = XLoggerFactory.getXLogger(CatalogExtractionCode.class);
-    public static final List<String> listOfCatalogCodes = Arrays.asList("DBF", "DLF", "DBI", "DMF", "DMO", "DPF", "BKM", "GBF", "GMO", "GPF", "FPF", "DBR", "UTI");
-    private static final String temporaryDate = "999999";
+    protected static final List<String> listOfCatalogCodes = Arrays.asList("DBF", "DLF", "DBI", "DMF", "DMO", "DPF", "BKM", "GBF", "GMO", "GPF", "FPF", "DBR", "UTI");
+    private static final String TEMPORARY_DATE = "999999";
     private static final String DATE_PATTERN = "^(\\d){6}"; // Matches 6 numbers
+
+    private CatalogExtractionCode() {
+
+    }
 
     /**
      * This function checks whether the given record is under production
@@ -39,41 +43,35 @@ public class CatalogExtractionCode {
     }
 
     public static boolean isUnderProduction(MarcRecord record, List<String> listOfCatalogCodes) {
-        logger.entry(record);
+        boolean hasExtractionDateInTheFuture = false;
+        final MarcRecordReader reader = new MarcRecordReader(record);
+        final MarcField field032 = reader.getField("032");
 
-        try {
-            boolean hasExtractionDateInTheFuture = false;
-            final MarcRecordReader reader = new MarcRecordReader(record);
-            final MarcField field032 = reader.getField("032");
-
-            if (field032 != null) {
-                logger.info("Found 032 field: {}", field032);
-                // 032 contains both *a and *x fields but for this calculation they are treated the same way
-                for (MarcSubField subfield : field032.getSubfields()) {
-                    final String value = subfield.getValue();
-                    logger.info("Checking {} for production date", value);
-                    if (hasPublishingDate(value, listOfCatalogCodes)) {
-                        if (hasFuturePublishingDate(value)) {
-                            logger.info("Found future extraction date");
-                            hasExtractionDateInTheFuture = true;
-                        } else {
-                            logger.info("Extraction date in the past was found so returning false");
-                            return false;
-                        }
+        if (field032 != null) {
+            logger.info("Found 032 field: {}", field032);
+            // 032 contains both *a and *x fields but for this calculation they are treated the same way
+            for (MarcSubField subfield : field032.getSubfields()) {
+                final String value = subfield.getValue();
+                logger.info("Checking {} for production date", value);
+                if (hasPublishingDate(value, listOfCatalogCodes)) {
+                    if (hasFuturePublishingDate(value)) {
+                        logger.info("Found future extraction date");
+                        hasExtractionDateInTheFuture = true;
+                    } else {
+                        logger.info("Extraction date in the past was found so returning false");
+                        return false;
                     }
                 }
             }
+        }
 
-            // If we get to this point there has not been found an extraction date in the past
-            if (hasExtractionDateInTheFuture) {
-                logger.info("Extraction date was found in the future but not in the past - therefor this record is under production");
-                return true;
-            } else {
-                logger.info("Neither past nor future extraction date was found - record is not under production");
-                return false;
-            }
-        } finally {
-            logger.exit();
+        // If we get to this point there has not been found an extraction date in the past
+        if (hasExtractionDateInTheFuture) {
+            logger.info("Extraction date was found in the future but not in the past - therefor this record is under production");
+            return true;
+        } else {
+            logger.info("Neither past nor future extraction date was found - record is not under production");
+            return false;
         }
     }
 
@@ -89,11 +87,8 @@ public class CatalogExtractionCode {
     }
 
     public static boolean isPublished(MarcRecord record, List<String> listOfCatalogCodes) {
-        logger.entry(record);
-
-        try {
-            final MarcRecordReader reader = new MarcRecordReader(record);
-            final MarcField field032 = reader.getField("032");
+        final MarcRecordReader reader = new MarcRecordReader(record);
+        final MarcField field032 = reader.getField("032");
 
             if (field032 != null) {
                 logger.info("Found 032 field: {}", field032);
@@ -105,41 +100,34 @@ public class CatalogExtractionCode {
                         // Since the publishing date is not in the future it must be in the past
                         logger.info("Extraction date in the past was found so returning true");
                         return true;
-                    }
+
                 }
             }
 
-            return false;
-        } finally {
-            logger.exit();
-        }
+        return false;
     }
 
     public static boolean isPublishedIgnoreCatalogCodes(MarcRecord marcRecord) {
         logger.entry(marcRecord);
 
-        try {
-            final MarcRecordReader reader = new MarcRecordReader(marcRecord);
-            final MarcField field032 = reader.getField("032");
+        final MarcRecordReader reader = new MarcRecordReader(marcRecord);
+        final MarcField field032 = reader.getField("032");
 
-            if (field032 != null) {
-                logger.info("Found 032 field: {}", field032);
-                // 032 contains both *a and *x fields but for this calculation they are treated the same way
-                for (MarcSubField subfield : field032.getSubfields()) {
-                    final String value = subfield.getValue();
-                    logger.info("Checking {} for production date", value);
-                    if (hasPublishingDateIgnoreCatalogCodes(value) && !hasFuturePublishingDate(value)) {
-                        // Since the publishing date is not in the future it must be in the past
-                        logger.info("Extraction date in the past was found so returning true");
-                        return true;
-                    }
+        if (field032 != null) {
+            logger.info("Found 032 field: {}", field032);
+            // 032 contains both *a and *x fields but for this calculation they are treated the same way
+            for (MarcSubField subfield : field032.getSubfields()) {
+                final String value = subfield.getValue();
+                logger.info("Checking {} for production date", value);
+                if (hasPublishingDateIgnoreCatalogCodes(value) && !hasFuturePublishingDate(value)) {
+                    // Since the publishing date is not in the future it must be in the past
+                    logger.info("Extraction date in the past was found so returning true");
+                    return true;
                 }
             }
-
-            return false;
-        } finally {
-            logger.exit();
         }
+
+        return false;
     }
 
     /**
@@ -159,25 +147,19 @@ public class CatalogExtractionCode {
     }
 
     static boolean hasPublishingDate(String value, List<String> listOfCatalogCodes) {
-        logger.entry(value);
-
         boolean result = false;
 
-        try {
-            if (value.length() == 9) {
-                final String catalogCode = value.substring(0, 3);
+        if (value.length() == 9) {
+            final String catalogCode = value.substring(0, 3);
 
-                if (listOfCatalogCodes.contains(catalogCode)) {
-                    final String extractionDate = value.substring(3, 9);
+            if (listOfCatalogCodes.contains(catalogCode)) {
+                final String extractionDate = value.substring(3, 9);
 
-                    result = extractionDate.equals(temporaryDate) || extractionDate.matches(DATE_PATTERN);
-                }
+                result = extractionDate.equals(TEMPORARY_DATE) || extractionDate.matches(DATE_PATTERN);
             }
-
-            return result;
-        } finally {
-            logger.exit(result);
         }
+
+        return result;
     }
 
     static boolean hasPublishingDateIgnoreCatalogCodes(String value) {
@@ -185,18 +167,13 @@ public class CatalogExtractionCode {
 
         boolean result = false;
 
-        try {
-            if (value.length() == 9) {
-                final String extractionDate = value.substring(3, 9);
+        if (value.length() == 9) {
+            final String extractionDate = value.substring(3, 9);
 
-                result = extractionDate.equals(temporaryDate) || extractionDate.matches(DATE_PATTERN);
-            }
-
-            return result;
-        } finally {
-            logger.exit(result);
+            result = extractionDate.equals(TEMPORARY_DATE) || extractionDate.matches(DATE_PATTERN);
         }
 
+        return result;
     }
 
     /**
@@ -207,36 +184,31 @@ public class CatalogExtractionCode {
      * @return <code>true</code> if the value contains a date later that the date input - otherwise <code>false</code>
      */
     static boolean hasFuturePublishingDate(String value) {
-        logger.entry(value);
         boolean result = false;
         final LocalDate date = LocalDate.now();
 
-        try {
-            final String dateStr = value.substring(3, 9);
+        final String dateStr = value.substring(3, 9);
 
-            if (dateStr.equals(temporaryDate)) {
-                result = true;
-            } else {
-                final int year = Integer.parseInt(value.substring(3, 7));
-                final int weekNo = Integer.parseInt(value.substring(7, 9));
+        if (dateStr.equals(TEMPORARY_DATE)) {
+            result = true;
+        } else {
+            final int year = Integer.parseInt(value.substring(3, 7));
+            final int weekNo = Integer.parseInt(value.substring(7, 9));
 
-                final Calendar cal = Calendar.getInstance();
-                cal.setTime(new Date());
-                cal.set(Calendar.YEAR, year);
-                cal.set(Calendar.WEEK_OF_YEAR, weekNo - 1);
-                cal.set(Calendar.DAY_OF_WEEK, Calendar.FRIDAY);
+            final Calendar cal = Calendar.getInstance();
+            cal.setTime(new Date());
+            cal.set(Calendar.YEAR, year);
+            cal.set(Calendar.WEEK_OF_YEAR, weekNo - 1);
+            cal.set(Calendar.DAY_OF_WEEK, Calendar.FRIDAY);
 
-                final Instant instant = cal.toInstant();
-                final ZonedDateTime zonedDateTime = instant.atZone(ZoneId.systemDefault());
-                final LocalDate dateProduction = zonedDateTime.toLocalDate();
+            final Instant instant = cal.toInstant();
+            final ZonedDateTime zonedDateTime = instant.atZone(ZoneId.systemDefault());
+            final LocalDate dateProduction = zonedDateTime.toLocalDate();
 
-                result = !date.until(dateProduction).isNegative();
-            }
-
-            return result;
-        } finally {
-            logger.exit(result);
+            result = !date.until(dateProduction).isNegative();
         }
+
+        return result;
     }
 
 }

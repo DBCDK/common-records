@@ -6,6 +6,10 @@ import java.util.Base64;
 
 public class LogUtils {
 
+    private LogUtils() {
+
+    }
+
     public static String base64Encode(MarcRecord record) {
         if (record == null) {
             return "null";

@@ -15,13 +15,17 @@ import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
 import java.io.StringWriter;
 import java.io.UnsupportedEncodingException;
+import java.nio.charset.StandardCharsets;
 
 public class RecordContentTransformer {
     private static final XLogger logger = XLoggerFactory.getXLogger(RecordContentTransformer.class);
     private static final String SCHEMA_LOCATION = "http://www.loc.gov/standards/iso25577/marcxchange-1-1.xsd";
-    private static final String ENCODING = "UTF-8";
 
     private static final JAXBContext jaxbContext;
+
+    private RecordContentTransformer() {
+
+    }
 
     static {
         try {
@@ -44,36 +48,27 @@ public class RecordContentTransformer {
      * @throws UnsupportedEncodingException if the record can not be encoded in UTF-8
      */
     public static byte[] encodeRecord(MarcRecord record) throws JAXBException, UnsupportedEncodingException {
-        logger.entry(record);
-        byte[] result = null;
-
-        try {
-            if (record.getFields().isEmpty()) {
-                return null;
-            }
-
-            RecordType marcXchangeType = MarcXchangeFactory.createMarcXchangeFromMarc(record);
-
-            ObjectFactory objectFactory = new ObjectFactory();
-            JAXBElement<RecordType> jAXBElement = objectFactory.createRecord(marcXchangeType);
-
-            Marshaller marshaller = getJAXBContext().createMarshaller();
-            marshaller.setProperty(Marshaller.JAXB_SCHEMA_LOCATION, SCHEMA_LOCATION);
-
-            StringWriter recData = new StringWriter();
-            marshaller.marshal(jAXBElement, recData);
-
-            logger.info("Marshalled record: {}", recData.toString());
-            result = recData.toString().getBytes(ENCODING);
-
-            return result;
-        } finally {
-            logger.exit(result);
+        if (record.getFields().isEmpty()) {
+            return null;
         }
+
+        RecordType marcXchangeType = MarcXchangeFactory.createMarcXchangeFromMarc(record);
+
+        ObjectFactory objectFactory = new ObjectFactory();
+        JAXBElement<RecordType> jAXBElement = objectFactory.createRecord(marcXchangeType);
+
+        Marshaller marshaller = getJAXBContext().createMarshaller();
+        marshaller.setProperty(Marshaller.JAXB_SCHEMA_LOCATION, SCHEMA_LOCATION);
+
+        StringWriter recData = new StringWriter();
+        marshaller.marshal(jAXBElement, recData);
+
+        logger.info("Marshalled record: {}", recData.toString());
+        return recData.toString().getBytes(StandardCharsets.UTF_8);
     }
 
     public static MarcRecord decodeRecord(byte[] bytes) throws UnsupportedEncodingException {
-        return MarcConverter.convertFromMarcXChange(new String(bytes, ENCODING));
+        return MarcConverter.convertFromMarcXChange(new String(bytes, StandardCharsets.UTF_8));
     }
 
 }

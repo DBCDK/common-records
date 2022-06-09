@@ -57,7 +57,7 @@ public class MarcXChangeProvider implements MarcRecordProvider {
      * Each record is not converted to MarcRecord by this method. This is first done
      * when the record is returned by iterator().
      */
-    private static List<RecordType> loadRecords(File file) throws IOException {
+    private static List<RecordType> loadRecords(File file) {
         // Try to unmarshal a collection
         CollectionType collection = JAXB.unmarshal(file, CollectionType.class);
         if (!collection.getRecord().isEmpty()) {
@@ -89,8 +89,6 @@ public class MarcXChangeProvider implements MarcRecordProvider {
          */
         @Override
         public boolean hasNext() {
-            logger.entry();
-
             logger.trace("currentIndex: {}", currentIndex);
             logger.trace("xmlRecords: {}", xmlRecords);
 
@@ -108,7 +106,7 @@ public class MarcXChangeProvider implements MarcRecordProvider {
          * @throws NoSuchElementException if the iteration has no more elements
          */
         @Override
-        public MarcRecord next() throws NoSuchElementException {
+        public MarcRecord next() {
             if (xmlRecords != null) {
                 logger.trace("xmlRecords: {}", xmlRecords.size());
                 currentIndex++;

@@ -1,8 +1,5 @@
 package dk.dbc.common.records;
 
-import org.slf4j.ext.XLogger;
-import org.slf4j.ext.XLoggerFactory;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -11,8 +8,6 @@ import java.util.Objects;
  * This class represents a marc record.
  */
 public class MarcRecord {
-    private static final XLogger logger = XLoggerFactory.getXLogger(MarcRecord.class);
-
     private List<MarcField> fields;
 
     /**
@@ -54,14 +49,7 @@ public class MarcRecord {
     }
 
     public boolean isEmpty() {
-        logger.entry();
-
-        Boolean result = null;
-        try {
-            return result = fields == null || fields.isEmpty();
-        } finally {
-            logger.exit(result);
-        }
+        return fields == null || fields.isEmpty();
     }
 
     @Override
