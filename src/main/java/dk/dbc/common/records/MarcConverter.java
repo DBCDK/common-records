@@ -31,6 +31,10 @@ import java.util.ArrayList;
 public class MarcConverter {
     private static final JAXBContext jaxbContext;
 
+    private MarcConverter() {
+
+    }
+
     static {
         try {
             jaxbContext = JAXBContext.newInstance(RecordType.class);
@@ -166,7 +170,7 @@ public class MarcConverter {
     /**
      * Constructs a MarcSubField from a SubfieldatafieldType.
      */
-    private static MarcSubField createFromSubfield(SubfieldatafieldType sf, DataFieldType df) throws IllegalArgumentException {
+    private static MarcSubField createFromSubfield(SubfieldatafieldType sf, DataFieldType df) {
         String name = sf.getCode();
         String val = sf.getValue();
         if (name.length() > 1) {
