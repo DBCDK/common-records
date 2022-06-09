@@ -1,8 +1,3 @@
-/*
- * Copyright Dansk Bibliotekscenter a/s. Licensed under GNU GPL v3
- *  See license text at https://opensource.dbc.dk/licenses/gpl-3.0
- */
-
 package dk.dbc.common.records.utils;
 
 
@@ -19,27 +14,27 @@ public class IOUtils {
 
     /**
      * @brief Returns an input stream for a given resource.
-     * 
-     * The resource is located in the class path and not only by the 
+     *
+     * The resource is located in the class path and not only by the
      * current jar.
-     * 
+     *
      * @param name The name of the resource.
-     * 
+     *
      * @return An InputStream if the resource exists. null otherwise.
      */
     public static InputStream getResourceAsStream( String name ) {
         return IOUtils.class.getClassLoader().getResourceAsStream( name );
     }
-    
+
     /**
      * @brief Reads all content from a resource file and returns it.
-     * 
+     *
      * The resource is assumed to be a text resource.
-     * 
+     *
      * @param resName The resource name.
-     * 
+     *
      * @return The content of the resource.
-     * 
+     *
      * @throws IOException In case of IO failures.
      */
     public static String readAll( String resName ) throws IOException {
@@ -48,42 +43,42 @@ public class IOUtils {
 
     /**
      * @brief Reads all content from a resource file and returns it.
-     * 
+     *
      * The resource is assumed to be a text resource.
-     * 
+     *
      * @param resName  The resource name.
      * @param encoding Name for the encoding (charset) to use.
-     * 
+     *
      * @return The content of the resource.
-     * 
+     *
      * @throws IOException In case of IO failures.
      */
     public static String readAll( String resName, String encoding ) throws IOException {
         return readAll( getResourceAsStream( resName ), encoding );
     }
-   
+
     /**
      * @brief Reads all content from an InputStream and returns it.
-     * 
+     *
      * The InputStream is assumed to be a text resource.
-     * 
+     *
      * @param in       InputStream
      * @param encoding Name for the encoding (charset) to use.
-     * 
+     *
      * @return The content of the resource.
-     * 
+     *
      * @throws IOException In case of IO failures.
      * @throws UnsupportedEncodingException If the encoding is unknown.
      */
     public static String readAll( InputStream in, String encoding ) throws UnsupportedEncodingException, IOException {
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        
+
         byte[] buffer = new byte[1024];
         int length;
         while ((length = in.read(buffer)) != -1) {
             baos.write(buffer, 0, length);
         }
-        
+
         return new String( baos.toByteArray(), encoding );
     }
 
