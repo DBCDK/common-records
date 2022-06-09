@@ -90,19 +90,20 @@ public class CatalogExtractionCode {
         final MarcRecordReader reader = new MarcRecordReader(record);
         final MarcField field032 = reader.getField("032");
 
-            if (field032 != null) {
-                logger.info("Found 032 field: {}", field032);
-                // 032 contains both *a and *x fields but for this calculation they are treated the same way
-                for (MarcSubField subfield : field032.getSubfields()) {
-                    final String value = subfield.getValue();
-                    logger.info("Checking {} for production date", value);
-                    if (hasPublishingDate(value, listOfCatalogCodes) && !hasFuturePublishingDate(value)) {
-                        // Since the publishing date is not in the future it must be in the past
-                        logger.info("Extraction date in the past was found so returning true");
-                        return true;
+        if (field032 != null) {
+            logger.info("Found 032 field: {}", field032);
+            // 032 contains both *a and *x fields but for this calculation they are treated the same way
+            for (MarcSubField subfield : field032.getSubfields()) {
+                final String value = subfield.getValue();
+                logger.info("Checking {} for production date", value);
+                if (hasPublishingDate(value, listOfCatalogCodes) && !hasFuturePublishingDate(value)) {
+                    // Since the publishing date is not in the future it must be in the past
+                    logger.info("Extraction date in the past was found so returning true");
+                    return true;
 
                 }
             }
+        }
 
         return false;
     }
