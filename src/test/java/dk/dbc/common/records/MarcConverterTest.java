@@ -18,9 +18,7 @@ import java.io.InputStreamReader;
 
 import static org.junit.Assert.*;
 
-/**
- * @author stp
- */
+
 public class MarcConverterTest {
 
     /**
