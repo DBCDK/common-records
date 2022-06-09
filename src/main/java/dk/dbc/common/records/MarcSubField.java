@@ -1,14 +1,9 @@
-/*
- * Copyright Dansk Bibliotekscenter a/s. Licensed under GNU GPL v3
- *  See license text at https://opensource.dbc.dk/licenses/gpl-3.0
- */
-
 package dk.dbc.common.records;
 
 /**
- * @brief This class represents a sub field in a marc record.
+ * This class represents a sub field in a marc record.
  */
-public class MarcSubField implements Cloneable {
+public class MarcSubField {
     private String name;
     private String value;
 
@@ -19,7 +14,7 @@ public class MarcSubField implements Cloneable {
     /**
      * @param name  Name of this sub field.
      * @param value Its value.
-     * @brief Constructs a new sub field.
+     * Constructs a new sub field.
      */
     public MarcSubField(String name, String value) {
         this.name = name;

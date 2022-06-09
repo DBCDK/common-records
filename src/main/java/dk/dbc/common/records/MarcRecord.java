@@ -1,12 +1,8 @@
-/*
- * Copyright Dansk Bibliotekscenter a/s. Licensed under GNU GPL v3
- *  See license text at https://opensource.dbc.dk/licenses/gpl-3.0
- */
-
 package dk.dbc.common.records;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * This class represents a marc record.
@@ -74,7 +70,7 @@ public class MarcRecord {
         }
 
         final MarcRecord other = (MarcRecord) obj;
-        return this.fields == other.fields || (this.fields != null && this.fields.equals(other.fields));
+        return Objects.equals(this.fields, other.fields);
     }
 
     @Override
