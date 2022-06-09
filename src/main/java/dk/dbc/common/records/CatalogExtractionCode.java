@@ -110,32 +110,28 @@ public class CatalogExtractionCode {
             }
         }
 
-            return false;
-        } finally {
-            logger.exit();
-        }
+        return false;
     }
 
     public static boolean isPublishedIgnoreCatalogCodes(MarcRecord marcRecord) {
         logger.entry(marcRecord);
 
-        try {
-            final MarcRecordReader reader = new MarcRecordReader(marcRecord);
-            final MarcField field032 = reader.getField("032");
+        final MarcRecordReader reader = new MarcRecordReader(marcRecord);
+        final MarcField field032 = reader.getField("032");
 
-            if (field032 != null) {
-                logger.info("Found 032 field: {}", field032);
-                // 032 contains both *a and *x fields but for this calculation they are treated the same way
-                for (MarcSubField subfield : field032.getSubfields()) {
-                    final String value = subfield.getValue();
-                    logger.info("Checking {} for production date", value);
-                    if (hasPublishingDateIgnoreCatalogCodes(value) && !hasFuturePublishingDate(value)) {
-                        // Since the publishing date is not in the future it must be in the past
-                        logger.info("Extraction date in the past was found so returning true");
-                        return true;
-                    }
+        if (field032 != null) {
+            logger.info("Found 032 field: {}", field032);
+            // 032 contains both *a and *x fields but for this calculation they are treated the same way
+            for (MarcSubField subfield : field032.getSubfields()) {
+                final String value = subfield.getValue();
+                logger.info("Checking {} for production date", value);
+                if (hasPublishingDateIgnoreCatalogCodes(value) && !hasFuturePublishingDate(value)) {
+                    // Since the publishing date is not in the future it must be in the past
+                    logger.info("Extraction date in the past was found so returning true");
+                    return true;
                 }
             }
+        }
 
         return false;
     }
@@ -166,13 +162,10 @@ public class CatalogExtractionCode {
                 final String extractionDate = value.substring(3, 9);
 
                 result = extractionDate.equals(TEMPORARY_DATE) || extractionDate.matches(DATE_PATTERN);
-                }
             }
-
-            return result;
-        } finally {
-            logger.exit(result);
         }
+
+        return result;
     }
 
     static boolean hasPublishingDateIgnoreCatalogCodes(String value) {
@@ -180,11 +173,10 @@ public class CatalogExtractionCode {
 
         boolean result = false;
 
-        try {
-            if (value.length() == 9) {
-                final String extractionDate = value.substring(3, 9);
+        if (value.length() == 9) {
+            final String extractionDate = value.substring(3, 9);
 
-                result = extractionDate.equals(temporaryDate) || extractionDate.matches(DATE_PATTERN);
+            result = extractionDate.equals(TEMPORARY_DATE) || extractionDate.matches(DATE_PATTERN);
         }
 
         return result;
