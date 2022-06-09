@@ -24,6 +24,7 @@ public class CatalogExtractionCode {
     private static final XLogger logger = XLoggerFactory.getXLogger(CatalogExtractionCode.class);
     protected static final List<String> listOfCatalogCodes = Arrays.asList("DBF", "DLF", "DBI", "DMF", "DMO", "DPF", "BKM", "GBF", "GMO", "GPF", "FPF", "DBR", "UTI");
     private static final String TEMPORARY_DATE = "999999";
+    private static final String DATE_PATTERN = "^(\\d){6}"; // Matches 6 numbers
 
     private CatalogExtractionCode() {
 
@@ -112,6 +113,29 @@ public class CatalogExtractionCode {
         return false;
     }
 
+    public static boolean isPublishedIgnoreCatalogCodes(MarcRecord marcRecord) {
+        logger.entry(marcRecord);
+
+        final MarcRecordReader reader = new MarcRecordReader(marcRecord);
+        final MarcField field032 = reader.getField("032");
+
+        if (field032 != null) {
+            logger.info("Found 032 field: {}", field032);
+            // 032 contains both *a and *x fields but for this calculation they are treated the same way
+            for (MarcSubField subfield : field032.getSubfields()) {
+                final String value = subfield.getValue();
+                logger.info("Checking {} for production date", value);
+                if (hasPublishingDateIgnoreCatalogCodes(value) && !hasFuturePublishingDate(value)) {
+                    // Since the publishing date is not in the future it must be in the past
+                    logger.info("Extraction date in the past was found so returning true");
+                    return true;
+                }
+            }
+        }
+
+        return false;
+    }
+
     /**
      * This function takes the value of a subfield and determines whether that value should be treated as an
      * extraction date.
@@ -130,7 +154,6 @@ public class CatalogExtractionCode {
 
     static boolean hasPublishingDate(String value, List<String> listOfCatalogCodes) {
         boolean result = false;
-        final String patternDate = "^(\\d){6}"; // Matches 6 numbers
 
         if (value.length() == 9) {
             final String catalogCode = value.substring(0, 3);
@@ -138,8 +161,22 @@ public class CatalogExtractionCode {
             if (listOfCatalogCodes.contains(catalogCode)) {
                 final String extractionDate = value.substring(3, 9);
 
-                result = extractionDate.equals(TEMPORARY_DATE) || extractionDate.matches(patternDate);
+                result = extractionDate.equals(TEMPORARY_DATE) || extractionDate.matches(DATE_PATTERN);
             }
+        }
+
+        return result;
+    }
+
+    static boolean hasPublishingDateIgnoreCatalogCodes(String value) {
+        logger.entry(value);
+
+        boolean result = false;
+
+        if (value.length() == 9) {
+            final String extractionDate = value.substring(3, 9);
+
+            result = extractionDate.equals(TEMPORARY_DATE) || extractionDate.matches(DATE_PATTERN);
         }
 
         return result;

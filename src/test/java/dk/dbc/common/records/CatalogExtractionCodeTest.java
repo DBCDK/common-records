@@ -229,6 +229,21 @@ public class CatalogExtractionCodeTest {
     }
 
     @Test
+    public void testIsPublishedIgnoreCatalogCodes() {
+        MarcSubField subfieldA = new MarcSubField("a", "XYZ191304");
+        MarcSubField subfieldX = new MarcSubField("x", "ÅÅÅ999999");
+
+        MarcField field = new MarcField("032", "00");
+        field.getSubfields().add(subfieldA);
+        field.getSubfields().add(subfieldX);
+
+        MarcRecord record = new MarcRecord();
+        record.getFields().add(field);
+
+        assertThat(CatalogExtractionCode.isPublishedIgnoreCatalogCodes(record), equalTo(true));
+    }
+
+    @Test
     public void testIsPublishedHasProductionCodeInTheFuture() throws Exception {
         MarcSubField subfieldA = new MarcSubField("a", "DBI291304");
         MarcSubField subfieldX = new MarcSubField("x", "DBI999999");
