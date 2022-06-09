@@ -9,7 +9,6 @@ package dk.dbc.common.records;
 import org.slf4j.ext.XLogger;
 import org.slf4j.ext.XLoggerFactory;
 
-import java.util.Iterator;
 import java.util.List;
 
 public class MarcFieldWriter {

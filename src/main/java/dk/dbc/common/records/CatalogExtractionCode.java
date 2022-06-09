@@ -106,12 +106,10 @@ public class CatalogExtractionCode {
                 for (MarcSubField subfield : field032.getSubfields()) {
                     final String value = subfield.getValue();
                     logger.info("Checking {} for production date", value);
-                    if (hasPublishingDate(value, listOfCatalogCodes)) {
-                        if (!hasFuturePublishingDate(value)) {
-                            // Since the publishing date is not in the future it must be in the past
-                            logger.info("Extraction date in the past was found so returning true");
-                            return true;
-                        }
+                    if (hasPublishingDate(value, listOfCatalogCodes) && !hasFuturePublishingDate(value)) {
+                        // Since the publishing date is not in the future it must be in the past
+                        logger.info("Extraction date in the past was found so returning true");
+                        return true;
                     }
                 }
             }

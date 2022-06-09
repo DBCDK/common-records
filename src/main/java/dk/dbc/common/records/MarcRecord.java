@@ -10,6 +10,7 @@ import org.slf4j.ext.XLoggerFactory;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * This class represents a marc record.
@@ -86,7 +87,7 @@ public class MarcRecord {
         }
 
         final MarcRecord other = (MarcRecord) obj;
-        return this.fields == other.fields || (this.fields != null && this.fields.equals(other.fields));
+        return Objects.equals(this.fields, other.fields);
     }
 
     @Override

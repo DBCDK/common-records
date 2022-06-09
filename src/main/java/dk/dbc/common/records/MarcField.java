@@ -9,6 +9,7 @@ import org.apache.commons.lang.StringUtils;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * This class represents a field in a marc record.
@@ -103,13 +104,13 @@ public class MarcField {
             return false;
         }
         final MarcField other = (MarcField) obj;
-        if ((this.name == null) ? (other.name != null) : !this.name.equals(other.name)) {
+        if (!Objects.equals(this.name, other.name)) {
             return false;
         }
-        if ((this.indicator == null) ? (other.indicator != null) : !this.indicator.equals(other.indicator)) {
+        if (!Objects.equals(this.indicator, other.indicator)) {
             return false;
         }
-        return this.subfields == other.subfields || (this.subfields != null && this.subfields.equals(other.subfields));
+        return Objects.equals(this.subfields, other.subfields);
     }
 
     @Override
