@@ -10,7 +10,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
 public class CatalogExtractionCodeTest {
 
     @Test
-    public void testhasLastProductionDate() throws Exception {
+    public void testhasLastProductionDate() {
         assertThat(CatalogExtractionCode.hasPublishingDate(""), equalTo(false));
         assertThat(CatalogExtractionCode.hasPublishingDate("XXX20161"), equalTo(false));
         assertThat(CatalogExtractionCode.hasPublishingDate("XXX2016001"), equalTo(false));
@@ -21,21 +21,21 @@ public class CatalogExtractionCodeTest {
     }
 
     @Test
-    public void testhasFutureLastProductionDate() throws Exception {
+    public void testhasFutureLastProductionDate() {
         assertThat(CatalogExtractionCode.hasFuturePublishingDate("DBI999999"), equalTo(true));
         assertThat(CatalogExtractionCode.hasFuturePublishingDate("DBI201502"), equalTo(false));
         assertThat(CatalogExtractionCode.hasFuturePublishingDate("DBI211602"), equalTo(true));
     }
 
     @Test
-    public void testIsRecordInProductionEmptyRecord() throws Exception {
+    public void testIsRecordInProductionEmptyRecord() {
         MarcRecord record = new MarcRecord();
 
         assertThat(CatalogExtractionCode.isUnderProduction(record), equalTo(false));
     }
 
     @Test
-    public void testIsRecordInProductionNo032() throws Exception {
+    public void testIsRecordInProductionNo032() {
         MarcRecord record = new MarcRecord();
         record.getFields().add(new MarcField("004", "00"));
 
@@ -55,35 +55,35 @@ public class CatalogExtractionCodeTest {
     }
 
     @Test
-    public void testIsRecordInProductionNo032ax() throws Exception {
+    public void testIsRecordInProductionNo032ax() {
         MarcRecord record = generateMarcRecordWith032("k", "xxx");
 
         assertThat(CatalogExtractionCode.isUnderProduction(record), equalTo(false));
     }
 
     @Test
-    public void testIsRecordInProduction032aWrongFormat() throws Exception {
+    public void testIsRecordInProduction032aWrongFormat() {
         MarcRecord record = generateMarcRecordWith032("a", "xxx");
 
         assertThat(CatalogExtractionCode.isUnderProduction(record), equalTo(false));
     }
 
     @Test
-    public void testIsRecordInProduction032aWrongProductionCode() throws Exception {
+    public void testIsRecordInProduction032aWrongProductionCode() {
         MarcRecord record = generateMarcRecordWith032("a", "XXX201504");
 
         assertThat(CatalogExtractionCode.isUnderProduction(record), equalTo(false));
     }
 
     @Test
-    public void testIsRecordInProduction032aPublicityDateIsBeforeCurrentDate() throws Exception {
+    public void testIsRecordInProduction032aPublicityDateIsBeforeCurrentDate() {
         MarcRecord record = generateMarcRecordWith032("a", "DBI201504");
 
         assertThat(CatalogExtractionCode.isUnderProduction(record), equalTo(false));
     }
 
     @Test
-    public void testIsRecordInProduction032aPublicityDateIsBeforeCurrentDateCustomCatalogCodes() throws Exception {
+    public void testIsRecordInProduction032aPublicityDateIsBeforeCurrentDateCustomCatalogCodes() {
         MarcRecord record = generateMarcRecordWith032("a", "DBF201504");
 
         assertThat(CatalogExtractionCode.isUnderProduction(record,
@@ -92,56 +92,56 @@ public class CatalogExtractionCodeTest {
     }
 
     @Test
-    public void testIsRecordInProduction032aPublicityDateIsAfterCurrentDate() throws Exception {
+    public void testIsRecordInProduction032aPublicityDateIsAfterCurrentDate() {
         MarcRecord record = generateMarcRecordWith032("a", "DBI211604");
 
         assertThat(CatalogExtractionCode.isUnderProduction(record), equalTo(true));
     }
 
     @Test
-    public void testIsRecordInProduction032xWrongFormat() throws Exception {
+    public void testIsRecordInProduction032xWrongFormat() {
         MarcRecord record = generateMarcRecordWith032("x", "xxx");
 
         assertThat(CatalogExtractionCode.isUnderProduction(record), equalTo(false));
     }
 
     @Test
-    public void testIsRecordInProduction032xWrongProductionCode() throws Exception {
+    public void testIsRecordInProduction032xWrongProductionCode() {
         MarcRecord record = generateMarcRecordWith032("x", "XXX201504");
 
         assertThat(CatalogExtractionCode.isUnderProduction(record), equalTo(false));
     }
 
     @Test
-    public void testIsRecordInProduction032xPublicityDateIsBeforeCurrentDate() throws Exception {
+    public void testIsRecordInProduction032xPublicityDateIsBeforeCurrentDate() {
         MarcRecord record = generateMarcRecordWith032("x", "DBI201504");
 
         assertThat(CatalogExtractionCode.isUnderProduction(record), equalTo(false));
     }
 
     @Test
-    public void testIsRecordInProduction032xPublicityDateIsAfterCurrentDate() throws Exception {
+    public void testIsRecordInProduction032xPublicityDateIsAfterCurrentDate() {
         MarcRecord record = generateMarcRecordWith032("x", "DBI211604");
 
         assertThat(CatalogExtractionCode.isUnderProduction(record), equalTo(true));
     }
 
     @Test
-    public void testIsRecordInProduction032xTemporaryDateOnly() throws Exception {
+    public void testIsRecordInProduction032xTemporaryDateOnly() {
         MarcRecord record = generateMarcRecordWith032("x", "DBI999999");
 
         assertThat(CatalogExtractionCode.isUnderProduction(record), equalTo(true));
     }
 
     @Test
-    public void testIsRecordInProduction032aTemporaryDateOnly() throws Exception {
+    public void testIsRecordInProduction032aTemporaryDateOnly() {
         MarcRecord record = generateMarcRecordWith032("a", "DBI999999");
 
         assertThat(CatalogExtractionCode.isUnderProduction(record), equalTo(true));
     }
 
     @Test
-    public void testIsRecordInProduction032aPublicityDateIsBeforeCurrentDateAnd032xPublicityDateIsAfterCurrentDate() throws Exception {
+    public void testIsRecordInProduction032aPublicityDateIsBeforeCurrentDateAnd032xPublicityDateIsAfterCurrentDate() {
         MarcSubField subfieldA = new MarcSubField("a", "DBI191304");
         MarcSubField subfieldX = new MarcSubField("x", "DBI211604");
 
@@ -156,7 +156,7 @@ public class CatalogExtractionCodeTest {
     }
 
     @Test
-    public void testIsRecordInProduction032aTemporyDateAnd032xPublicityDateIsAfterCurrentDate() throws Exception {
+    public void testIsRecordInProduction032aTemporaryDateAnd032xPublicityDateIsAfterCurrentDate() {
         MarcSubField subfieldA = new MarcSubField("a", "DBI999999");
         MarcSubField subfieldX = new MarcSubField("x", "DBI211604");
 
@@ -171,7 +171,7 @@ public class CatalogExtractionCodeTest {
     }
 
     @Test
-    public void testIsRecordInProduction032aPublicityDateIsBeforeCurrentDateAnd032xTemporyDate() throws Exception {
+    public void testIsRecordInProduction032aPublicityDateIsBeforeCurrentDateAnd032xTemporaryDate() {
         MarcSubField subfieldA = new MarcSubField("a", "DBI191304");
         MarcSubField subfieldX = new MarcSubField("x", "DBI999999");
 
@@ -186,7 +186,7 @@ public class CatalogExtractionCodeTest {
     }
 
     @Test
-    public void testIsPublishedNoField032() throws Exception {
+    public void testIsPublishedNoField032() {
         MarcRecord record = new MarcRecord();
 
         assertThat(CatalogExtractionCode.isPublished(record), equalTo(false));
@@ -194,7 +194,7 @@ public class CatalogExtractionCodeTest {
 
 
     @Test
-    public void testIsPublishedHasProductionCodeInThePast() throws Exception {
+    public void testIsPublishedHasProductionCodeInThePast() {
         MarcSubField subfieldA = new MarcSubField("a", "DBI191304");
         MarcSubField subfieldX = new MarcSubField("x", "DBI999999");
 
@@ -209,7 +209,7 @@ public class CatalogExtractionCodeTest {
     }
 
     @Test
-    public void testIsPublishedHasProductionCodeInThePastCustomCatalogueCodes() throws Exception {
+    public void testIsPublishedHasProductionCodeInThePastCustomCatalogueCodes() {
         MarcSubField subfieldA = new MarcSubField("a", "DBI191304");
         MarcSubField subfieldX = new MarcSubField("x", "DBI999999");
 
@@ -224,9 +224,22 @@ public class CatalogExtractionCodeTest {
     }
 
     @Test
+    public void verifySubfieldAndContent() {
+
+        assertThat(CatalogExtractionCode.verifySubfieldAndContent("&", "text"), equalTo(false));
+        assertThat(CatalogExtractionCode.verifySubfieldAndContent("a", "short"), equalTo(false));
+        assertThat(CatalogExtractionCode.verifySubfieldAndContent("a", "0123456789"), equalTo(false));
+        assertThat(CatalogExtractionCode.verifySubfieldAndContent("a", "123456789"), equalTo(true));
+        assertThat(CatalogExtractionCode.verifySubfieldAndContent("a", "OVE456789"), equalTo(false));
+        assertThat(CatalogExtractionCode.verifySubfieldAndContent("a", "BKM456789"), equalTo(true));
+    }
+
+    @Test
     public void testIsPublishedIgnoreCatalogCodes() {
         MarcSubField subfieldA = new MarcSubField("a", "XYZ191304");
         MarcSubField subfieldX = new MarcSubField("x", "ÅÅÅ999999");
+        MarcSubField subfieldAmp = new MarcSubField("&", "715700");
+        MarcSubField subfieldOve = new MarcSubField("a", "OVE202121");
 
         MarcField field = new MarcField("032", "00");
         field.getSubfields().add(subfieldA);
@@ -236,10 +249,21 @@ public class CatalogExtractionCodeTest {
         record.getFields().add(field);
 
         assertThat(CatalogExtractionCode.isPublishedIgnoreCatalogCodes(record), equalTo(true));
+
+        MarcField fieldAmp = new MarcField("032", "00");
+        fieldAmp.getSubfields().add(subfieldAmp);
+        MarcRecord recordAmp = new MarcRecord();
+        recordAmp.getFields().add(fieldAmp);
+        assertThat(CatalogExtractionCode.isPublishedIgnoreCatalogCodes(recordAmp), equalTo(false));
+        fieldAmp.getSubfields().add(subfieldOve);
+        assertThat(CatalogExtractionCode.isPublishedIgnoreCatalogCodes(recordAmp), equalTo(false));
+        fieldAmp.getSubfields().add(subfieldA);
+        assertThat(CatalogExtractionCode.isPublishedIgnoreCatalogCodes(recordAmp), equalTo(true));
+
     }
 
     @Test
-    public void testIsPublishedHasProductionCodeInTheFuture() throws Exception {
+    public void testIsPublishedHasProductionCodeInTheFuture() {
         MarcSubField subfieldA = new MarcSubField("a", "DBI291304");
         MarcSubField subfieldX = new MarcSubField("x", "DBI999999");
 
@@ -254,7 +278,7 @@ public class CatalogExtractionCodeTest {
     }
 
     @Test
-    public void testIsPublishedHasACCCodeInThePast() throws Exception {
+    public void testIsPublishedHasACCCodeInThePast() {
         MarcSubField subfieldA = new MarcSubField("a", "ACC201839");
         MarcSubField subfieldX = new MarcSubField("x", "DBI999999");
 

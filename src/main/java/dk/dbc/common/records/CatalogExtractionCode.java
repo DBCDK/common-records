@@ -119,8 +119,9 @@ public class CatalogExtractionCode {
             // 032 contains both *a and *x fields but for this calculation they are treated the same way
             for (MarcSubField subfield : field032.getSubfields()) {
                 final String value = subfield.getValue();
-                logger.info("Checking {} for production date", value);
-                if (hasPublishingDateIgnoreCatalogCodes(value) && !hasFuturePublishingDate(value)) {
+                final String code = subfield.getName();
+                logger.info("Checking subfield {} value {} for production date", code, value);
+                if (verifySubfieldAndContent(code, value) && !hasFuturePublishingDate(value)) {
                     // Since the publishing date is not in the future it must be in the past
                     logger.info("Extraction date in the past was found so returning true");
                     return true;
@@ -163,8 +164,26 @@ public class CatalogExtractionCode {
         return result;
     }
 
-    static boolean hasPublishingDateIgnoreCatalogCodes(String value) {
+    /**
+     *
+     * @param code    the subfield name
+     * @param value   the subfield content
+     * @return bool   return a boolean result depending on :
+     * the name & returns false
+     * value OVE as katalog code returns false
+     * length different from 9 returns false
+     * value after catalog code that doesn't match certain date format returns false
+     * otherwise true
+     */
+    static boolean verifySubfieldAndContent(String code, String value) {
         logger.entry(value);
+
+        if ("&".equals(code)) {
+            return false;
+        }
+        if (value.startsWith("OVE")) {
+            return false;
+        }
 
         boolean result = false;
 
@@ -185,7 +204,7 @@ public class CatalogExtractionCode {
      * @return <code>true</code> if the value contains a date later that the date input - otherwise <code>false</code>
      */
     static boolean hasFuturePublishingDate(String value) {
-        boolean result = false;
+        boolean result;
         final LocalDate date = LocalDate.now();
 
         final String dateStr = value.substring(3, 9);
