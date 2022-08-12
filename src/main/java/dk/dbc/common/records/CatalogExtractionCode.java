@@ -181,8 +181,7 @@ public class CatalogExtractionCode {
         if ("&".equals(code)) {
             return false;
         }
-        final String catalogCode = value.substring(0, 3);
-        if ("OVE".equals(catalogCode)) {
+        if (value.startsWith("OVE")) {
             return false;
         }
 
