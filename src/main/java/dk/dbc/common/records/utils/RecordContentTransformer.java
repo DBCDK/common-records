@@ -14,7 +14,6 @@ import javax.xml.bind.JAXBElement;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
 import java.io.StringWriter;
-import java.io.UnsupportedEncodingException;
 import java.nio.charset.StandardCharsets;
 
 public class RecordContentTransformer {
@@ -45,9 +44,8 @@ public class RecordContentTransformer {
      * @param record The record to encode.
      * @return The encoded record as a sequence of bytes.
      * @throws JAXBException                if the record can not be encoded in marcxchange.
-     * @throws UnsupportedEncodingException if the record can not be encoded in UTF-8
      */
-    public static byte[] encodeRecord(MarcRecord record) throws JAXBException, UnsupportedEncodingException {
+    public static byte[] encodeRecord(MarcRecord record) throws JAXBException {
         if (record.getFields().isEmpty()) {
             return null;
         }
@@ -67,7 +65,7 @@ public class RecordContentTransformer {
         return recData.toString().getBytes(StandardCharsets.UTF_8);
     }
 
-    public static MarcRecord decodeRecord(byte[] bytes) throws UnsupportedEncodingException {
+    public static MarcRecord decodeRecord(byte[] bytes) {
         return MarcConverter.convertFromMarcXChange(new String(bytes, StandardCharsets.UTF_8));
     }
 
