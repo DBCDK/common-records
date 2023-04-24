@@ -1,36 +1,36 @@
 package dk.dbc.common.records;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
-import static org.hamcrest.core.IsEqual.equalTo;
+import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 
-public class AgencyNumberTest {
+class AgencyNumberTest {
     @Test
-    public void testIntegerNumbers() {
+    void testIntegerNumbers() {
         AgencyNumber instance = new AgencyNumber(100);
-        assertThat(instance.getAgencyId(), equalTo(100));
-        assertThat(instance.toString(), equalTo("000100"));
+        assertThat(instance.getAgencyId(), is(100));
+        assertThat(instance.toString(), is("000100"));
 
         instance.setAgencyId(716800);
-        assertThat(instance.getAgencyId(), equalTo(716800));
-        assertThat(instance.toString(), equalTo("716800"));
+        assertThat(instance.getAgencyId(), is(716800));
+        assertThat(instance.toString(), is("716800"));
     }
 
     @Test
-    public void testStringNumbers() {
+    void testStringNumbers() {
         AgencyNumber instance = new AgencyNumber("100");
-        assertThat(instance.getAgencyId(), equalTo(100));
-        assertThat(instance.toString(), equalTo("000100"));
+        assertThat(instance.getAgencyId(), is(100));
+        assertThat(instance.toString(), is("000100"));
 
         instance.setAgencyId("716800");
-        assertThat(instance.getAgencyId(), equalTo(716800));
-        assertThat(instance.toString(), equalTo("716800"));
+        assertThat(instance.getAgencyId(), is(716800));
+        assertThat(instance.toString(), is("716800"));
     }
 
     @Test
-    public void testShortNumber() {
+    void testShortNumber() {
         AgencyNumber instance = new AgencyNumber(100);
-        assertThat(instance.toString(), equalTo("000100"));
+        assertThat(instance.toString(), is("000100"));
     }
 }

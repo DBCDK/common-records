@@ -1,6 +1,6 @@
 package dk.dbc.common.records.utils;
 
-import dk.dbc.common.records.MarcRecord;
+import dk.dbc.marc.binding.MarcRecord;
 
 import java.util.Base64;
 
@@ -18,7 +18,7 @@ public class LogUtils {
 
             byte[] encodedBytes = Base64.getEncoder().encode(recordString.getBytes());
 
-            // This format is a compromise between human readable format and script readable format
+            // This format is a compromise between human-readable format and script readable format
             return "BASE64 " + new String(encodedBytes);
         }
     }

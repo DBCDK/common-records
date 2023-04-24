@@ -1,0 +1,34 @@
+001 00 *a5 316 151 0 *b 870970 *c 20170614180728 *d 20170511 *f a
+004 00 *rn *a e
+008 00 *tm *u f *a 2017 *b dk*då*dy *l dan *x 06 *v 0
+009 00 *aa *g xx
+021 00 *e9788791779534 *c hf.
+032 00 *xACC201719 *a DBF201725 *x BKM201725
+245 00 *aDanmarks kystklitter
+260 00 *aÅrhus *b Naturhistorisk Museum *c 2017
+300 00 *a35 sider *b ill. i farver
+440 00 *0 *a Natur og museum *z 0028-0585 *V 56 1 *v 56. årgang, nr. 1
+530 00 *&1 *a Indhold: Det danske klitland ; Hvordan dannes en klit? ; Fredning af klitområder ; Styring af publikum? ; Kysttilbagerykning ; Klitlandets planter ; Dyrelivets udfordringer ; Fremtidsscenarie for klitområder ; Klittyper ud fra habitatdirektivet
+532 00 *&1 *a Med litteraturhenvisninger
+652 00 *m50.26
+666 00 *0 *f klitter
+666 00 *0 *f kyster
+666 00 *0 *f kystområder
+666 00 *0 *f naturforhold
+666 00 *0 *f geomorfologi
+666 00 *0 *f geologi
+700 00 *5870979 *6 69094139 *4 aut
+700 01 *5870979 *6 68098203 *4 aut
+700 00 *5870979 *6 19064689 *4 aut
+710 00 *aNaturhistorisk Museum
+720 00 *oMorten D.D. Hansen *4 edt
+720 00 *oNina Seirup *4 edt
+720 00 *oJens Erik Møller *4 edt
+990 00 *o201725 *b l *b v *u nt
+d08 00 *osah *o sb *k pbh
+f06 00 *bl *b v
+n51 00 *a20170614
+s10 00 *aDBC
+s12 00 *tTeamBAR201722
+z99 00 *apbh
+z98 00 *aMinus korrekturprint

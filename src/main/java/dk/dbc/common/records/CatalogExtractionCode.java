@@ -1,5 +1,8 @@
 package dk.dbc.common.records;
 
+import dk.dbc.marc.binding.DataField;
+import dk.dbc.marc.binding.MarcRecord;
+import dk.dbc.marc.binding.SubField;
 import org.slf4j.ext.XLogger;
 import org.slf4j.ext.XLoggerFactory;
 
@@ -35,23 +38,22 @@ public class CatalogExtractionCode {
      * The date 999999 is a temporary date because the exact date is not yet known. 999999 is treated as a future production date
      * If there is at least one production release date in the past then the record is no longer under production (return false)
      *
-     * @param record The input record
+     * @param marcRecord The input record
      * @return <code>true</code> if publishing date is in the future, otherwise <code>false</code>
      */
-    public static boolean isUnderProduction(MarcRecord record) {
-        return isUnderProduction(record, listOfCatalogCodes);
+    public static boolean isUnderProduction(MarcRecord marcRecord) {
+        return isUnderProduction(marcRecord, listOfCatalogCodes);
     }
 
-    public static boolean isUnderProduction(MarcRecord record, List<String> listOfCatalogCodes) {
+    public static boolean isUnderProduction(MarcRecord marcRecord, List<String> listOfCatalogCodes) {
         boolean hasExtractionDateInTheFuture = false;
-        final MarcRecordReader reader = new MarcRecordReader(record);
-        final MarcField field032 = reader.getField("032");
+        final DataField field032 = (DataField) marcRecord.getField(MarcRecord.hasTag("032")).orElse(null);
 
         if (field032 != null) {
             logger.info("Found 032 field: {}", field032);
             // 032 contains both *a and *x fields but for this calculation they are treated the same way
-            for (MarcSubField subfield : field032.getSubfields()) {
-                final String value = subfield.getValue();
+            for (SubField subfield : field032.getSubFields()) {
+                final String value = subfield.getData();
                 logger.info("Checking {} for production date", value);
                 if (hasPublishingDate(value, listOfCatalogCodes)) {
                     if (hasFuturePublishingDate(value)) {
@@ -79,22 +81,21 @@ public class CatalogExtractionCode {
      * This function checks whether the given record has been published
      * A record is publish if it has a publishing date in the past
      *
-     * @param record The input record
+     * @param marcRecord The input record
      * @return <code>true</code> if the record has a publishing date is in the past, otherwise <code>false</code>
      */
-    public static boolean isPublished(MarcRecord record) {
-        return isPublished(record, listOfCatalogCodes);
+    public static boolean isPublished(MarcRecord marcRecord) {
+        return isPublished(marcRecord, listOfCatalogCodes);
     }
 
-    public static boolean isPublished(MarcRecord record, List<String> listOfCatalogCodes) {
-        final MarcRecordReader reader = new MarcRecordReader(record);
-        final MarcField field032 = reader.getField("032");
+    public static boolean isPublished(MarcRecord marcRecord, List<String> listOfCatalogCodes) {
+        final DataField field032 = (DataField) marcRecord.getField(MarcRecord.hasTag("032")).orElse(null);
 
         if (field032 != null) {
             logger.info("Found 032 field: {}", field032);
             // 032 contains both *a and *x fields but for this calculation they are treated the same way
-            for (MarcSubField subfield : field032.getSubfields()) {
-                final String value = subfield.getValue();
+            for (SubField subfield : field032.getSubFields()) {
+                final String value = subfield.getData();
                 logger.info("Checking {} for production date", value);
                 if (hasPublishingDate(value, listOfCatalogCodes) && !hasFuturePublishingDate(value)) {
                     // Since the publishing date is not in the future it must be in the past
@@ -111,15 +112,14 @@ public class CatalogExtractionCode {
     public static boolean isPublishedIgnoreCatalogCodes(MarcRecord marcRecord) {
         logger.entry(marcRecord);
 
-        final MarcRecordReader reader = new MarcRecordReader(marcRecord);
-        final MarcField field032 = reader.getField("032");
+        final DataField field032 = (DataField) marcRecord.getField(MarcRecord.hasTag("032")).orElse(null);
 
         if (field032 != null) {
             logger.info("Found 032 field: {}", field032);
             // 032 contains both *a and *x fields but for this calculation they are treated the same way
-            for (MarcSubField subfield : field032.getSubfields()) {
-                final String value = subfield.getValue();
-                final String code = subfield.getName();
+            for (SubField subfield : field032.getSubFields()) {
+                final String value = subfield.getData();
+                final char code = subfield.getCode();
                 logger.info("Checking subfield {} value {} for production date", code, value);
                 if (verifySubfieldAndContent(code, value) && !hasFuturePublishingDate(value)) {
                     // Since the publishing date is not in the future it must be in the past
@@ -175,10 +175,10 @@ public class CatalogExtractionCode {
      * value after catalog code that doesn't match certain date format returns false
      * otherwise true
      */
-    static boolean verifySubfieldAndContent(String code, String value) {
+    static boolean verifySubfieldAndContent(char code, String value) {
         logger.entry(value);
 
-        if ("&".equals(code)) {
+        if ('&' == code) {
             return false;
         }
         if (value.startsWith("OVE")) {

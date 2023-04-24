@@ -1,0 +1,16 @@
+001 00 *a 68839734 *b 870979 *c 20160617172643 *d 20131129 *f a *t faust
+004 00 *r n *a e *x n
+008 00 *t h *v 9
+025 00 *a 32001793 *2 viaf*&VIAF
+025 00 *a 0000000121003911 *2 isni*&VIAF
+025 00 *a Q7199 *2 wikidata*&VIAF
+040 00 *a DBC *b dan
+043 00 *c fr*&VIAF
+046 00 *f 1871*&VIAF
+046 00 *g 1922*&VIAF
+100 00 *a Proust *h Marcel
+375 00 *a 1 *2 iso5218*&VIAF
+d08 00 *o autogenereret
+xyz 00 *u ProustMarcel
+z98 00 *a Minus korrekturprint
+z99 00 *a VIAF
