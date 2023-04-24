@@ -102,7 +102,7 @@ public class UpdateOwnership {
     private static List<String> createListOfPreviousOwners(MarcRecord marcRecord) {
         final List<String> owners;
 
-        if (marcRecord.hasField(MarcRecord.hasTag("996").and(hasSubField('m')))) {
+        if (marcRecord.hasField(hasTag("996").and(hasSubField('m')))) {
             owners = marcRecord.getSubFieldValues("996", 'm');
         } else {
             owners = new ArrayList<>();

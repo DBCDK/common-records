@@ -12,6 +12,13 @@ public class MarcRecordHelper {
     public static void addOrReplaceSubField(MarcRecord marcRecord, String tag, char code, String value) {
         final List<DataField> dataFields = marcRecord.getFields(DataField.class, MarcRecord.hasTag(tag));
 
+        // Field wasn't found so add it
+        if(dataFields.isEmpty()) {
+            marcRecord.getFields().add(new DataField(tag, "00")
+                    .addSubField(new SubField(code, value)));
+            return;
+        }
+
         for (DataField dataField : dataFields) {
             // Try to update existing value
             final Optional<SubField> subField = dataField.getSubField(DataField.hasSubFieldCode(code));
@@ -20,14 +27,10 @@ public class MarcRecordHelper {
                 return;
             }
 
-            // No field has the subfield, so add subfield
-            dataField.getSubFields().add(new SubField(code, value));
-            return;
         }
 
-        // Field wasn't found so add it
-        marcRecord.getFields().add(new DataField(tag, "00")
-                .addSubField(new SubField(code, value)));
+        // No field has the subfield, so add subfield
+        dataFields.get(0).getSubFields().add(new SubField(code, value));
     }
 
 }

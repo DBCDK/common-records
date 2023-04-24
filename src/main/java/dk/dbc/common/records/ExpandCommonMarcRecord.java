@@ -407,7 +407,7 @@ public class ExpandCommonMarcRecord {
                                 sb.append("). ");
                                 sb.append(subField.getData());
                             } else {
-                                if ('\u0000' != (previousSubFieldName)) {
+                                if ('\u0000' != previousSubFieldName) {
                                     sb.append(". ");
                                 }
                                 sb.append(subField.getData());
