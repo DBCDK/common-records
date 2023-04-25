@@ -10,11 +10,11 @@ public class LogUtils {
 
     }
 
-    public static String base64Encode(MarcRecord record) {
-        if (record == null) {
+    public static String base64Encode(MarcRecord marcRecord) {
+        if (marcRecord == null) {
             return "null";
         } else {
-            String recordString = record.toString();
+            String recordString = marcRecord.toString();
 
             byte[] encodedBytes = Base64.getEncoder().encode(recordString.getBytes());
 
