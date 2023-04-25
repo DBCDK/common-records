@@ -50,28 +50,28 @@ public class ExpandCommonMarcRecord {
      * @throws MarcReaderException When expansion fails (usually due to missing authority record)
      */
     public static byte[] expandRecord(byte[] content, Map<String, byte[]> authorityContent, boolean keepAutFields) throws MarcReaderException, MarcRecordExpandException {
-            final Stopwatch stopWatch = new Stopwatch();
-            final MarcRecord commonMarcRecord =contentToMarcRecord(content);
-            logger.debug("Stopwatch - {} took {} ms", "RecordContentTransformer.decodeRecord(common)", stopWatch.getElapsedTime(TimeUnit.MILLISECONDS));
-            stopWatch.reset();
+        final Stopwatch stopWatch = new Stopwatch();
+        final MarcRecord commonMarcRecord = contentToMarcRecord(content);
+        logger.debug("Stopwatch - {} took {} ms", "RecordContentTransformer.decodeRecord(common)", stopWatch.getElapsedTime(TimeUnit.MILLISECONDS));
+        stopWatch.reset();
 
-            final Map<String, MarcRecord> authorityMarcRecords = new HashMap<>();
-            for (Map.Entry<String, byte[]> entry : authorityContent.entrySet()) {
-                authorityMarcRecords.put(entry.getKey(), contentToMarcRecord(entry.getValue()));
-                logger.debug("Stopwatch - {} took {} ms", "RecordContentTransformer.decodeRecord(loop)", stopWatch.getElapsedTime(TimeUnit.MILLISECONDS));
-                stopWatch.reset();
-            }
-
-            final MarcRecord expandedMarcRecord = doExpand(commonMarcRecord, authorityMarcRecords, keepAutFields);
-            logger.debug("Stopwatch - {} took {} ms", "doExpand", stopWatch.getElapsedTime(TimeUnit.MILLISECONDS));
+        final Map<String, MarcRecord> authorityMarcRecords = new HashMap<>();
+        for (Map.Entry<String, byte[]> entry : authorityContent.entrySet()) {
+            authorityMarcRecords.put(entry.getKey(), contentToMarcRecord(entry.getValue()));
+            logger.debug("Stopwatch - {} took {} ms", "RecordContentTransformer.decodeRecord(loop)", stopWatch.getElapsedTime(TimeUnit.MILLISECONDS));
             stopWatch.reset();
+        }
 
-            logger.debug("Stopwatch - {} took {} ms", "sortFields", stopWatch.getElapsedTime(TimeUnit.MILLISECONDS));
-            stopWatch.reset();
+        final MarcRecord expandedMarcRecord = doExpand(commonMarcRecord, authorityMarcRecords, keepAutFields);
+        logger.debug("Stopwatch - {} took {} ms", "doExpand", stopWatch.getElapsedTime(TimeUnit.MILLISECONDS));
+        stopWatch.reset();
 
-            logger.debug("Stopwatch - {} took {} ms", "RecordContentTransformer.encodeRecord", stopWatch.getElapsedTime(TimeUnit.MILLISECONDS));
-            stopWatch.reset();
-            return marcRecordWriter.write(expandedMarcRecord, charset);
+        logger.debug("Stopwatch - {} took {} ms", "sortFields", stopWatch.getElapsedTime(TimeUnit.MILLISECONDS));
+        stopWatch.reset();
+
+        logger.debug("Stopwatch - {} took {} ms", "RecordContentTransformer.encodeRecord", stopWatch.getElapsedTime(TimeUnit.MILLISECONDS));
+        stopWatch.reset();
+        return marcRecordWriter.write(expandedMarcRecord, charset);
     }
 
     /**
