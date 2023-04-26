@@ -1,21 +1,21 @@
-001 00 *a5 321 482 7 *b 870970 *c 20170620162855 *d 20170602 *f a
-004 00 *rn *a e
-008 00 *tm *u f *a 2017 *b dk *d y *l dan *n b *x 06 *v 0 *w 1
-009 00 *aa *g xe
-021 00 *e9788778538857
-032 00 *aDBF201727 *x BKM201727 *x ACC201722
-100 00 *5870979 *6 68570492 *4 aut
-245 00 *aPivottabeller og makroer i Excel med VBA programmering
-250 00 *a1. udgave*b÷
-260 00 *bLibris*g[sælges på internettet]*c2017
+001 00 *a 53214827 *b 870970 *c 20170620162855 *d 20170602 *f a
+004 00 *r n *a e
+008 00 *t m *u f *a 2017 *b dk *d y *l dan *n b *x 06 *v 0 *w 1
+009 00 *a a *g xe
+021 00 *e 9788778538857
+032 00 *a DBF201727 *x BKM201727 *x ACC201722
+100 00 *5 870979 *6 68570492 *4 aut
+245 00 *a Pivottabeller og makroer i Excel med VBA programmering
+250 00 *a 1. udgave *b ÷
+260 00 *b Libris *g [sælges på internettet] *c 2017
 440 00 *0 *a Lær det selv
-440 00 *å1*0 *a Visuel guide*øValby
-512 00 *aDownloades i PDF-format
-512 00 *aVBA: Visual Basic for Applications
-512 00 *aPå titelskærmbilledet: Excel pivottabeller, VBA og makroer
-512 00 *aPå titelskærmbbilledet: Arbejd smartere med Excel-rutineopgaver, Lær at indspille og redigere makroer, Få styr på pivottabeller og pivotdata
-530 00 *&1 *a Indhold: Makroer og VBA-editoren ; Kom i gang med VBA ; Lav dine egne userforms ; Pivottabeller ; Power Map ; Statistisk analyse i Excel ; Tips og tricks
-652 00 *m51.8
+440 00 *å 1 *0 *a Visuel guide *ø Valby
+512 00 *a Downloades i PDF-format
+512 00 *a VBA: Visual Basic for Applications
+512 00 *a På titelskærmbilledet: Excel pivottabeller, VBA og makroer
+512 00 *a På titelskærmbbilledet: Arbejd smartere med Excel-rutineopgaver, Lær at indspille og redigere makroer, Få styr på pivottabeller og pivotdata
+530 00 *& 1 *a Indhold: Makroer og VBA-editoren ; Kom i gang med VBA ; Lav dine egne userforms ; Pivottabeller ; Power Map ; Statistisk analyse i Excel ; Tips og tricks
+652 00 *m 51.8
 666 00 *0 *f regneark
 666 00 *0 *f pivottabeller
 666 00 *0 *f Visual Basic for Applications
@@ -23,14 +23,14 @@
 666 00 *0 *f programmering
 666 00 *0 *f makroprogrammering
 666 00 *0 *f Excel
-666 00 *fExcel 2016
+666 00 *f Excel 2016
 666 00 *0 *o vejledninger
-745 00 *aExcel
-945 00 *aVisuel guide*øLibris *z 440/1(a,ø)
-d08 00 *odra *o ls
-d70 00 *bPublizon
-f06 00 *bv
-f21 00 *ahttp://dmat.dbc.dk/eVALU/get.php?isbn=9788778538857 *l Publizon *f http://images.pubhub.dk/originals/d66f5dd7-b1fb-46a9-b24d-391afdf8191e.jpg *n 9788778538857
-s10 00 *aDBC
-s12 00 *tTeamBAR201725
-z99 00 *als
+745 00 *a Excel
+945 00 *a Visuel guide *ø Libris *z 440/1(a,ø)
+d08 00 *o dra *o ls
+d70 00 *b Publizon
+f06 00 *b v
+f21 00 *a http://dmat.dbc.dk/eVALU/get.php?isbn=9788778538857 *l Publizon *f http://images.pubhub.dk/originals/d66f5dd7-b1fb-46a9-b24d-391afdf8191e.jpg *n 9788778538857
+s10 00 *a DBC
+s12 00 *t TeamBAR201725
+z99 00 *a ls

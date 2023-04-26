@@ -1,15 +1,15 @@
 001 00 *a 68584566 *b 870979 *c 20160617172905 *d 20131129 *f a *t faust
 004 00 *r n *a e *x n
 008 00 *t h *v 9
-025 00 *a 7490013 *2 viaf*&VIAF
-025 00 *a 0000000122761300 *2 isni*&VIAF
-025 00 *a Q2090457 *2 wikidata*&VIAF
+025 00 *a 7490013 *2 viaf *& VIAF
+025 00 *a 0000000122761300 *2 isni *& VIAF
+025 00 *a Q2090457 *2 wikidata *& VIAF
 040 00 *a DBC *b dan
-043 00 *c dk*&VIAF
-046 00 *f 1893*&VIAF
-046 00 *g 1974*&VIAF
+043 00 *c dk *& VIAF
+046 00 *f 1893 *& VIAF
+046 00 *g 1974 *& VIAF
 100 00 *a Kristensen *h Tom *c f. 1893
-375 00 *a 1 *2 iso5218*&VIAF
+375 00 *a 1 *2 iso5218 *& VIAF
 d08 00 *o autogenereret
 xyz 00 *u KristensenTomf. 1893
 z98 00 *a Minus korrekturprint

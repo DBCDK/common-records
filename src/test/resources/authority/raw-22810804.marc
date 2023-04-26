@@ -2,14 +2,14 @@
 004 00 *r n *a e
 008 00 *t m *u f *a 2000 *b dk *d y *l dan *x 06 *v 0
 009 00 *a a *g xx
-021 00 *a 87-16-12325-5 *c hf.*dkr. 168,00
+021 00 *a 87-16-12325-5 *c hf.*d kr. 168,00
 032 00 *a DBF200012 *x SFD200012 *x DAT201840
 100 00 *5 870979 *6 68305926
 245 00 *a Skabende arbejde med børn *e Dorthe Filtenborg Sørensen *f tegninger: børn fra Utterslev Kirkes Børnegård *f foto: Dorthe Filtenborg Sørensen
 250 00 *a 1. udgave
-260 00*&1*a[Kbh.]*bMunksgꜳrd *c 2000 *k Special-Tr. Viborg
+260 00 *& 1 *a [Kbh.] *b Munksgꜳrd *c 2000 *k Special-Tr. Viborg
 300 00 *a 104 sider *b ill. (nogle i farver)
-532 00*&1 *a Med litteraturhenvisninger
+532 00 *& 1 *a Med litteraturhenvisninger
 652 00 *m 37.21
 666 00 *f børn
 666 00 *f daginstitutioner

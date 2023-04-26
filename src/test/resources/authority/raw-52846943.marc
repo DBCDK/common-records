@@ -1,4 +1,4 @@
-001 00 *a5 284 694 3 *b 870970 *c 20170131132027 *d 20161229 *f a
+001 00 *a 52846943 *b 870970 *c 20170131132027 *d 20161229 *f a
 004 00 *r n *a e
 008 00 *t s *u f *a 2016 *b dk *d y *l mul *x 06 *v 0
 009 00 *a a *g xx
@@ -6,17 +6,17 @@
 032 00 *a DBF201707 *x ACC201652
 041 00 *p dan *p eng
 245 00 *a Project Disc *c Topsil-sagen 2016 *p Project Disc *c the Topsil case 2016
-260 00 *a [Kbh.]*d[Rådhuspladsen 4, 1550 V]*bLETT*c[2016]
+260 00 *a [Kbh.] *d [Rådhuspladsen 4, 1550 V] *b LETT *c [2016]
 300 00 *a 129, 129 sider *b ill. i farver
 508 00 *a Parallelle tekster på dansk og engelsk
 512 00 *a Trykt tête-bêche
-521 00 *b 1. oplag*c[2016]*ku.st.
+521 00 *b 1. oplag *c [2016] *k u.st.
 652 00 *m 62.37
 700 01 *5 870979 *6 19024709 *4 ctb *g 1
 700 02 *5 870979 *6 19024687 *4 edt *4 led
 710 00 *a LETT
 720 00 *o Gina Ginelli *4 edt
-d08 00 *o cko *r nk *a onlineversion i 2 dele: 5 285 044 4 og 5 285 048 7 *o ls *a 720 medtaget på trods af at der i kol. står redaktionssekretær. På engelsk står der editorial assistent
+d08 00 *o cko *r nk *a onlineversion i 2 dele: 52850444 og 52850487 *o ls *a 720 medtaget på trods af at der i kol. står redaktionssekretær. På engelsk står der editorial assistent
 s10 00 *a DBC
 s12 00 *t TeamBAR201705
 z99 00 *a ls
