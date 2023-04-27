@@ -1,0 +1,19 @@
+001 00 *a 68305926 *b 870979 *c 20211202185423 *d 20131129 *f a
+004 00 *r n *a e *x n
+008 00 *t h *v 0
+025 00 *a 307232416 *2 viaf *& VIAF
+040 00 *a DBC *b dan
+046 00 *f 1968
+100 00 *a Filtenborg Sørensen *h Dorthe
+400 00 *a Sørensen *h Dorthe Filtenborg
+500 00 *a Filtenborg *h Dorthe *w senere navn
+d08 00 *o ehw *r ehw *a 046+500 tilf.
+d08 00 *a Masserettelse af 001t, nov.-dec. 2021
+g40 00 *a Sørensen *h Dorthe Filtenborg
+g40 00 *a Filtenborg *h Dorthe
+g50 00 *a Ingen henvisninger tidligere
+xyz 00 *u FILTENBORG SÆRENSENDORTHE
+z98 00 *a Minus korrekturprint
+z99 00 *a ehw
+z99 00 *a masseret
+

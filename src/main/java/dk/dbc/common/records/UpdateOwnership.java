@@ -1,10 +1,16 @@
 package dk.dbc.common.records;
 
+import dk.dbc.marc.binding.DataField;
+import dk.dbc.marc.binding.MarcRecord;
+import dk.dbc.marc.binding.SubField;
 import org.slf4j.ext.XLogger;
 import org.slf4j.ext.XLoggerFactory;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static dk.dbc.marc.binding.MarcRecord.hasSubField;
+import static dk.dbc.marc.binding.MarcRecord.hasTag;
 
 public class UpdateOwnership {
     private static final XLogger LOGGER = XLoggerFactory.getXLogger(UpdateOwnership.class);
@@ -42,13 +48,8 @@ public class UpdateOwnership {
                 return newRecord;
             }
 
-            final MarcRecordReader currentRecordReader = new MarcRecordReader(currentRecord);
-
-            final MarcRecordReader newRecordReader = new MarcRecordReader(newRecord);
-            final MarcRecordWriter newRecordWriter = new MarcRecordWriter(newRecord);
-
-            final String currentOwner = currentRecordReader.getValue("996", "a");
-            final String newOwner = newRecordReader.getValue("996", "a");
+            final String currentOwner = currentRecord.getSubFieldValue("996", 'a').orElse(null);
+            final String newOwner = newRecord.getSubFieldValue("996", 'a').orElse(null);
 
             if (currentOwner == null) {
                 return newRecord;
@@ -57,40 +58,40 @@ public class UpdateOwnership {
             LOGGER.debug("currentOwner: {}", currentOwner);
             LOGGER.debug("newOwner: {}", newOwner);
 
-            newRecordWriter.removeField("996");
+            newRecord.removeField("996");
 
-            // A 996 field will most likely exist on the new record but we check anyway.
+            // A 996 field will most likely exist on the new record, but we check anyway.
             // Field 996 is assumed to always exist on the current record as that field is mandatory.
             // If the new and current owners are the same, simply copy the 996 field from current record.
             if (newOwner == null || newOwner.equals(currentOwner)) {
-                newRecord.getFields().add(new MarcField(currentRecordReader.getField("996")));
+                newRecord.getFields().add(new DataField((DataField) currentRecord.getField(hasTag("996")).orElseThrow()));
             } else {
-                final MarcField ownerField = new MarcField("996", "00");
+                final DataField ownerField = new DataField("996", "00");
 
                 // Handle 996 *a
-                ownerField.getSubfields().add(new MarcSubField("a", newOwner));
+                ownerField.getSubFields().add(new SubField('a', newOwner));
 
                 if (currentOwner.startsWith("7") && !"RET".equals(newOwner)) {
                     // Handle 996 *o
-                    if (currentRecordReader.hasSubfield("996", "o")) {
-                        final String originalOwner = currentRecordReader.getValue("996", "o");
+                    if (currentRecord.hasField(hasTag("996").and(hasSubField('o')))) {
+                        final String originalOwner = currentRecord.getSubFieldValue("996", 'o').orElseThrow();
 
-                        ownerField.getSubfields().add(new MarcSubField("o", originalOwner));
+                        ownerField.getSubFields().add(new SubField('o', originalOwner));
 
                         // Handle 996 *m
-                        final List<String> previousOwners = createListOfPreviousOwners(currentRecordReader);
+                        final List<String> previousOwners = createListOfPreviousOwners(currentRecord);
 
                         for (String previousOwner : previousOwners) {
-                            ownerField.getSubfields().add(new MarcSubField("m", previousOwner));
+                            ownerField.getSubFields().add(new SubField('m', previousOwner));
                         }
                     } else {
-                        ownerField.getSubfields().add(new MarcSubField("o", currentOwner));
+                        ownerField.getSubFields().add(new SubField('o', currentOwner));
                     }
                 }
                 newRecord.getFields().add(ownerField);
             }
 
-            newRecordWriter.sort();
+            newRecord.getFields().sort(new SortFieldByTag());
 
             return newRecord;
         } finally {
@@ -98,16 +99,16 @@ public class UpdateOwnership {
         }
     }
 
-    private static List<String> createListOfPreviousOwners(MarcRecordReader reader) {
+    private static List<String> createListOfPreviousOwners(MarcRecord marcRecord) {
         final List<String> owners;
 
-        if (reader.hasSubfield("996", "m")) {
-            owners = reader.getValues("996", "m");
+        if (marcRecord.hasField(hasTag("996").and(hasSubField('m')))) {
+            owners = marcRecord.getSubFieldValues("996", 'm');
         } else {
             owners = new ArrayList<>();
         }
 
-        final String currentOwner = reader.getValue("996", "a");
+        final String currentOwner = marcRecord.getSubFieldValue("996", 'a').orElseThrow();
 
         // Current owner should be added to the list of previous owners unless already listed
         if (!owners.contains(currentOwner)) {

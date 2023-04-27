@@ -1,0 +1,27 @@
+001 00 *a 53213642 *b 870970 *c 20170619210653 *d 20170602 *f a
+004 00 *r n *a e
+008 00 *t m *u f *a 2017 *b dk *d y *k b *l dan *n b *x 06 *v 0 *w 1
+009 00 *a a *g xe
+021 00 *e 9788755951396
+032 00 *x ACC201722 *a DBR201727 *x BKM201727 *x ERE201727
+100 00 *a Sabroe *h Poul *4 aut
+245 00 *a Teglbaronen *c en murstensbiografi om ildsjælen Christian A. Petersen
+250 00 *a 1. e-bogsudgave *b ÷
+260 00 *b Haase *g [sælges på internettet] *c 2017
+504 00 *& 1 *a Portræt af en sønderjysk teglværksejer, Christian A. Petersen (f. 1941), der i en menneskealder har udviklet tegl og mursten til danske og internationale arkitekter og tegnestuer
+512 00 *a Downloades i EPUB-format
+600 00 *a Petersen *h Christian A.
+652 00 *m 99.4 *a Petersen *h Christian A.
+652 00 *p 66.25
+666 00 *0 *f tegl
+666 00 *0 *f teglværker
+666 00 *0 *f mursten
+666 00 *0 *o biografier
+856 00 *z Adgang til lån hos eReolen.dk *u https://ereolen.dk/ting/object/870970-basis:53213642
+d08 00 *o crp *o kpn
+d70 00 *b Publizon
+f06 00 *b v
+f21 00 *a http://dmat.dbc.dk/eVALU/get.php?isbn=9788755951396
+f21 00 *a http://samples.pubhub.dk/9788755951396.epub *l eReolen *f https://images.pubhub.dk/originals/d7525e24-902e-4293-bd8f-003abcf2e4a9.jpg *n 9788755951396
+s10 00 *a DBC
+z99 00 *a kpn
