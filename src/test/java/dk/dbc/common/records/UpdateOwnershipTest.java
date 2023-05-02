@@ -92,7 +92,7 @@ class UpdateOwnershipTest {
         final MarcRecord currentRecord = getCurrentRecordWithOwner(true);
 
         final MarcRecord expected = getCurrentRecordWithOwner(true);
-        final DataField expectedField996 = (DataField) expected.getField(MarcRecord.hasTag("996")).get();
+        final DataField expectedField996 = (DataField) expected.getField(MarcRecord.hasTag("996")).orElseThrow();
         expectedField996.addOrReplaceFirstSubField(new SubField('a', "777777"));
 
         assertThat(UpdateOwnership.mergeRecord(record, currentRecord), is(expected));
