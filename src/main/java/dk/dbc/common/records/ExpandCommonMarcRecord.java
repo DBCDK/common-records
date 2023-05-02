@@ -28,7 +28,7 @@ import static dk.dbc.marc.binding.MarcRecord.hasTag;
 
 public class ExpandCommonMarcRecord {
     private static final XLogger logger = XLoggerFactory.getXLogger(ExpandCommonMarcRecord.class);
-    public static final List<String> AUTHORITY_FIELD_LIST = Arrays.asList("100", "110", "233", "234", "600", "610", "700", "710", "770", "780", "845", "846");
+    public static final List<String> AUTHORITY_FIELD_LIST = Arrays.asList("100", "110", "233", "234", "600", "610", "664", "665", "666", "700", "710", "770", "780", "845", "846");
     private static final MarcXchangeV1Writer marcRecordWriter = new MarcXchangeV1Writer();
     private static final Charset charset = StandardCharsets.UTF_8;
 
@@ -153,6 +153,9 @@ public class ExpandCommonMarcRecord {
         handleRepeatableField(commonRecord.getFields(DataField.class, hasTag("234")), expandedRecord, authorityRecords, keepAutFields, authNumerator);
         handleRepeatableField(commonRecord.getFields(DataField.class, hasTag("600")), expandedRecord, authorityRecords, keepAutFields, authNumerator);
         handleRepeatableField(commonRecord.getFields(DataField.class, hasTag("610")), expandedRecord, authorityRecords, keepAutFields, authNumerator);
+        handleRepeatableField(commonRecord.getFields(DataField.class, hasTag("664")), expandedRecord, authorityRecords, keepAutFields, authNumerator);
+        handleRepeatableField(commonRecord.getFields(DataField.class, hasTag("665")), expandedRecord, authorityRecords, keepAutFields, authNumerator);
+        handleRepeatableField(commonRecord.getFields(DataField.class, hasTag("666")), expandedRecord, authorityRecords, keepAutFields, authNumerator);
         handleRepeatableField(commonRecord.getFields(DataField.class, hasTag("700")), expandedRecord, authorityRecords, keepAutFields, authNumerator);
         handleRepeatableField(commonRecord.getFields(DataField.class, hasTag("710")), expandedRecord, authorityRecords, keepAutFields, authNumerator);
         handleRepeatableField(commonRecord.getFields(DataField.class, hasTag("770")), expandedRecord, authorityRecords, keepAutFields, authNumerator);
