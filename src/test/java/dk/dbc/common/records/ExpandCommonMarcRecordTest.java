@@ -4,7 +4,6 @@ import dk.dbc.marc.binding.DataField;
 import dk.dbc.marc.binding.MarcRecord;
 import dk.dbc.marc.binding.SubField;
 import dk.dbc.marc.reader.DanMarc2LineFormatReader;
-import dk.dbc.marc.reader.LineFormatReader;
 import dk.dbc.marc.reader.MarcReaderException;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -13,16 +12,14 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 
-import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.MatcherAssert.assertThat;
 
 class ExpandCommonMarcRecordTest {
     private static final String AUT_RAW_22810804 = "authority/raw-22810804.marc";
@@ -545,7 +542,8 @@ class ExpandCommonMarcRecordTest {
     @Test
     void missingPartOfAuthorName_A() throws Exception {
         final MarcRecord expanded = loadMarcRecord(AUT_EXPANDED_53214592);
-        MarcRecordHelper.addOrReplaceSubField(expanded, "900", 'w', "Michael");
+        final MarcRecordWriter writer = new MarcRecordWriter(expanded);
+        writer.addOrReplaceSubField("900", 'w', "Michael");
 
         for (DataField field : expanded.getFields(DataField.class, MarcRecord.hasTag("700"))) {
             final Optional<SubField> subField = field.getSubField(DataField.hasSubFieldCode('h'));
@@ -557,7 +555,7 @@ class ExpandCommonMarcRecordTest {
         final MarcRecord auth1 = loadMarcRecord(AUTHORITY_68354153);
         final MarcRecord auth2 = loadMarcRecord(AUTHORITY_68472806);
         final MarcRecord auth3 = loadMarcRecord(AUTHORITY_68585627);
-        final DataField dataField100 = auth2.getField(DataField.class, MarcRecord.hasTag("100")).get();
+        final DataField dataField100 = auth2.getField(DataField.class, MarcRecord.hasTag("100")).orElseThrow();
         dataField100.removeSubField('a');
 
         final Map<String, MarcRecord> collection = new HashMap<>();
@@ -573,7 +571,8 @@ class ExpandCommonMarcRecordTest {
     void missingPartOfAuthorName_H() throws Exception {
         final MarcRecord expanded = loadMarcRecord(AUT_EXPANDED_53214592);
 
-        MarcRecordHelper.addOrReplaceSubField(expanded, "900", 'w', "Hviid Jacobsen");
+        final MarcRecordWriter writer = new MarcRecordWriter(expanded);
+        writer.addOrReplaceSubField("900", 'w', "Hviid Jacobsen");
 
         for (DataField field : expanded.getFields(DataField.class, MarcRecord.hasTag("700"))) {
             final Optional<SubField> subField = field.getSubField(DataField.hasSubFieldCode('a'));
@@ -585,7 +584,7 @@ class ExpandCommonMarcRecordTest {
         final MarcRecord auth1 = loadMarcRecord(AUTHORITY_68354153);
         final MarcRecord auth2 = loadMarcRecord(AUTHORITY_68472806);
         final MarcRecord auth3 = loadMarcRecord(AUTHORITY_68585627);
-        final DataField dataField100 = auth2.getField(DataField.class, MarcRecord.hasTag("100")).get();
+        final DataField dataField100 = auth2.getField(DataField.class, MarcRecord.hasTag("100")).orElseThrow();
         dataField100.removeSubField('h');
 
         final Map<String, MarcRecord> collection = new HashMap<>();
