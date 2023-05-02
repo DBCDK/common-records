@@ -110,7 +110,7 @@ public class MarcRecordWriter {
         if (dataField.isPresent()) {
             dataField.get().addOrReplaceFirstSubField(new SubField(code, value));
         } else {
-            marcRecord.addField(new DataField(tag, "0")
+            marcRecord.addField(new DataField(tag, "00")
                     .addSubField(new SubField(code, value)));
         }
     }
