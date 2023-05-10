@@ -3,6 +3,7 @@ package dk.dbc.common.records;
 import dk.dbc.marc.binding.DataField;
 import dk.dbc.marc.binding.Leader;
 import dk.dbc.marc.binding.MarcRecord;
+import dk.dbc.marc.binding.SubField;
 import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;
@@ -57,6 +58,23 @@ class MarcRecordWriterTest {
         writer.removeSubfield("004", 'a');
         assertThat(record, equalTo(record2));
     }
+
+    @Test
+    void testRemoveSubfieldAndField() {
+        final MarcRecord expected = getBasicRecord().setLeader(new Leader().setData(DEFAULT_LEADER));
+        MarcRecord record = getBasicRecord().setLeader(new Leader().setData(DEFAULT_LEADER));
+        record.getFields().add(new DataField("z98", "00")
+                .addSubField(new SubField('a', "julemand"))
+                .addSubField(new SubField('b', "julemand")));
+
+        MarcRecordWriter writer = new MarcRecordWriter(record);
+        writer.removeSubfield("z98", 'a');
+        assertThat(record.getFields().size(), equalTo(3));
+        writer.removeSubfield("z98", 'b');
+        assertThat(record.getFields().size(), equalTo(2));
+        assertThat(record, equalTo(expected));
+    }
+
 
     @Test
     void testCopyFieldFromRecord() {
@@ -166,4 +184,5 @@ class MarcRecordWriterTest {
 
         assertThat(record, equalTo(expected));
     }
+
 }
