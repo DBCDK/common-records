@@ -32,13 +32,14 @@ class MarcRecordReaderTest {
         DataField f2 = new DataField("245", "00")
                 .addSubField(new SubField('a', "v2"))
                 .addSubField(new SubField('x', "x2_1"))
-                .addSubField(new SubField('x', "x2_2"));
+                .addSubField(new SubField('x', "x2_2"))
+                .addSubField(new SubField('z', "z2_1"));
         record.getFields().add(f2);
 
         MarcRecordReader instance = new MarcRecordReader(record);
 
         assertThat(instance.getValue("001", 'z'), nullValue());
-        assertThat(instance.getValue("245", 'z'), nullValue());
+        assertThat(instance.getValue("245", 'z'), is("z2_1"));
         assertThat(instance.getValue("245", 'x'), is("x1_1"));
     }
 

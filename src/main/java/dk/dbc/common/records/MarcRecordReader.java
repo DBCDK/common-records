@@ -8,9 +8,12 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Optional;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import static dk.dbc.marc.binding.DataField.hasSubFieldCode;
+import static dk.dbc.marc.binding.MarcRecord.hasSubField;
 import static dk.dbc.marc.binding.MarcRecord.hasSubFieldValue;
 import static dk.dbc.marc.binding.MarcRecord.hasTag;
 
@@ -34,7 +37,16 @@ public class MarcRecordReader {
      * @return The value of the subfield if found, <code>null</code> otherwise.
      */
     public String getValue(String fieldName, char subfieldName) {
-        return marcRecord.getSubFieldValue(fieldName, subfieldName).orElse(null);
+        final Optional<DataField> dataField = marcRecord.getField(DataField.class, hasTag(fieldName).and(hasSubField(subfieldName)));
+
+        if (dataField.isPresent()) {
+            final Optional<SubField> subField = dataField.get().getSubField(hasSubFieldCode(subfieldName));
+            if (subField.isPresent()) {
+                return subField.get().getData();
+            }
+        }
+
+        return null;
     }
 
     public boolean hasField(String fieldName) {

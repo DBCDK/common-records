@@ -1,13 +1,16 @@
 package dk.dbc.common.records;
 
 import dk.dbc.marc.binding.DataField;
+import dk.dbc.marc.binding.Leader;
 import dk.dbc.marc.binding.MarcRecord;
+import dk.dbc.marc.writer.MarcXchangeV1Writer;
 import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
+import static dk.dbc.marc.reader.DanMarc2LineFormatReader.DEFAULT_LEADER;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.IsEqual.equalTo;
@@ -46,7 +49,7 @@ class MarcRecordWriterTest {
 
     @Test
     void testRemoveSubfield() {
-        MarcRecord record = getBasicRecord();
+        MarcRecord record = getBasicRecord().setLeader(new Leader().setData(DEFAULT_LEADER));
         MarcRecordWriter writer = new MarcRecordWriter(record);
         writer.addOrReplaceSubField("004", 'b', "xxx");
         MarcRecord record2 = new MarcRecord(record);
