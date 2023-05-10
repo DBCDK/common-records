@@ -3,7 +3,6 @@ package dk.dbc.common.records;
 import dk.dbc.marc.binding.DataField;
 import dk.dbc.marc.binding.Leader;
 import dk.dbc.marc.binding.MarcRecord;
-import dk.dbc.marc.writer.MarcXchangeV1Writer;
 import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;
@@ -130,7 +129,7 @@ class MarcRecordWriterTest {
     }
 
     @Test
-    void testRemoveFieldNone() throws Exception {
+    void testRemoveFieldNone() {
         MarcRecord record = getBasicRecord();
 
         MarcRecordWriter writer = new MarcRecordWriter(record);
@@ -142,7 +141,7 @@ class MarcRecordWriterTest {
     }
 
     @Test
-    void testRemoveFieldOne() throws Exception {
+    void testRemoveFieldOne() {
         MarcRecord record = getBasicRecord();
         record.getFields().add(new DataField("666", "00"));
 
@@ -155,7 +154,7 @@ class MarcRecordWriterTest {
     }
 
     @Test
-    void testRemoveFieldTwo() throws Exception {
+    void testRemoveFieldTwo() {
         MarcRecord record = getBasicRecord();
         record.getFields().add(new DataField("666", "00"));
         record.getFields().add(new DataField("666", "00"));
