@@ -32,13 +32,14 @@ class MarcRecordReaderTest {
         DataField f2 = new DataField("245", "00")
                 .addSubField(new SubField('a', "v2"))
                 .addSubField(new SubField('x', "x2_1"))
-                .addSubField(new SubField('x', "x2_2"));
+                .addSubField(new SubField('x', "x2_2"))
+                .addSubField(new SubField('z', "z2_1"));
         record.getFields().add(f2);
 
         MarcRecordReader instance = new MarcRecordReader(record);
 
         assertThat(instance.getValue("001", 'z'), nullValue());
-        assertThat(instance.getValue("245", 'z'), nullValue());
+        assertThat(instance.getValue("245", 'z'), is("z2_1"));
         assertThat(instance.getValue("245", 'x'), is("x1_1"));
     }
 
@@ -412,7 +413,7 @@ class MarcRecordReaderTest {
     }
 
     @Test
-    void testGetSubfieldValueMatchers_MutipleMatchesInSameField() {
+    void testGetSubfieldValueMatchers_MultipleMatchesInSameField() {
         MarcRecord record = new MarcRecord();
         record.getFields().add(new DataField("666", "00").addAllSubFields(Arrays.asList(new SubField('u', "For 3-4 år"), new SubField('u', "For 5-8 år"))));
 
@@ -425,7 +426,7 @@ class MarcRecordReaderTest {
     }
 
     @Test
-    void testGetSubfieldValueMatchers_MutipleMatchesInMutipleFields() {
+    void testGetSubfieldValueMatchers_MultipleMatchesInMultipleFields() {
         MarcRecord record = new MarcRecord();
         record.getFields().add(new DataField("666", "00").addAllSubFields(List.of(new SubField('u', "For 3-4 år"))));
         record.getFields().add(new DataField("666", "00").addAllSubFields(List.of(new SubField('u', "For 5-8 år"))));
@@ -439,7 +440,7 @@ class MarcRecordReaderTest {
     }
 
     @Test
-    void testGetSubfieldValueMatchers_SingleMatchInMutipleFields() {
+    void testGetSubfieldValueMatchers_SingleMatchInMultipleFields() {
         MarcRecord record = new MarcRecord();
         record.getFields().add(new DataField("666", "00").addAllSubFields(List.of(new SubField('u', "For 3-4 år"))));
         record.getFields().add(new DataField("666", "00").addAllSubFields(List.of(new SubField('u', "For 3 år"))));

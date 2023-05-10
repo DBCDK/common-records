@@ -34,7 +34,15 @@ public class MarcRecordReader {
      * @return The value of the subfield if found, <code>null</code> otherwise.
      */
     public String getValue(String fieldName, char subfieldName) {
-        return marcRecord.getSubFieldValue(fieldName, subfieldName).orElse(null);
+        // getSubFieldValue (without s) looks at the first field that matches the field name only, so if the subfield
+        // isn't present in that field null is returned. getSubFieldValues on the other hand looks at all matching fields
+        final List<String> values = marcRecord.getSubFieldValues(fieldName, subfieldName);
+
+        if (!values.isEmpty()) {
+            return values.get(0);
+        } else {
+            return null;
+        }
     }
 
     public boolean hasField(String fieldName) {

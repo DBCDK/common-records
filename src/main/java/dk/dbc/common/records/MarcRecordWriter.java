@@ -27,9 +27,9 @@ public class MarcRecordWriter {
         return marcRecord;
     }
 
-    public void addFieldSubfield(String fieldname, char subfieldname, String value) {
-        final DataField field = new DataField(fieldname, "00");
-        field.getSubFields().add(new SubField(subfieldname, value));
+    public void addFieldSubfield(String fieldName, char subFieldName, String value) {
+        final DataField field = new DataField(fieldName, "00");
+        field.getSubFields().add(new SubField(subFieldName, value));
         marcRecord.getFields().add(field);
     }
 
@@ -63,19 +63,18 @@ public class MarcRecordWriter {
     /***
      * This function removes all subfields with given subfield name
      * in fields with the given field name.
-     *
      * If this function removes the last subfield of a field, that field is removed as well
      *
-     * @param fieldname String name of field to search for
-     * @param subfieldname subfield name to remove in  the current record
+     * @param fieldName String name of field to search for
+     * @param subFieldName subfield name to remove in  the current record
      */
-    public void removeSubfield(String fieldname, char subfieldname) {
-        final List<DataField> marcFieldList = marcRecord.getFields(DataField.class);
-        for (Iterator<DataField> mfIter = marcFieldList.listIterator(); mfIter.hasNext(); ) {
-            DataField mf = mfIter.next();
-            if (mf.getTag().equals(fieldname)) {
+    public void removeSubfield(String fieldName, char subFieldName) {
+        final List<Field> marcFieldList = marcRecord.getFields();
+        for (Iterator<Field> mfIter = marcFieldList.listIterator(); mfIter.hasNext(); ) {
+            DataField mf = (DataField) mfIter.next();
+            if (mf.getTag().equals(fieldName)) {
                 List<SubField> subfields = mf.getSubFields();
-                subfields.removeIf(subfield -> subfieldname == subfield.getCode());
+                subfields.removeIf(subfield -> subFieldName == subfield.getCode());
                 // remove field if it has no subfields
                 if (mf.getSubFields().isEmpty()) {
                     mfIter.remove();
@@ -87,10 +86,10 @@ public class MarcRecordWriter {
     /***
      * This function removes all fields with the given field name
      *
-     * @param fieldname String name of field to search for
+     * @param fieldName String name of field to search for
      */
-    public void removeField(String fieldname) {
-        marcRecord.removeField(fieldname);
+    public void removeField(String fieldName) {
+        marcRecord.removeField(fieldName);
     }
 
     /**

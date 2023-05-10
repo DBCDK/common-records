@@ -1,13 +1,16 @@
 package dk.dbc.common.records;
 
 import dk.dbc.marc.binding.DataField;
+import dk.dbc.marc.binding.Leader;
 import dk.dbc.marc.binding.MarcRecord;
+import dk.dbc.marc.binding.SubField;
 import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
+import static dk.dbc.marc.reader.DanMarc2LineFormatReader.DEFAULT_LEADER;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.IsEqual.equalTo;
@@ -46,7 +49,7 @@ class MarcRecordWriterTest {
 
     @Test
     void testRemoveSubfield() {
-        MarcRecord record = getBasicRecord();
+        MarcRecord record = getBasicRecord().setLeader(new Leader().setData(DEFAULT_LEADER));
         MarcRecordWriter writer = new MarcRecordWriter(record);
         writer.addOrReplaceSubField("004", 'b', "xxx");
         MarcRecord record2 = new MarcRecord(record);
@@ -55,6 +58,23 @@ class MarcRecordWriterTest {
         writer.removeSubfield("004", 'a');
         assertThat(record, equalTo(record2));
     }
+
+    @Test
+    void testRemoveSubfieldAndField() {
+        final MarcRecord expected = getBasicRecord().setLeader(new Leader().setData(DEFAULT_LEADER));
+        MarcRecord record = getBasicRecord().setLeader(new Leader().setData(DEFAULT_LEADER));
+        record.getFields().add(new DataField("z98", "00")
+                .addSubField(new SubField('a', "julemand"))
+                .addSubField(new SubField('b', "julemand")));
+
+        MarcRecordWriter writer = new MarcRecordWriter(record);
+        writer.removeSubfield("z98", 'a');
+        assertThat(record.getFields().size(), equalTo(3));
+        writer.removeSubfield("z98", 'b');
+        assertThat(record.getFields().size(), equalTo(2));
+        assertThat(record, equalTo(expected));
+    }
+
 
     @Test
     void testCopyFieldFromRecord() {
@@ -127,7 +147,7 @@ class MarcRecordWriterTest {
     }
 
     @Test
-    void testRemoveFieldNone() throws Exception {
+    void testRemoveFieldNone() {
         MarcRecord record = getBasicRecord();
 
         MarcRecordWriter writer = new MarcRecordWriter(record);
@@ -139,7 +159,7 @@ class MarcRecordWriterTest {
     }
 
     @Test
-    void testRemoveFieldOne() throws Exception {
+    void testRemoveFieldOne() {
         MarcRecord record = getBasicRecord();
         record.getFields().add(new DataField("666", "00"));
 
@@ -152,7 +172,7 @@ class MarcRecordWriterTest {
     }
 
     @Test
-    void testRemoveFieldTwo() throws Exception {
+    void testRemoveFieldTwo() {
         MarcRecord record = getBasicRecord();
         record.getFields().add(new DataField("666", "00"));
         record.getFields().add(new DataField("666", "00"));
@@ -164,4 +184,5 @@ class MarcRecordWriterTest {
 
         assertThat(record, equalTo(expected));
     }
+
 }
