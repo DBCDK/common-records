@@ -19,8 +19,8 @@ import java.util.List;
  * This class operates on the 032 field
  */
 public class CatalogExtractionCode {
+    public static final List<String> listOfCatalogCodes = Arrays.asList("DBF", "DLF", "DBI", "DMF", "DMO", "DPF", "BKM", "GBF", "GMO", "GPF", "FPF", "DBR", "UTI");
     private static final XLogger logger = XLoggerFactory.getXLogger(CatalogExtractionCode.class);
-    protected static final List<String> listOfCatalogCodes = Arrays.asList("DBF", "DLF", "DBI", "DMF", "DMO", "DPF", "BKM", "GBF", "GMO", "GPF", "FPF", "DBR", "UTI");
     private static final String TEMPORARY_DATE = "999999";
     private static final String DATE_PATTERN = "^(\\d){6}"; // Matches 6 numbers
 
