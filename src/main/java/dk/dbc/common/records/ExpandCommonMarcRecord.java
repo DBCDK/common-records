@@ -465,7 +465,7 @@ public class ExpandCommonMarcRecord {
             try {
                 return Integer.parseInt(dataField.getSubField(hasSubFieldCode('å')).orElseThrow().getData());
             } catch (NumberFormatException e) {
-                logger.error("Got invalid integer value in *å: {}", dataField.getSubField(hasSubFieldCode('å')).orElseThrow().getData());
+                // The subfield has a value that can't be converted to an integer, so we just put the field at top
                 return 0;
             }
         } else {
