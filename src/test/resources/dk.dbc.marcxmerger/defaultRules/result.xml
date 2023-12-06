@@ -1,0 +1,262 @@
+<?xml version="1.0" encoding="UTF-8"?><record xmlns="info:lc/xmlns/marcxchange-v1" xsi:schemaLocation="http://www.loc.gov/standards/iso25577/marcxchange-1-1.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <leader>00000n    2200000   4500</leader>
+    <datafield ind1="0" ind2="0" tag="001">
+        <subfield code="a">61674063</subfield>
+        <subfield code="b">830380</subfield>
+        <subfield code="c">20211215111755</subfield>
+        <subfield code="d">20211215</subfield>
+        <subfield code="f">a</subfield>
+    </datafield>
+    <datafield ind1="0" ind2="0" tag="004">
+        <subfield code="r">n</subfield>
+        <subfield code="a">e</subfield>
+    </datafield>
+    <datafield ind1="0" ind2="0" tag="008">
+        <subfield code="t">s</subfield>
+        <subfield code="u">f</subfield>
+        <subfield code="a">2021</subfield>
+        <subfield code="b">dk</subfield>
+        <subfield code="d">y</subfield>
+        <subfield code="l">dan</subfield>
+        <subfield code="x">04</subfield>
+        <subfield code="v">0</subfield>
+    </datafield>
+    <datafield ind1="0" ind2="0" tag="009">
+        <subfield code="a">a</subfield>
+        <subfield code="g">xx</subfield>
+    </datafield>
+    <datafield ind1="0" ind2="0" tag="021">
+        <subfield code="e">9788799470631</subfield>
+        <subfield code="c">hf.</subfield>
+    </datafield>
+    <datafield ind1="0" ind2="0" tag="032">
+        <subfield code="a">DBF202150</subfield>
+        <subfield code="x">BKM202150</subfield>
+        <subfield code="x">ACF202145</subfield>
+        <subfield code="x">ACC202145</subfield>
+    </datafield>
+    <datafield ind1="0" ind2="0" tag="245">
+        <subfield code="a">Humanisme i radiografi</subfield>
+    </datafield>
+    <datafield ind1="0" ind2="0" tag="250">
+        <subfield code="a">1. udgave</subfield>
+        <subfield code="b">÷</subfield>
+    </datafield>
+    <datafield ind1="0" ind2="0" tag="260">
+        <subfield code="a">Frederiksberg</subfield>
+        <subfield code="b">Radiografien</subfield>
+        <subfield code="c">2021</subfield>
+    </datafield>
+    <datafield ind1="0" ind2="0" tag="300">
+        <subfield code="a">265 sider</subfield>
+    </datafield>
+    <datafield ind1="0" ind2="0" tag="504">
+        <subfield code="&amp;">1</subfield>
+        <subfield code="a">Antologien giver perspektiver på radiografiens humanistiske indhold og henvender sig bredt til interesserede i radiograffaget</subfield>
+    </datafield>
+    <datafield ind1="0" ind2="0" tag="504">
+        <subfield code="a">Forlagets beskrivelse: ”Humanisme i radiografi” rummer i introduktionen en interessant og grundig gennemgang af, hvad humanisme i radiografi betyder, for faget og dets praksis. Introduktionen danner dermed fundamentet for bogens berettigelse. Med Finn Olesens ord fra introduktionen handler bogen om, hvordan særligt menneskelige kvaliteter udfolder sig i radiografisk praksis og tænkning, og hvilke begrænsninger, de møder. Olesen udtrykker det også på denne måde: bogen beskriver, hvordan relationen mellem menneske og teknologi indvirker på radiografens praksis og radiografens selvforståelse. Bogens fire temaer: Narrativer i radiografi, Teknologi og etik, Mellemmenneskelige relationer samt Radiografiens rammer angriber fra forskellige perspektiver og med forskellige metoder radiografens virkelighed i krydsfeltet, hvor relationen med mennesket til undersøgelse og/eller behandling udspiller sig i et højteknologisk felt. Unikt for denne bog er, at den også indeholder et kapitel med stærke og vedkommende patientfortællinger, indhentet fra radiografisk praksis. Bogen henvender sig bredt til interesserede i faget og er den første af sin art med eksempler fra radiografisk praksis. Målet er at styrke læseren i at forstå, diskutere og udvikle radiografisk praksis.</subfield>
+    </datafield>
+    <datafield ind1="0" ind2="0" tag="521">
+        <subfield code="b">1. oplag</subfield>
+        <subfield code="c">2021</subfield>
+    </datafield>
+    <datafield ind1="0" ind2="0" tag="530">
+        <subfield code="&amp;">1</subfield>
+        <subfield code="i">Indhold</subfield>
+        <subfield code="g">Introduktion</subfield>
+        <subfield code="b"> (</subfield>
+        <subfield code="t">Introduktion til humanistisk radiografi</subfield>
+        <subfield code="e">Finn Olesen</subfield>
+        <subfield code="b">). </subfield>
+        <subfield code="g">Narrativer i radiografi</subfield>
+        <subfield code="t">Patientfortællinger</subfield>
+        <subfield code="e">Lene Klausen, Marianne Pilegꜳrd Knudsen,  Henriette Rꜳschou</subfield>
+        <subfield code="t">Radiografen som storyteller</subfield>
+        <subfield code="e">Bo Mussmann</subfield>
+        <subfield code="t">Vidensformer i radiografi</subfield>
+        <subfield code="c">Aristoteles' bidrag</subfield>
+        <subfield code="e">Karen Johnsen</subfield>
+        <subfield code="b">). </subfield>
+        <subfield code="g">Teknologi og etik</subfield>
+        <subfield code="b"> (</subfield>
+        <subfield code="t">Teknologiforståelse i radiografisk praksis</subfield>
+        <subfield code="e">Susanne Holm, Finn Olesen</subfield>
+        <subfield code="t">Radiografikunst</subfield>
+        <subfield code="e">Susanne Holm</subfield>
+        <subfield code="t">På udkik efter en ny moralsk dimension i medicinsk billeddannelsesteknologi</subfield>
+        <subfield code="e">Gitte Lindvang Samsøe</subfield>
+        <subfield code="t">Etik i radiografi</subfield>
+        <subfield code="e">Gitte Lindvang Samsøe, Marianne Gellert, Karen Johnsen</subfield>
+        <subfield code="b">). </subfield>
+        <subfield code="g">Mellemmenneskelige relationer</subfield>
+        <subfield code="t">Kommunikation i radiografi</subfield>
+        <subfield code="e">Susanne Hjorth Hansen, Uffe Lindberg Wewer Jakobsen, Sickan Løk Olsen</subfield>
+        <subfield code="t">Omsorg i radiografi</subfield>
+        <subfield code="c">Kari Martinsens perspektiver</subfield>
+        <subfield code="e">Karen Johnsen, Louise Møller</subfield>
+        <subfield code="t">Salutogenese</subfield>
+        <subfield code="c">Aron Antonovskys sundhedsforståelse</subfield>
+        <subfield code="e">Louise Møller, Karen Johnsen</subfield>
+        <subfield code="b">). </subfield>
+        <subfield code="g">Radiografiens rammer</subfield>
+        <subfield code="t">Radiografprofessionens udvikling</subfield>
+        <subfield code="e">Anne-Mette Briand de Crevecoeur</subfield>
+        <subfield code="t">Radiografens kompetenceprofil og kernekompetencer</subfield>
+        <subfield code="e">Marianne Gellert, Charlotte Graungꜳrd Falkvard</subfield>
+        <subfield code="t">Faglig forsvarlighed</subfield>
+        <subfield code="e">Gitte Lindvang Samsøe, Charlotte Graungꜳrd Falkvard, Karen Johnsen</subfield>
+        <subfield code="b">)</subfield>
+    </datafield>
+    <datafield ind1="0" ind2="0" tag="600">
+        <subfield code="a">Antonovsky</subfield>
+        <subfield code="h">Aron</subfield>
+    </datafield>
+    <datafield ind1="0" ind2="0" tag="600">
+        <subfield code="a">Aristoteles</subfield>
+    </datafield>
+    <datafield ind1="0" ind2="0" tag="600">
+        <subfield code="a">Martinsen</subfield>
+        <subfield code="h">Kari</subfield>
+    </datafield>
+    <datafield ind1="0" ind2="0" tag="631">
+        <subfield code="a">billeddannelsesteknologi</subfield>
+    </datafield>
+    <datafield ind1="0" ind2="0" tag="631">
+        <subfield code="a">fag (professioner)</subfield>
+    </datafield>
+    <datafield ind1="0" ind2="0" tag="631">
+        <subfield code="a">humanistisk radiografi</subfield>
+    </datafield>
+    <datafield ind1="0" ind2="0" tag="631">
+        <subfield code="a">kernekompetencer</subfield>
+    </datafield>
+    <datafield ind1="0" ind2="0" tag="631">
+        <subfield code="a">kompetenceprofil</subfield>
+    </datafield>
+    <datafield ind1="0" ind2="0" tag="631">
+        <subfield code="a">medicinsk billeddannelsesteknologi</subfield>
+    </datafield>
+    <datafield ind1="0" ind2="0" tag="631">
+        <subfield code="a">mellemmenneskelige relationer</subfield>
+    </datafield>
+    <datafield ind1="0" ind2="0" tag="631">
+        <subfield code="a">patientfortællinger</subfield>
+    </datafield>
+    <datafield ind1="0" ind2="0" tag="631">
+        <subfield code="a">radiografigerning</subfield>
+    </datafield>
+    <datafield ind1="0" ind2="0" tag="631">
+        <subfield code="a">radiografikunst</subfield>
+    </datafield>
+    <datafield ind1="0" ind2="0" tag="631">
+        <subfield code="a">radiografisk praksis</subfield>
+    </datafield>
+    <datafield ind1="0" ind2="0" tag="631">
+        <subfield code="a">salutogenese</subfield>
+    </datafield>
+    <datafield ind1="0" ind2="0" tag="631">
+        <subfield code="a">social kontakt</subfield>
+    </datafield>
+    <datafield ind1="0" ind2="0" tag="631">
+        <subfield code="a">sundhedsforståelse</subfield>
+    </datafield>
+    <datafield ind1="0" ind2="0" tag="652">
+        <subfield code="m">61.608</subfield>
+    </datafield>
+    <datafield ind1="0" ind2="0" tag="666">
+        <subfield code="f">radiografi</subfield>
+    </datafield>
+    <datafield ind1="0" ind2="0" tag="666">
+        <subfield code="f">radiografer</subfield>
+    </datafield>
+    <datafield ind1="0" ind2="0" tag="666">
+        <subfield code="f">humanisme</subfield>
+    </datafield>
+    <datafield ind1="0" ind2="0" tag="666">
+        <subfield code="u">for radiografer</subfield>
+    </datafield>
+    <datafield ind1="0" ind2="0" tag="666">
+        <subfield code="u">for radiografuddannelse</subfield>
+    </datafield>
+    <datafield ind1="0" ind2="0" tag="666">
+        <subfield code="f">billeddannelse</subfield>
+    </datafield>
+    <datafield ind1="0" ind2="0" tag="666">
+        <subfield code="f">etik</subfield>
+    </datafield>
+    <datafield ind1="0" ind2="0" tag="666">
+        <subfield code="f">faglighed</subfield>
+    </datafield>
+    <datafield ind1="0" ind2="0" tag="666">
+        <subfield code="f">færdigheder</subfield>
+    </datafield>
+    <datafield ind1="0" ind2="0" tag="666">
+        <subfield code="f">historie</subfield>
+    </datafield>
+    <datafield ind1="0" ind2="0" tag="666">
+        <subfield code="f">kommunikation</subfield>
+    </datafield>
+    <datafield ind1="0" ind2="0" tag="666">
+        <subfield code="f">kompetencer</subfield>
+    </datafield>
+    <datafield ind1="0" ind2="0" tag="666">
+        <subfield code="f">medicinsk teknologi</subfield>
+    </datafield>
+    <datafield ind1="0" ind2="0" tag="666">
+        <subfield code="f">moral</subfield>
+    </datafield>
+    <datafield ind1="0" ind2="0" tag="666">
+        <subfield code="f">narrativitet</subfield>
+    </datafield>
+    <datafield ind1="0" ind2="0" tag="666">
+        <subfield code="f">omsorg</subfield>
+    </datafield>
+    <datafield ind1="0" ind2="0" tag="666">
+        <subfield code="f">praksis</subfield>
+    </datafield>
+    <datafield ind1="0" ind2="0" tag="666">
+        <subfield code="f">professioner</subfield>
+    </datafield>
+    <datafield ind1="0" ind2="0" tag="666">
+        <subfield code="f">sociale relationer</subfield>
+    </datafield>
+    <datafield ind1="0" ind2="0" tag="666">
+        <subfield code="f">sundhed</subfield>
+    </datafield>
+    <datafield ind1="0" ind2="0" tag="666">
+        <subfield code="f">teknik</subfield>
+    </datafield>
+    <datafield ind1="0" ind2="0" tag="666">
+        <subfield code="f">teknologi</subfield>
+    </datafield>
+    <datafield ind1="0" ind2="0" tag="666">
+        <subfield code="f">teknologiforståelse</subfield>
+    </datafield>
+    <datafield ind1="0" ind2="0" tag="666">
+        <subfield code="f">viden</subfield>
+    </datafield>
+    <datafield ind1="0" ind2="0" tag="700">
+        <subfield code="5">870979</subfield>
+        <subfield code="6">61771158</subfield>
+        <subfield code="4">edt</subfield>
+    </datafield>
+    <datafield ind1="0" ind2="0" tag="700">
+        <subfield code="5">870979</subfield>
+        <subfield code="6">61379142</subfield>
+        <subfield code="4">edt</subfield>
+    </datafield>
+    <datafield ind1="0" ind2="0" tag="700">
+        <subfield code="5">870979</subfield>
+        <subfield code="6">68779952</subfield>
+        <subfield code="4">ctb</subfield>
+        <subfield code="g">1</subfield>
+    </datafield>
+    <datafield ind1="0" ind2="0" tag="990">
+        <subfield code="b">v</subfield>
+        <subfield code="u">nt</subfield>
+    </datafield>
+    <datafield ind1="0" ind2="0" tag="996">
+        <subfield code="a">DBC</subfield>
+    </datafield>
+</record>

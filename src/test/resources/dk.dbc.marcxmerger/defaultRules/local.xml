@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8"?><record xmlns="info:lc/xmlns/marcxchange-v1" xsi:schemaLocation="http://www.loc.gov/standards/iso25577/marcxchange-1-1.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <leader>00000n    2200000   4500</leader>
+    <datafield tag="001" ind1="0" ind2="0">
+        <subfield code="a">61674063</subfield>
+        <subfield code="b">830380</subfield>
+        <subfield code="c">20211215111755</subfield>
+        <subfield code="d">20211215</subfield>
+        <subfield code="f">a</subfield>
+    </datafield>
+    <datafield tag="004" ind1="0" ind2="0">
+        <subfield code="r">n</subfield>
+        <subfield code="a">e</subfield>
+    </datafield>
+    <datafield tag="504" ind1="0" ind2="0">
+        <subfield code="a">Forlagets beskrivelse: ”Humanisme i radiografi” rummer i introduktionen en interessant og grundig gennemgang af, hvad humanisme i radiografi betyder, for faget og dets praksis. Introduktionen danner dermed fundamentet for bogens berettigelse. Med Finn Olesens ord fra introduktionen handler bogen om, hvordan særligt menneskelige kvaliteter udfolder sig i radiografisk praksis og tænkning, og hvilke begrænsninger, de møder. Olesen udtrykker det også på denne måde: bogen beskriver, hvordan relationen mellem menneske og teknologi indvirker på radiografens praksis og radiografens selvforståelse. Bogens fire temaer: Narrativer i radiografi, Teknologi og etik, Mellemmenneskelige relationer samt Radiografiens rammer angriber fra forskellige perspektiver og med forskellige metoder radiografens virkelighed i krydsfeltet, hvor relationen med mennesket til undersøgelse og/eller behandling udspiller sig i et højteknologisk felt. Unikt for denne bog er, at den også indeholder et kapitel med stærke og vedkommende patientfortællinger, indhentet fra radiografisk praksis. Bogen henvender sig bredt til interesserede i faget og er den første af sin art med eksempler fra radiografisk praksis. Målet er at styrke læseren i at forstå, diskutere og udvikle radiografisk praksis.</subfield>
+    </datafield>
+    <datafield tag="600" ind1="0" ind2="0">
+        <subfield code="a">Antonovsky</subfield>
+        <subfield code="h">Aron</subfield>
+    </datafield>
+    <datafield tag="600" ind1="0" ind2="0">
+        <subfield code="a">Aristoteles</subfield>
+    </datafield>
+    <datafield tag="600" ind1="0" ind2="0">
+        <subfield code="a">Martinsen</subfield>
+        <subfield code="h">Kari</subfield>
+    </datafield>
+    <datafield tag="631" ind1="0" ind2="0">
+        <subfield code="a">billeddannelsesteknologi</subfield>
+    </datafield>
+    <datafield tag="631" ind1="0" ind2="0">
+        <subfield code="a">fag (professioner)</subfield>
+    </datafield>
+    <datafield tag="631" ind1="0" ind2="0">
+        <subfield code="a">humanistisk radiografi</subfield>
+    </datafield>
+    <datafield tag="631" ind1="0" ind2="0">
+        <subfield code="a">kernekompetencer</subfield>
+    </datafield>
+    <datafield tag="631" ind1="0" ind2="0">
+        <subfield code="a">kompetenceprofil</subfield>
+    </datafield>
+    <datafield tag="631" ind1="0" ind2="0">
+        <subfield code="a">medicinsk billeddannelsesteknologi</subfield>
+    </datafield>
+    <datafield tag="631" ind1="0" ind2="0">
+        <subfield code="a">mellemmenneskelige relationer</subfield>
+    </datafield>
+    <datafield tag="631" ind1="0" ind2="0">
+        <subfield code="a">patientfortællinger</subfield>
+    </datafield>
+    <datafield tag="631" ind1="0" ind2="0">
+        <subfield code="a">radiografigerning</subfield>
+    </datafield>
+    <datafield tag="631" ind1="0" ind2="0">
+        <subfield code="a">radiografikunst</subfield>
+    </datafield>
+    <datafield tag="631" ind1="0" ind2="0">
+        <subfield code="a">radiografisk praksis</subfield>
+    </datafield>
+    <datafield tag="631" ind1="0" ind2="0">
+        <subfield code="a">salutogenese</subfield>
+    </datafield>
+    <datafield tag="631" ind1="0" ind2="0">
+        <subfield code="a">social kontakt</subfield>
+    </datafield>
+    <datafield tag="631" ind1="0" ind2="0">
+        <subfield code="a">sundhedsforståelse</subfield>
+    </datafield>
+    <datafield tag="666" ind1="0" ind2="0">
+        <subfield code="f">billeddannelse</subfield>
+    </datafield>
+    <datafield tag="666" ind1="0" ind2="0">
+        <subfield code="f">etik</subfield>
+    </datafield>
+    <datafield tag="666" ind1="0" ind2="0">
+        <subfield code="f">faglighed</subfield>
+    </datafield>
+    <datafield tag="666" ind1="0" ind2="0">
+        <subfield code="f">færdigheder</subfield>
+    </datafield>
+    <datafield tag="666" ind1="0" ind2="0">
+        <subfield code="f">historie</subfield>
+    </datafield>
+    <datafield tag="666" ind1="0" ind2="0">
+        <subfield code="f">kommunikation</subfield>
+    </datafield>
+    <datafield tag="666" ind1="0" ind2="0">
+        <subfield code="f">kompetencer</subfield>
+    </datafield>
+    <datafield tag="666" ind1="0" ind2="0">
+        <subfield code="f">medicinsk teknologi</subfield>
+    </datafield>
+    <datafield tag="666" ind1="0" ind2="0">
+        <subfield code="f">moral</subfield>
+    </datafield>
+    <datafield tag="666" ind1="0" ind2="0">
+        <subfield code="f">narrativitet</subfield>
+    </datafield>
+    <datafield tag="666" ind1="0" ind2="0">
+        <subfield code="f">omsorg</subfield>
+    </datafield>
+    <datafield tag="666" ind1="0" ind2="0">
+        <subfield code="f">praksis</subfield>
+    </datafield>
+    <datafield tag="666" ind1="0" ind2="0">
+        <subfield code="f">professioner</subfield>
+    </datafield>
+    <datafield tag="666" ind1="0" ind2="0">
+        <subfield code="f">sociale relationer</subfield>
+    </datafield>
+    <datafield tag="666" ind1="0" ind2="0">
+        <subfield code="f">sundhed</subfield>
+    </datafield>
+    <datafield tag="666" ind1="0" ind2="0">
+        <subfield code="f">teknik</subfield>
+    </datafield>
+    <datafield tag="666" ind1="0" ind2="0">
+        <subfield code="f">teknologi</subfield>
+    </datafield>
+    <datafield tag="666" ind1="0" ind2="0">
+        <subfield code="f">teknologiforståelse</subfield>
+    </datafield>
+    <datafield tag="666" ind1="0" ind2="0">
+        <subfield code="f">viden</subfield>
+    </datafield>
+</record>
