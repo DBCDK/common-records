@@ -1,5 +1,7 @@
-package dk.dbc.marcxmerge;
+package dk.dbc.common.records;
 
+import dk.dbc.common.records.MarcXChangeMimeType;
+import dk.dbc.common.records.MarcXMimeTypeMerger;
 import org.junit.jupiter.api.Test;
 
 import static org.hamcrest.CoreMatchers.is;

@@ -1,4 +1,4 @@
-package dk.dbc.marcxmerge;
+package dk.dbc.common.records;
 
 import java.util.Arrays;
 import java.util.HashSet;

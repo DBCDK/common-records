@@ -1,4 +1,4 @@
-package dk.dbc.marcxmerge;
+package dk.dbc.common.records;
 
 import dk.dbc.marc.binding.MarcRecord;
 import dk.dbc.marc.reader.MarcReaderException;

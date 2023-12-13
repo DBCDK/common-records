@@ -1,4 +1,4 @@
-package dk.dbc.marcxmerge;
+package dk.dbc.common.records;
 
 import dk.dbc.marc.binding.DataField;
 import dk.dbc.marc.binding.Leader;

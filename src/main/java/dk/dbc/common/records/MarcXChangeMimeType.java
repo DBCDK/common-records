@@ -1,4 +1,4 @@
-package dk.dbc.marcxmerge;
+package dk.dbc.common.records;
 
 /**
  * @author DBC {@literal <dbc.dk>}
