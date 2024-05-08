@@ -207,6 +207,7 @@ public class ExpandCommonMarcRecord {
 
                 final DataField expandedField = new DataField(dataField);
                 String authAuthorFieldName = "";
+                String referenceField = "";
 
                 int mode = 0;
                 switch (dataField.getTag()) {
@@ -233,11 +234,13 @@ public class ExpandCommonMarcRecord {
                     case "845":
                         mode = 3;
                     case "233":
+                        referenceField = "433";
                         authAuthorFieldName = "133";
                         break;
                     case "846":
                         mode = 4;
                     case "234":
+                        referenceField = "434";
                         authAuthorFieldName = "134";
                         break;
                 }
@@ -281,12 +284,15 @@ public class ExpandCommonMarcRecord {
                     }
                 } else {
                     // The universe/series fields is repeatable, so we add a numerator value to the *z content
-                    if (!dataField.hasSubField(hasSubFieldCode('å'))) {
+                    // though, only if there are 433 or 434 fields
+                    boolean hasAdditionalFields;
+                    hasAdditionalFields = authRecord.hasField(hasTag(referenceField));
+                    if (hasAdditionalFields && !dataField.hasSubField(hasSubFieldCode('å'))) {
                         expandedField.getSubFields().add(0, new SubField('å', Integer.toString(authNumerator)));
                         fieldReference += "/" + authNumerator;
                         authNumerator++;
                     } else {
-                        fieldReference += "/" + dataField.getSubField(hasSubFieldCode('å')).orElseThrow().getData();
+                        fieldReference = "";
                     }
                     if (mode == 3) {
                         addAdditionalFields("945", expandedRecord, authRecord.getFields(DataField.class, hasTag("433")), authAuthorField, fieldReference);
@@ -444,7 +450,9 @@ public class ExpandCommonMarcRecord {
                 additionalField.getSubFields().add(new SubField('w', sb.toString()));
 
             }
-            additionalField.getSubFields().add(new SubField('z', fieldReference));
+            if (!fieldReference.isEmpty()) {
+                additionalField.getSubFields().add(new SubField('z', fieldReference));
+            }
             marcRecord.getFields().add(additionalField);
         }
     }
