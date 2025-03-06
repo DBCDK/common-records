@@ -47,6 +47,7 @@ class ExpandCommonMarcRecordTest {
     private static final String AUT_RAW_90004158 = "authority/raw-90004158.marc";
     private static final String AUT_RAW_130955754 = "authority/raw-130955754.marc";
     private static final String AUT_RAW_61777431 = "authority/raw-61777431.marc";
+    private static final String AUT_RAW_47042143 = "authority/raw-47042143.marc";
 
     private static final String AUT_EXPANDED_22810804 = "authority/expanded-22810804.marc";
     private static final String AUT_EXPANDED_126350333 = "authority/expanded-126350333.marc";
@@ -73,6 +74,7 @@ class ExpandCommonMarcRecordTest {
     private static final String AUT_EXPANDED_90004158 = "authority/expanded-90004158.marc";
     private static final String AUT_EXPANDED_130955754 = "authority/expanded-130955754.marc";
     private static final String AUT_EXPANDED_61777431 = "authority/expanded-61777431.marc";
+    private static final String AUT_EXPANDED_47042143 = "authority/expanded-47042143.marc";
 
     private static final String AUTHORITY_68305926 = "authority/authority-68305926.marc";
     private static final String AUTHORITY_19024687 = "authority/authority-19024687.marc";
@@ -137,6 +139,7 @@ class ExpandCommonMarcRecordTest {
     private static final String AUTHORITY_133990054 = "authority/authority-133990054.marc";
     private static final String EXPANDED_133990054 = "authority/expanded-133990054.marc";
     private static final String AUTHORITY_133990119 = "authority/authority-133990119.marc";
+    private static final String AUTHORITY_138073416 = "authority/authority-138073416.marc";
 
     private static final String COMMON_SINGLE_RECORD_RESOURCE = "authority/common_enrichment.marc";
 
@@ -261,6 +264,18 @@ class ExpandCommonMarcRecordTest {
         collection.put("68570492", auth1);
 
         assertThat(ExpandCommonMarcRecord.expandMarcRecord(collection, "53214827"), is(expanded));
+    }
+
+    @Test
+    void expandCommonRecordUniverse133_433() throws Exception {
+        MarcRecord raw = loadMarcRecord(AUT_RAW_47042143);
+        MarcRecord expanded = loadMarcRecord(AUT_EXPANDED_47042143);
+        MarcRecord auth1 = loadMarcRecord(AUTHORITY_138073416);
+
+        Map<String, MarcRecord> collection = new HashMap<>();
+        collection.put("47042143", raw);
+        collection.put("138073416", auth1);
+        assertThat(ExpandCommonMarcRecord.expandMarcRecord(collection, "47042143"), is(expanded));
     }
 
     @Test
