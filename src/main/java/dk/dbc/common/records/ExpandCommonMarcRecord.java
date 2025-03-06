@@ -307,17 +307,22 @@ public class ExpandCommonMarcRecord {
         }
     }
 
-    private static void addMainField(Field<DataField> field, Field<DataField> authField, boolean keepAutFields) {
-        // Find the index of where the AUT reference subfields are in the field
-        // We need to add the AUT content at that location
-        int authSubfieldIndex = 0;
+    // Sonarlint
+    private static int findAuthPosition(Field<DataField> field) {
         final DataField dataField = (DataField) field;
         for (int i = 0; i < dataField.getSubFields().size(); i++) {
             if (dataField.getSubFields().get(i).getCode() == '5') {
-                authSubfieldIndex = i;
-                break;
+                return i;
             }
         }
+        return 0;
+    }
+
+    private static void addMainField(Field<DataField> field, Field<DataField> authField, boolean keepAutFields) {
+        // Find the index of where the AUT reference subfields are in the field
+        // We need to add the AUT content at that location
+        int authSubfieldIndex = findAuthPosition(field);
+        final DataField dataField = (DataField) field;
 
         if (keepAutFields) {
             // If we are keeping *5 and *6 then move the aut data 2 fields "back"
@@ -332,7 +337,8 @@ public class ExpandCommonMarcRecord {
         if ("845".equals(dataField.getTag()) || "846".equals(dataField.getTag())) {
             final DataField authDataField = (DataField) authField;
             for (SubField authSubfield : authDataField.getSubFields()) {
-                if ('a' == authSubfield.getCode()) {
+                char code = authSubfield.getCode();
+                if ('a' == code || 'ø' == code) {
                     dataField.getSubFields().add(authSubfieldIndex++, new SubField(authSubfield));
                 }
             }
@@ -344,44 +350,120 @@ public class ExpandCommonMarcRecord {
         }
     }
 
+    // Sonarlint is even stupider
+    private static void doGeneralUniverse(boolean universeFields, SubField authSubfield, DataField additionalField) {
+        if (universeFields) {
+            char code = authSubfield.getCode();
+            if ('a' == code || 'ø' == code) {
+                // there will at least be a subfield 8 which isn't wanted - only subfield a and ø should be copied
+                additionalField.getSubFields().add(new SubField(authSubfield));
+            }
+        } else {
+            additionalField.getSubFields().add(new SubField(authSubfield));
+        }
+    }
+
+    // Sonarlint is stupid
+    private static String doGeneral(boolean universeFields, DataField additionalField, DataField authDataField, String subfieldwValue) {
+        for (SubField authSubfield : authDataField.getSubFields()) {
+            if ('w' == authSubfield.getCode()) {
+                if (!universeFields) {
+                    subfieldwValue = authSubfield.getData();
+                }
+            } else {
+                doGeneralUniverse(universeFields, authSubfield, additionalField);
+            }
+        }
+        return subfieldwValue;
+    }
+
+    private static void handleLookContent(String subfieldwValue, DataField additionalField, DataField authDataField) {
+        if (subfieldwValue != null) {
+            if ("tidligere navn".equals(subfieldwValue)) {
+                additionalField.getSubFields().add(new SubField('x', "se også under det senere navn"));
+            } else if ("senere navn".equals(subfieldwValue)) {
+                additionalField.getSubFields().add(new SubField('x', "se også under det tidligere navn"));
+            } else {
+                additionalField.getSubFields().add(new SubField('x', subfieldwValue));
+            }
+        } else {
+            if (Arrays.asList("500", "510").contains(authDataField.getTag())) {
+                additionalField.getSubFields().add(new SubField('x', "se også"));
+            } else {
+                additionalField.getSubFields().add(new SubField('x', "se"));
+            }
+        }
+    }
+
+    private static void handleField100(DataField authAuthorField, StringBuilder sb) {
+        final boolean hasAuthField100A = authAuthorField.hasSubField(hasSubFieldCode('a'));
+        final boolean hasAuthField100H = authAuthorField.hasSubField(hasSubFieldCode('h'));
+
+        if (hasAuthField100A && hasAuthField100H) {
+            sb.append(authAuthorField.getSubField(hasSubFieldCode('a')).orElseThrow().getData());
+            sb.append(", ");
+            sb.append(authAuthorField.getSubField(hasSubFieldCode('h')).orElseThrow().getData());
+        } else if (hasAuthField100A) {
+            sb.append(authAuthorField.getSubField(hasSubFieldCode('a')).orElseThrow().getData());
+        } else if (hasAuthField100H) {
+            sb.append(authAuthorField.getSubField(hasSubFieldCode('h')).orElseThrow().getData());
+        }
+
+        if (authAuthorField.hasSubField(hasSubFieldCode('c'))) {
+            sb.append(" (");
+            sb.append(authAuthorField.getSubField(hasSubFieldCode('c')).orElseThrow().getData());
+            sb.append(")");
+        }
+    }
+
+    private static void handleParantesis(char previousSubFieldName, StringBuilder sb, SubField subField, List<Character> parenthesesSubFieldNames) {
+        if (parenthesesSubFieldNames.contains(previousSubFieldName)) {
+            // Continue parentheses
+            sb.append(" : ");
+            sb.append(subField.getData());
+        } else {
+            // New parentheses
+            sb.append(" (");
+            sb.append(subField.getData());
+        }
+    }
+
+    private static void handleNonUniverse110(DataField authAuthorField, StringBuilder sb) {
+        final List<Character> parenthesesSubFieldNames = Arrays.asList('e', 'i', 'j', 'k');
+
+        char previousSubFieldName = '\0';
+
+        for (SubField subField : authAuthorField.getSubFields()) {
+            if (parenthesesSubFieldNames.contains(subField.getCode())) {
+                handleParantesis(previousSubFieldName, sb, subField, parenthesesSubFieldNames);
+            } else {
+                if (parenthesesSubFieldNames.contains(previousSubFieldName)) {
+                    // End parentheses
+                    sb.append("). ");
+                    sb.append(subField.getData());
+                } else {
+                    if ('\u0000' != previousSubFieldName) {
+                        sb.append(". ");
+                    }
+                    sb.append(subField.getData());
+                }
+            }
+            previousSubFieldName = subField.getCode();
+        }
+        if (parenthesesSubFieldNames.contains(previousSubFieldName)) {
+            sb.append(")");
+        }
+    }
+
     private static void addAdditionalFields(String fieldName, MarcRecord marcRecord, List<DataField> authFields, DataField authAuthorField, String fieldReference) {
         final boolean universeFields = "945".equals(fieldName); // I don't like this, but for the moment only universe/series put things in 945
         for (DataField authDataField : authFields) {
             final DataField additionalField = new DataField(fieldName, "00");
             String subfieldwValue = null;
-            for (SubField authSubfield : authDataField.getSubFields()) {
-                if ('w' == authSubfield.getCode()) {
-                    if (!universeFields) {
-                        subfieldwValue = authSubfield.getData();
-                    }
-                } else {
-                    if (universeFields) {
-                        if ('a' == authSubfield.getCode()) {
-                            // there will at least be a subfield 8 which isn't wanted - only subfield a should be copied
-                            additionalField.getSubFields().add(new SubField(authSubfield));
-                        }
-                    } else {
-                        additionalField.getSubFields().add(new SubField(authSubfield));
-                    }
-                }
-            }
+            subfieldwValue = doGeneral(universeFields, additionalField, authDataField, subfieldwValue);
 
             if (!universeFields) {
-                if (subfieldwValue != null) {
-                    if ("tidligere navn".equals(subfieldwValue)) {
-                        additionalField.getSubFields().add(new SubField('x', "se også under det senere navn"));
-                    } else if ("senere navn".equals(subfieldwValue)) {
-                        additionalField.getSubFields().add(new SubField('x', "se også under det tidligere navn"));
-                    } else {
-                        additionalField.getSubFields().add(new SubField('x', subfieldwValue));
-                    }
-                } else {
-                    if (Arrays.asList("500", "510").contains(authDataField.getTag())) {
-                        additionalField.getSubFields().add(new SubField('x', "se også"));
-                    } else {
-                        additionalField.getSubFields().add(new SubField('x', "se"));
-                    }
-                }
+                handleLookContent(subfieldwValue, additionalField, authDataField);
             }
 
             final StringBuilder sb = new StringBuilder();
@@ -395,57 +477,9 @@ public class ExpandCommonMarcRecord {
              */
             if (!universeFields) {
                 if ("110".equals(authAuthorField.getTag())) {
-                    final List<Character> parenthesesSubFieldNames = Arrays.asList('e', 'i', 'j', 'k');
-
-                    char previousSubFieldName = '\0';
-
-                    for (SubField subField : authAuthorField.getSubFields()) {
-                        if (parenthesesSubFieldNames.contains(subField.getCode())) {
-                            if (parenthesesSubFieldNames.contains(previousSubFieldName)) {
-                                // Continue parentheses
-                                sb.append(" : ");
-                                sb.append(subField.getData());
-                            } else {
-                                // New parentheses
-                                sb.append(" (");
-                                sb.append(subField.getData());
-                            }
-                        } else {
-                            if (parenthesesSubFieldNames.contains(previousSubFieldName)) {
-                                // End parentheses
-                                sb.append("). ");
-                                sb.append(subField.getData());
-                            } else {
-                                if ('\u0000' != previousSubFieldName) {
-                                    sb.append(". ");
-                                }
-                                sb.append(subField.getData());
-                            }
-                        }
-                        previousSubFieldName = subField.getCode();
-                    }
-                    if (parenthesesSubFieldNames.contains(previousSubFieldName)) {
-                        sb.append(")");
-                    }
+                    handleNonUniverse110(authAuthorField, sb);
                 } else {
-                    final boolean hasAuthField100A = authAuthorField.hasSubField(hasSubFieldCode('a'));
-                    final boolean hasAuthField100H = authAuthorField.hasSubField(hasSubFieldCode('h'));
-
-                    if (hasAuthField100A && hasAuthField100H) {
-                        sb.append(authAuthorField.getSubField(hasSubFieldCode('a')).orElseThrow().getData());
-                        sb.append(", ");
-                        sb.append(authAuthorField.getSubField(hasSubFieldCode('h')).orElseThrow().getData());
-                    } else if (hasAuthField100A) {
-                        sb.append(authAuthorField.getSubField(hasSubFieldCode('a')).orElseThrow().getData());
-                    } else if (hasAuthField100H) {
-                        sb.append(authAuthorField.getSubField(hasSubFieldCode('h')).orElseThrow().getData());
-                    }
-
-                    if (authAuthorField.hasSubField(hasSubFieldCode('c'))) {
-                        sb.append(" (");
-                        sb.append(authAuthorField.getSubField(hasSubFieldCode('c')).orElseThrow().getData());
-                        sb.append(")");
-                    }
+                    handleField100(authAuthorField, sb);
                 }
                 additionalField.getSubFields().add(new SubField('w', sb.toString()));
 
