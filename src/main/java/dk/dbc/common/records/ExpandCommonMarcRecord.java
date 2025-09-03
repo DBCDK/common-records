@@ -245,7 +245,12 @@ public class ExpandCommonMarcRecord {
                         break;
                 }
                 if (!authRecord.hasField(hasTag(authAuthorFieldName))) {
-                    return;
+                    final DataField errorField = new DataField("e01", "00");
+                    String error = "A-post " + authRecordId + " er ikke af en type der svarer til felt " + dataField.getTag();
+                    errorField.addSubField(new SubField('a', error));
+                    expandedRecord.getFields().add(new DataField(dataField));
+                    expandedRecord.getFields().add(new DataField(errorField));
+                    continue;
                 }
                 final DataField authAuthorField = new DataField((DataField) authRecord.getField(hasTag(authAuthorFieldName)).orElseThrow());
 

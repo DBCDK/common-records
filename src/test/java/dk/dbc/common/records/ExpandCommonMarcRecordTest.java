@@ -26,6 +26,7 @@ class ExpandCommonMarcRecordTest {
     private static final String AUT_RAW_126350333 = "authority/raw-126350333.marc";
     private static final String AUT_RAW_126850298 = "authority/raw-126850298.marc";
     private static final String AUT_RAW_22642448 = "authority/raw-22642448.marc";
+    private static final String AUT_RAW_22642448_ERROR = "authority/raw-22642448-error.marc";
     private static final String AUT_RAW_26081718 = "authority/raw-26081718.marc";
     private static final String AUT_RAW_26443784 = "authority/raw-26443784.marc";
     private static final String AUT_RAW_27568602 = "authority/raw-27568602.marc";
@@ -53,6 +54,7 @@ class ExpandCommonMarcRecordTest {
     private static final String AUT_EXPANDED_126350333 = "authority/expanded-126350333.marc";
     private static final String AUT_EXPANDED_126850298 = "authority/expanded-126850298.marc";
     private static final String AUT_EXPANDED_22642448 = "authority/expanded-22642448.marc";
+    private static final String AUT_EXPANDED_22642448_ERROR = "authority/expanded-22642448-error.marc";
     private static final String AUT_EXPANDED_26081718 = "authority/expanded-26081718.marc";
     private static final String AUT_EXPANDED_26443784 = "authority/expanded-26443784.marc";
     private static final String AUT_EXPANDED_27568602 = "authority/expanded-27568602.marc";
@@ -418,6 +420,20 @@ class ExpandCommonMarcRecordTest {
         assertThat(ExpandCommonMarcRecord.expandMarcRecord(collection, "22810804"), is(expanded));
     }
 
+    @Test
+    void textAutMus1_error() throws Exception {
+        MarcRecord expanded = loadMarcRecord(AUT_EXPANDED_22642448_ERROR);
+
+        Map<String, MarcRecord> collection = new HashMap<>();
+        collection.put("22642448", loadMarcRecord(AUT_RAW_22642448_ERROR));
+        collection.put("48872212", loadMarcRecord(AUTHORITY_48872212));
+        collection.put("48872239", loadMarcRecord(AUTHORITY_48872239));
+        collection.put("48872123", loadMarcRecord(AUTHORITY_48872123));
+        collection.put("48872336", loadMarcRecord(AUTHORITY_48872336));
+        collection.put("48872247", loadMarcRecord(AUTHORITY_48872247));
+
+        assertThat(ExpandCommonMarcRecord.expandMarcRecord(collection, "22642448"), is(expanded));
+    }
     @Test
     void textAutMus1() throws Exception {
         MarcRecord expanded = loadMarcRecord(AUT_EXPANDED_22642448);

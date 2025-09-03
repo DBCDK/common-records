@@ -7,13 +7,13 @@
     <parent>
         <groupId>dk.dbc</groupId>
         <artifactId>microservice-pom</artifactId>
-        <version>java11-old-payara5</version>
+        <version>java17-SNAPSHOT</version>
         <relativePath/>
     </parent>
 
     <name>common-records</name>
     <artifactId>common-records</artifactId>
-    <version>2.3-SNAPSHOT</version>
+    <version>2.4-SNAPSHOT</version>
 
     <repositories>
         <repository>
@@ -31,6 +31,11 @@
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-ext</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>log4j-over-slf4j</artifactId>
+            <version>${slf4j.version}</version>
         </dependency>
         <dependency>
             <groupId>commons-lang</groupId>
