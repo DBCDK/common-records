@@ -49,7 +49,7 @@ public class ExpandCommonMarcRecord {
      * @param keepAutFields    If true the  *5 and *6 fields remains in the output record
      * @throws MarcReaderException When expansion fails (usually due to missing authority record)
      */
-    public static byte[] expandRecord(byte[] content, Map<String, byte[]> authorityContent, boolean keepAutFields) throws MarcReaderException, MarcRecordExpandException {
+    public byte[] expandRecord(byte[] content, Map<String, byte[]> authorityContent, boolean keepAutFields) throws MarcReaderException, MarcRecordExpandException {
         final Stopwatch stopWatch = new Stopwatch();
         final MarcRecord commonMarcRecord = contentToMarcRecord(content);
         logger.debug("Stopwatch - {} took {} ms", "RecordContentTransformer.decodeRecord(common)", stopWatch.getElapsedTime(TimeUnit.MILLISECONDS));
@@ -81,7 +81,7 @@ public class ExpandCommonMarcRecord {
      * @return a single common record expanded with authority data
      * @throws MarcRecordExpandException if the collection doesn't contain the necessary records
      */
-    public static MarcRecord expandMarcRecord(Map<String, MarcRecord> records, String recordId, boolean keepAutFields) throws MarcRecordExpandException {
+    public MarcRecord expandMarcRecord(Map<String, MarcRecord> records, String recordId, boolean keepAutFields) throws MarcRecordExpandException {
         final Stopwatch stopWatch = new Stopwatch();
         MarcRecord commonRecord = null;
         final Map<String, MarcRecord> authorityRecords = new HashMap<>();
@@ -116,11 +116,11 @@ public class ExpandCommonMarcRecord {
      * @return a single common record expanded with authority data
      * @throws MarcRecordExpandException if the collection doesn't contain the necessary records
      */
-    public static MarcRecord expandMarcRecord(Map<String, MarcRecord> records, String recordId) throws MarcRecordExpandException {
+    public MarcRecord expandMarcRecord(Map<String, MarcRecord> records, String recordId) throws MarcRecordExpandException {
         return expandMarcRecord(records, recordId, false);
     }
 
-    private static MarcRecord doExpand(MarcRecord commonRecord, Map<String, MarcRecord> authorityRecords, boolean keepAutFields) throws MarcRecordExpandException {
+    private MarcRecord doExpand(MarcRecord commonRecord, Map<String, MarcRecord> authorityRecords, boolean keepAutFields) throws MarcRecordExpandException {
         final MarcRecord expandedRecord = new MarcRecord()
                 .setLeader(commonRecord.getLeader());
         /*
@@ -193,7 +193,75 @@ public class ExpandCommonMarcRecord {
         return authNumerator;
     }
 
-    private static void handleRepeatableField(List<DataField> dataFields, MarcRecord expandedRecord, Map<String, MarcRecord> authorityRecords, boolean keepAutFields, int authNumerator) throws MarcRecordExpandException {
+    int mode = 0;
+    String authFieldName = "";
+    String referenceField = "";
+    public int getMode() {
+        return this.mode;
+    }
+
+    public String getAuthFieldName() {
+        return this.authFieldName;
+    }
+
+    public String getReference() {
+        return this.referenceField;
+    }
+
+    private void setMode(int newMode) {
+        this.mode = newMode;
+    }
+
+    private void setAuthFieldName(String newAuthFieldName) {
+        this.authFieldName = newAuthFieldName;
+    }
+
+    private void setReference(String newReferenceField) {
+        this.referenceField = newReferenceField;
+    }
+
+    public void getModeRefAFieldName(DataField field) {
+        setReference("");
+        setAuthFieldName("");
+        setMode(0);
+        switch (field.getTag()) {
+            case "100":
+                setMode(1);
+                setAuthFieldName("100");
+                break;
+            case "600":
+            case "700":
+            case "770":
+                setMode(2);
+                setAuthFieldName("100");
+                break;
+            case "110":
+                setMode(1);
+                setAuthFieldName("110");
+                break;
+            case "610":
+            case "710":
+            case "780":
+                setMode(2);
+                setAuthFieldName("110");
+                break;
+            case "845":
+                setMode(3);
+            case "233":
+                setReference("433");
+                setAuthFieldName("133");
+                break;
+            case "846":
+                setMode(4);
+            case "234":
+                setReference("434");
+                setAuthFieldName("134");
+                break;
+        }
+
+    }
+
+    private void handleRepeatableField(List<DataField> dataFields, MarcRecord expandedRecord, Map<String, MarcRecord> authorityRecords, boolean keepAutFields, int authNumerator) throws MarcRecordExpandException {
         for (DataField dataField : dataFields) {
             if (dataField.hasSubField(hasSubFieldCode('5')) && dataField.hasSubField(hasSubFieldCode('6'))) {
                 final String authRecordId = dataField.getSubField(hasSubFieldCode('6')).orElseThrow().getData();
@@ -206,45 +274,8 @@ public class ExpandCommonMarcRecord {
                 }
 
                 final DataField expandedField = new DataField(dataField);
-                String authAuthorFieldName = "";
-                String referenceField = "";
-
-                int mode = 0;
-                switch (dataField.getTag()) {
-                    case "100":
-                        mode = 1;
-                        authAuthorFieldName = "100";
-                        break;
-                    case "600":
-                    case "700":
-                    case "770":
-                        mode = 2;
-                        authAuthorFieldName = "100";
-                        break;
-                    case "110":
-                        mode = 1;
-                        authAuthorFieldName = "110";
-                        break;
-                    case "610":
-                    case "710":
-                    case "780":
-                        mode = 2;
-                        authAuthorFieldName = "110";
-                        break;
-                    case "845":
-                        mode = 3;
-                    case "233":
-                        referenceField = "433";
-                        authAuthorFieldName = "133";
-                        break;
-                    case "846":
-                        mode = 4;
-                    case "234":
-                        referenceField = "434";
-                        authAuthorFieldName = "134";
-                        break;
-                }
-                if (!authRecord.hasField(hasTag(authAuthorFieldName))) {
+                getModeRefAFieldName(dataField);
+                if (!authRecord.hasField(hasTag(getAuthFieldName()))) {
                     final DataField errorField = new DataField("e01", "00");
                     String error = "A-post " + authRecordId + " er ikke af en type der svarer til felt " + dataField.getTag();
                     errorField.addSubField(new SubField('a', error));
@@ -252,12 +283,12 @@ public class ExpandCommonMarcRecord {
                     expandedRecord.getFields().add(new DataField(errorField));
                     continue;
                 }
-                final DataField authAuthorField = new DataField((DataField) authRecord.getField(hasTag(authAuthorFieldName)).orElseThrow());
+                final DataField authAuthorField = new DataField((DataField) authRecord.getField(hasTag(getAuthFieldName())).orElseThrow());
 
                 addMainField(expandedField, authAuthorField, keepAutFields);
 
                 String fieldReference = dataField.getTag();
-                if (mode == 1 || mode == 2) {
+                if (getMode() == 1 || getMode() == 2) {
                     // x00 and 770 puts 400 and 500 in 900 fields and x10 and 780 puts 410 and 510 in 910 fields - this is so fun
                     boolean hasAdditionalFields;
                     List<String> mayNeedFourFiveHundred = Arrays.asList("00", "70");
@@ -266,7 +297,7 @@ public class ExpandCommonMarcRecord {
                     } else {
                         hasAdditionalFields = authRecord.hasField(hasTag("410").or(hasTag("510")));
                     }
-                    if (mode == 2 && hasAdditionalFields) {
+                    if (getMode() == 2 && hasAdditionalFields) {
                         // The field is repeatable, so we add a numerator value to the *z content
                         if (!dataField.hasSubField(hasSubFieldCode('å'))) {
                             expandedField.getSubFields().add(0, new SubField('å', Integer.toString(authNumerator)));
@@ -291,7 +322,7 @@ public class ExpandCommonMarcRecord {
                     // The universe/series fields is repeatable, so we add a numerator value to the *z content
                     // though, only if there are 433 or 434 fields
                     boolean hasAdditionalFields;
-                    hasAdditionalFields = authRecord.hasField(hasTag(referenceField));
+                    hasAdditionalFields = authRecord.hasField(hasTag(getReference()));
                     if (hasAdditionalFields && !dataField.hasSubField(hasSubFieldCode('å'))) {
                         expandedField.getSubFields().add(0, new SubField('å', Integer.toString(authNumerator)));
                         fieldReference += "/" + authNumerator;
@@ -299,7 +330,7 @@ public class ExpandCommonMarcRecord {
                     } else {
                         fieldReference = "";
                     }
-                    if (mode == 3) {
+                    if (getMode() == 3) {
                         addAdditionalFields("945", expandedRecord, authRecord.getFields(DataField.class, hasTag("433")), authAuthorField, fieldReference);
                     } else {
                         addAdditionalFields("945", expandedRecord, authRecord.getFields(DataField.class, hasTag("434")), authAuthorField, fieldReference);
@@ -421,7 +452,7 @@ public class ExpandCommonMarcRecord {
         }
     }
 
-    private static void handleParantesis(char previousSubFieldName, StringBuilder sb, SubField subField, List<Character> parenthesesSubFieldNames) {
+    private static void handleParentheses(char previousSubFieldName, StringBuilder sb, SubField subField, List<Character> parenthesesSubFieldNames) {
         if (parenthesesSubFieldNames.contains(previousSubFieldName)) {
             // Continue parentheses
             sb.append(" : ");
@@ -440,7 +471,7 @@ public class ExpandCommonMarcRecord {
 
         for (SubField subField : authAuthorField.getSubFields()) {
             if (parenthesesSubFieldNames.contains(subField.getCode())) {
-                handleParantesis(previousSubFieldName, sb, subField, parenthesesSubFieldNames);
+                handleParentheses(previousSubFieldName, sb, subField, parenthesesSubFieldNames);
             } else {
                 if (parenthesesSubFieldNames.contains(previousSubFieldName)) {
                     // End parentheses

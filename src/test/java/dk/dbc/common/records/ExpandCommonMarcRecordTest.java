@@ -145,6 +145,8 @@ class ExpandCommonMarcRecordTest {
 
     private static final String COMMON_SINGLE_RECORD_RESOURCE = "authority/common_enrichment.marc";
 
+    ExpandCommonMarcRecord mm = new ExpandCommonMarcRecord();
+
     private static MarcRecord loadMarcRecord(String filename) throws MarcReaderException, IOException {
         final ClassLoader classLoader = ExpandCommonMarcRecordTest.class.getClassLoader();
         final File file = new File(Objects.requireNonNull(classLoader.getResource(filename)).getFile());
@@ -167,7 +169,7 @@ class ExpandCommonMarcRecordTest {
         collection.put("19024709", auth1);
         collection.put("19024687", auth2);
 
-        assertThat(ExpandCommonMarcRecord.expandMarcRecord(collection, "52846943"), is(expanded));
+        assertThat(mm.expandMarcRecord(collection, "52846943"), is(expanded));
     }
 
     @Test
@@ -184,7 +186,7 @@ class ExpandCommonMarcRecordTest {
         collection.put("69328776", auth2);
         collection.put("19043800", auth3);
 
-        assertThat(ExpandCommonMarcRecord.expandMarcRecord(collection, "53025757"), is(expanded));
+        assertThat(mm.expandMarcRecord(collection, "53025757"), is(expanded));
     }
 
     @Test
@@ -201,7 +203,7 @@ class ExpandCommonMarcRecordTest {
         collection.put("68098203", auth2);
         collection.put("19064689", auth3);
 
-        assertThat(ExpandCommonMarcRecord.expandMarcRecord(collection, "53161510"), is(expanded));
+        assertThat(mm.expandMarcRecord(collection, "53161510"), is(expanded));
     }
 
     @Test
@@ -220,7 +222,7 @@ class ExpandCommonMarcRecordTest {
         collection.put("68900719", auth3);
         collection.put("68560985", auth4);
 
-        assertThat(ExpandCommonMarcRecord.expandMarcRecord(collection, "53180485"), is(expanded));
+        assertThat(mm.expandMarcRecord(collection, "53180485"), is(expanded));
     }
 
     @Test
@@ -235,7 +237,7 @@ class ExpandCommonMarcRecordTest {
         collection.put("68895650", auth1);
         collection.put("19130452", auth2);
 
-        assertThat(ExpandCommonMarcRecord.expandMarcRecord(collection, "53213642"), is(expanded));
+        assertThat(mm.expandMarcRecord(collection, "53213642"), is(expanded));
     }
 
     @Test
@@ -252,7 +254,7 @@ class ExpandCommonMarcRecordTest {
         collection.put("68472806", auth3);
         collection.put("68585627", auth4);
 
-        assertThat(ExpandCommonMarcRecord.expandMarcRecord(collection, "53214592"), is(expanded));
+        assertThat(mm.expandMarcRecord(collection, "53214592"), is(expanded));
     }
 
     @Test
@@ -265,7 +267,7 @@ class ExpandCommonMarcRecordTest {
         collection.put("53214827", raw);
         collection.put("68570492", auth1);
 
-        assertThat(ExpandCommonMarcRecord.expandMarcRecord(collection, "53214827"), is(expanded));
+        assertThat(mm.expandMarcRecord(collection, "53214827"), is(expanded));
     }
 
     @Test
@@ -277,7 +279,7 @@ class ExpandCommonMarcRecordTest {
         Map<String, MarcRecord> collection = new HashMap<>();
         collection.put("47042143", raw);
         collection.put("138073416", auth1);
-        assertThat(ExpandCommonMarcRecord.expandMarcRecord(collection, "47042143"), is(expanded));
+        assertThat(mm.expandMarcRecord(collection, "47042143"), is(expanded));
     }
 
     @Test
@@ -294,7 +296,7 @@ class ExpandCommonMarcRecordTest {
         collection.put("133990054", auth2);
         collection.put("133990119", auth3);
 
-        assertThat(ExpandCommonMarcRecord.expandMarcRecord(collection, "61777431"), is(expanded));
+        assertThat(mm.expandMarcRecord(collection, "61777431"), is(expanded));
     }
 
     @Test
@@ -304,7 +306,7 @@ class ExpandCommonMarcRecordTest {
         MarcRecord auth3 = loadMarcRecord(AUTHORITY_444444444);
         MarcRecord expanded = loadMarcRecord(EXPANDED_133990054);
         Map<String, MarcRecord> collection = Map.of("133990054", auth1, "222222222", auth2, "444444444", auth3);
-        MarcRecord record = ExpandCommonMarcRecord.expandMarcRecord(collection, "133990054");
+        MarcRecord record = mm.expandMarcRecord(collection, "133990054");
         assertThat(record, is(expanded));
     }
 
@@ -322,14 +324,14 @@ class ExpandCommonMarcRecordTest {
         collection.put("69294685", auth2);
         collection.put("48872247", auth3);
 
-        assertThat(ExpandCommonMarcRecord.expandMarcRecord(collection, "90004158"), is(expanded));
+        assertThat(mm.expandMarcRecord(collection, "90004158"), is(expanded));
     }
 
     @Test
     void noCommonRecord() {
         Map<String, MarcRecord> collection = new HashMap<>();
 
-        Assertions.assertThrows(MarcRecordExpandException.class, () -> ExpandCommonMarcRecord.expandMarcRecord(collection, ""));
+        Assertions.assertThrows(MarcRecordExpandException.class, () -> mm.expandMarcRecord(collection, ""));
     }
 
     @Test
@@ -339,7 +341,7 @@ class ExpandCommonMarcRecordTest {
         Map<String, MarcRecord> collection = new HashMap<>();
         collection.put("90004158", record);
 
-        Assertions.assertThrows(MarcRecordExpandException.class, () -> ExpandCommonMarcRecord.expandMarcRecord(collection, "90004158"));
+        Assertions.assertThrows(MarcRecordExpandException.class, () -> mm.expandMarcRecord(collection, "90004158"));
     }
 
     @Test
@@ -349,7 +351,7 @@ class ExpandCommonMarcRecordTest {
         Map<String, MarcRecord> collection = new HashMap<>();
         collection.put("20611529", record);
 
-        assertThat(ExpandCommonMarcRecord.expandMarcRecord(collection, "20611529"), is(record));
+        assertThat(mm.expandMarcRecord(collection, "20611529"), is(record));
     }
 
     @Test
@@ -362,7 +364,7 @@ class ExpandCommonMarcRecordTest {
         collection.put("26443784", raw);
         collection.put("68313686", authority);
 
-        assertThat(ExpandCommonMarcRecord.expandMarcRecord(collection, "26443784"), is(expanded));
+        assertThat(mm.expandMarcRecord(collection, "26443784"), is(expanded));
     }
 
     @Test
@@ -379,7 +381,7 @@ class ExpandCommonMarcRecordTest {
         collection.put("68058953", authority1);
         collection.put("68560985", authority2);
 
-        assertThat(ExpandCommonMarcRecord.expandMarcRecord(collection, "126350333"), is(expanded));
+        assertThat(mm.expandMarcRecord(collection, "126350333"), is(expanded));
     }
 
     @Test
@@ -401,7 +403,7 @@ class ExpandCommonMarcRecordTest {
         collection.put("68619858", authority3);
         collection.put("68679265", authority4);
 
-        assertThat(ExpandCommonMarcRecord.expandMarcRecord(collection, "126850298"), is(expanded));
+        assertThat(mm.expandMarcRecord(collection, "126850298"), is(expanded));
     }
 
     @Test
@@ -417,7 +419,7 @@ class ExpandCommonMarcRecordTest {
 
         collection.put("68305926", authority1);
 
-        assertThat(ExpandCommonMarcRecord.expandMarcRecord(collection, "22810804"), is(expanded));
+        assertThat(mm.expandMarcRecord(collection, "22810804"), is(expanded));
     }
 
     @Test
@@ -432,7 +434,7 @@ class ExpandCommonMarcRecordTest {
         collection.put("48872336", loadMarcRecord(AUTHORITY_48872336));
         collection.put("48872247", loadMarcRecord(AUTHORITY_48872247));
 
-        assertThat(ExpandCommonMarcRecord.expandMarcRecord(collection, "22642448"), is(expanded));
+        assertThat(mm.expandMarcRecord(collection, "22642448"), is(expanded));
     }
     @Test
     void textAutMus1() throws Exception {
@@ -446,7 +448,7 @@ class ExpandCommonMarcRecordTest {
         collection.put("48872336", loadMarcRecord(AUTHORITY_48872336));
         collection.put("48872247", loadMarcRecord(AUTHORITY_48872247));
 
-        assertThat(ExpandCommonMarcRecord.expandMarcRecord(collection, "22642448"), is(expanded));
+        assertThat(mm.expandMarcRecord(collection, "22642448"), is(expanded));
     }
 
     @Test
@@ -456,7 +458,7 @@ class ExpandCommonMarcRecordTest {
         Map<String, MarcRecord> collection = new HashMap<>();
         collection.put("26081718", loadMarcRecord(AUT_RAW_26081718));
 
-        assertThat(ExpandCommonMarcRecord.expandMarcRecord(collection, "26081718"), is(expanded));
+        assertThat(mm.expandMarcRecord(collection, "26081718"), is(expanded));
     }
 
     @Test
@@ -471,7 +473,7 @@ class ExpandCommonMarcRecordTest {
         collection.put("68759498", loadMarcRecord(AUTHORITY_68759498));
         collection.put("48872247", loadMarcRecord(AUTHORITY_48872247));
 
-        assertThat(ExpandCommonMarcRecord.expandMarcRecord(collection, "27568602"), is(expanded));
+        assertThat(mm.expandMarcRecord(collection, "27568602"), is(expanded));
     }
 
     @Test
@@ -482,7 +484,7 @@ class ExpandCommonMarcRecordTest {
         collection.put("47625475", loadMarcRecord(AUT_RAW_47625475));
         collection.put("48872336", loadMarcRecord(AUTHORITY_48872336));
 
-        assertThat(ExpandCommonMarcRecord.expandMarcRecord(collection, "47625475"), is(expanded));
+        assertThat(mm.expandMarcRecord(collection, "47625475"), is(expanded));
     }
 
     @Test
@@ -497,7 +499,7 @@ class ExpandCommonMarcRecordTest {
         collection.put("48623999", loadMarcRecord(AUTHORITY_48623999));
 
 
-        assertThat(ExpandCommonMarcRecord.expandMarcRecord(collection, "48141943"), is(expanded));
+        assertThat(mm.expandMarcRecord(collection, "48141943"), is(expanded));
     }
 
     @Test
@@ -508,7 +510,7 @@ class ExpandCommonMarcRecordTest {
         collection.put("48802362", loadMarcRecord(AUT_RAW_48802362));
         collection.put("48872174", loadMarcRecord(AUTHORITY_48872174));
 
-        assertThat(ExpandCommonMarcRecord.expandMarcRecord(collection, "48802362"), is(expanded));
+        assertThat(mm.expandMarcRecord(collection, "48802362"), is(expanded));
     }
 
     @Test
@@ -519,7 +521,7 @@ class ExpandCommonMarcRecordTest {
         collection.put("48867472", loadMarcRecord(AUT_RAW_48867472));
         collection.put("47220882", loadMarcRecord(AUTHORITY_47220882));
 
-        assertThat(ExpandCommonMarcRecord.expandMarcRecord(collection, "48867472"), is(expanded));
+        assertThat(mm.expandMarcRecord(collection, "48867472"), is(expanded));
     }
 
     @Test
@@ -530,7 +532,7 @@ class ExpandCommonMarcRecordTest {
         collection.put("53333338", loadMarcRecord(AUT_RAW_53333338));
         collection.put("47919142", loadMarcRecord(AUTHORITY_47919142));
 
-        assertThat(ExpandCommonMarcRecord.expandMarcRecord(collection, "53333338"), is(expanded));
+        assertThat(mm.expandMarcRecord(collection, "53333338"), is(expanded));
     }
 
     @Test
@@ -542,7 +544,7 @@ class ExpandCommonMarcRecordTest {
         collection.put("69518060", loadMarcRecord(AUTHORITY_69518060));
         collection.put("48327826", loadMarcRecord(AUTHORITY_48327826));
 
-        assertThat(ExpandCommonMarcRecord.expandMarcRecord(collection, "53356478"), is(expanded));
+        assertThat(mm.expandMarcRecord(collection, "53356478"), is(expanded));
     }
 
     @Test
@@ -556,7 +558,7 @@ class ExpandCommonMarcRecordTest {
         collection.put("48872328", loadMarcRecord(AUTHORITY_48872328));
         collection.put("48872158", loadMarcRecord(AUTHORITY_48872158));
 
-        assertThat(ExpandCommonMarcRecord.expandMarcRecord(collection, "53551173"), is(expanded));
+        assertThat(mm.expandMarcRecord(collection, "53551173"), is(expanded));
     }
 
     @Test
@@ -567,7 +569,7 @@ class ExpandCommonMarcRecordTest {
         collection.put("48776108", loadMarcRecord(AUT_RAW_48776108));
         collection.put("48873073", loadMarcRecord(AUTHORITY_48873073));
 
-        assertThat(ExpandCommonMarcRecord.expandMarcRecord(collection, "48776108"), is(expanded));
+        assertThat(mm.expandMarcRecord(collection, "48776108"), is(expanded));
     }
 
     @Test
@@ -595,7 +597,7 @@ class ExpandCommonMarcRecordTest {
         collection.put("68472806", auth2);
         collection.put("68585627", auth3);
 
-        assertThat(ExpandCommonMarcRecord.expandMarcRecord(collection, "53214592"), is(expanded));
+        assertThat(mm.expandMarcRecord(collection, "53214592"), is(expanded));
     }
 
     @Test
@@ -624,7 +626,7 @@ class ExpandCommonMarcRecordTest {
         collection.put("68472806", auth2);
         collection.put("68585627", auth3);
 
-        assertThat(ExpandCommonMarcRecord.expandMarcRecord(collection, "53214592"), is(expanded));
+        assertThat(mm.expandMarcRecord(collection, "53214592"), is(expanded));
     }
 
     @Test
@@ -646,7 +648,7 @@ class ExpandCommonMarcRecordTest {
         collection.put("68955076", loadMarcRecord(AUTHORITY_68955076));
         collection.put("69242162", loadMarcRecord(AUTHORITY_69242162));
 
-        assertThat(ExpandCommonMarcRecord.expandMarcRecord(collection, "130955754"), is(expanded));
+        assertThat(mm.expandMarcRecord(collection, "130955754"), is(expanded));
     }
 
 }
